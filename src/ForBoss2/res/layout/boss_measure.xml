@@ -1,0 +1,72 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg_survey" />
+
+    <ImageView
+        android:id="@+id/imgTopLine"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/top_line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" >
+
+        <ImageView
+            android:layout_width="92dp"
+            android:layout_height="42dp"
+            android:layout_alignParentTop="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/but_arrow" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutNavButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgTopLine" >
+
+        <ImageButton
+            android:layout_width="79dp"
+            android:layout_height="26dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:background="#00000000"
+            android:scaleType="fitXY"
+            android:src="@drawable/but_survey_back" />
+
+        <ImageButton
+            android:layout_width="79dp"
+            android:layout_height="26dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:background="#00000000"
+            android:scaleType="fitXY"
+            android:src="@drawable/but_next_survey" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/layoutFragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/imgBottomLine"
+        android:layout_below="@+id/layoutNavButtons" >
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/imgBottomLine"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:layout_alignParentBottom="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/bottom_line" />
+
+</RelativeLayout>

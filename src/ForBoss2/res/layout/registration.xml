@@ -1,0 +1,112 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="@drawable/plain_background">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitStart"
+        android:src="@drawable/background" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="35dp"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            android:src="@drawable/logo" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="35dp"
+            android:layout_marginTop="62dp"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/login_divider_1" />
+
+            <ImageView
+                android:layout_width="263dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/text_login_thanks" />
+
+            <ImageView
+                android:layout_width="224dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/text_login" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/login_divider_2" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="235dp"
+            android:layout_height="wrap_content"
+            android:text="Vui lòng đăng ký thông tin để chúng tôi liên lạc khi bạn trúng giải"
+            android:textAppearance="@style/registration_text" />
+
+        <EditText
+            android:id="@+id/editEmail"
+            android:layout_width="235dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_input_email"
+            android:hint="EMAIL"
+            android:paddingLeft="34dp"
+            android:textAppearance="@style/registration_text" />
+
+        <EditText
+            android:id="@+id/editPhoneNumber"
+            android:layout_width="235dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_input_phone"
+            android:hint="ĐIỆN THOẠI"
+            android:paddingLeft="34dp"
+            android:textAppearance="@style/registration_text" />
+
+        <EditText
+            android:id="@+id/editCMND"
+            android:layout_width="235dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_input_identifier"
+            android:hint="SỐ CMND"
+            android:paddingLeft="34dp"
+            android:textAppearance="@style/registration_text" />
+
+        <TextView
+            android:layout_width="235dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="* Thông tin của bạn sẽ được bảo mật"
+            android:textAppearance="@style/registration_text"
+            android:textSize="12sp"
+            android:textStyle="italic" />
+
+        <ImageButton
+            android:id="@+id/buttonSubmit"
+            android:layout_width="132dp"
+            android:layout_height="33dp"
+            android:layout_marginTop="6dp"
+            android:background="#00000000"
+            android:src="@drawable/submit_button" />
+    </LinearLayout>
+
+</RelativeLayout>
