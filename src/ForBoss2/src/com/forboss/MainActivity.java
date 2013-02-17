@@ -1,5 +1,8 @@
 package com.forboss;
 
+import com.forboss.bossmeasure.SurveyData;
+import com.forboss.bossmeasure.SurveyData.SurveyItem;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +13,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		navToFirstScreen();
+		SurveyItem firstItem = SurveyData.getFirstSurveyItem();
 	}
 
 	private void navToFirstScreen() {

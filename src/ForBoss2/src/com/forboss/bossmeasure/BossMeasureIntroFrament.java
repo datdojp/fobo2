@@ -13,13 +13,13 @@ public class BossMeasureIntroFrament extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View root = inflater.inflate(R.layout.boss_measure_intro_frament, container);
+		View root = inflater.inflate(R.layout.boss_measure_intro_frament, container, false);
 
 		ImageButton buttonJoinSurvey = (ImageButton) root.findViewById(R.id.buttonJoinSurvey);
 		buttonJoinSurvey.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				
+				BossMeasureActivity.getInstance().startOver();
 			}
 		});
 

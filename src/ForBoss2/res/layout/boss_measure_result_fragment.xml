@@ -1,0 +1,74 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bạn là:"
+                android:textAppearance="@style/survey_white_text" />
+
+            <TextView
+                android:id="@+id/textSummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="27dp"
+                android:text="[Dummy] Nhà lãnh đạo thép"
+                android:textAppearance="@style/survey_summary_text" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="49dp"
+                android:text="Bạn lãnh đạo theo phong cách"
+                android:textAppearance="@style/survey_golden_text" />
+
+            <TextView
+                android:id="@+id/textDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="27dp"
+                android:text="[Dummy] Phong cách của bạn"
+                android:textAppearance="@style/survey_white_text" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="Lời khuyên dành cho bạn"
+                android:textAppearance="@style/survey_golden_text" />
+
+            <TextView
+                android:id="@+id/textAdvice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="27dp"
+                android:text="[Dummy] Lời khuyên"
+                android:textAppearance="@style/survey_white_text" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/buttonContinueSurvey"
+            android:layout_width="275dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="52dp"
+            android:background="#00000000"
+            android:scaleType="fitXY"
+            android:src="@drawable/but_continue_survey" />
+    </LinearLayout>
+
+</ScrollView>

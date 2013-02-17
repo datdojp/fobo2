@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
+encoding//res/raw/survey.txt=UTF-8
 encoding//src/com/forboss/ForBossApplication.java=UTF-8
 encoding//src/com/forboss/RegistrationActivity.java=UTF-8
+encoding//src/com/forboss/bossmeasure/BossMeasureActivity.java=UTF-8
 encoding//src/com/forboss/util/ForBossUtils.java=UTF-8
-encoding//src/survey.txt=UTF-8

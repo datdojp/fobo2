@@ -5,4 +5,20 @@
         <item name="android:textSize">13sp</item>
     </style>
 
+    <style name="survey_white_text" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">#EEEEEE</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="survey_golden_text" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">#A39E6D</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="survey_summary_text" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">#E3984B</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

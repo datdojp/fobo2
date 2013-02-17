@@ -5,6 +5,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="fitXY"
         android:src="@drawable/bg_survey" />
 
     <ImageView
@@ -35,6 +36,7 @@
         android:layout_below="@+id/imgTopLine" >
 
         <ImageButton
+            android:id="@+id/buttonPrevSurveyItem"
             android:layout_width="79dp"
             android:layout_height="26dp"
             android:layout_alignParentLeft="true"
@@ -44,6 +46,7 @@
             android:src="@drawable/but_survey_back" />
 
         <ImageButton
+            android:id="@+id/buttonNextSurveyItem"
             android:layout_width="79dp"
             android:layout_height="26dp"
             android:layout_alignParentRight="true"

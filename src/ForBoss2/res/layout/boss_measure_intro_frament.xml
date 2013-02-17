@@ -11,25 +11,31 @@
         <ImageView
             android:layout_width="139dp"
             android:layout_height="70dp"
+            android:layout_marginTop="13dp"
             android:scaleType="fitXY"
             android:src="@drawable/logo_survey" />
 
         <TextView
             android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
             android:gravity="center_horizontal"
-            android:text="Trong mắt nhân viên dười quyền, bạn là người sếp như thế nào?" />
+            android:text="Trong mắt nhân viên dười quyền, bạn là người sếp như thế nào?"
+            android:textAppearance="@style/survey_white_text" />
 
         <TextView
             android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
             android:gravity="center_horizontal"
-            android:text="Hãy khám phá phong cách lãnh đạo của bạn và tìm ra bí quyết giúp bạn trở thành người sếp lịch lãm nhất!" />
+            android:text="Hãy khám phá phong cách lãnh đạo của bạn và tìm ra bí quyết giúp bạn trở thành người sếp lịch lãm nhất!"
+            android:textAppearance="@style/survey_white_text" />
 
         <ImageButton
             android:id="@+id/buttonJoinSurvey"
             android:layout_width="220dp"
             android:layout_height="68dp"
+            android:layout_marginTop="70dp"
             android:background="#00000000"
             android:scaleType="fitXY"
             android:src="@drawable/but_join_survey" />
