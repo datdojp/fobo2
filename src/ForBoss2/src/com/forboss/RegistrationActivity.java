@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.forboss.data.api.APIClient;
 import com.forboss.util.ForBossUtils;
 
 public class RegistrationActivity extends Activity {
@@ -52,18 +55,18 @@ public class RegistrationActivity extends Activity {
 			editCMND.requestFocus();
 			return;
 		}
-//		APIClient.getClient().signup(email, phoneNumber, cmnd, new Handler() {
-//			@Override
-//			public void handleMessage(Message msg) {
-//				handleRegistrationSuccess();
-//			}
-//		},
-//		new Handler() {
-//			@Override
-//			public void handleMessage(Message msg) {
-//				handleRegistrationFailed();
-//			}
-//		});
+		APIClient.getClient().signup(email, phoneNumber, cmnd, new Handler() {
+			@Override
+			public void handleMessage(Message msg) {
+				handleRegistrationSuccess();
+			}
+		},
+		new Handler() {
+			@Override
+			public void handleMessage(Message msg) {
+				handleRegistrationFailed();
+			}
+		});
 		handleRegistrationSuccess();
 	}
 	

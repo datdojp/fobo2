@@ -24,6 +24,8 @@
         <activity android:name="com.forboss.RegistrationActivity"></activity>
         <activity android:name="com.forboss.FeatureSelectingActivity"></activity>
         <activity android:name="com.forboss.bossmeasure.BossMeasureActivity"></activity>
+        <activity android:name="com.forboss.news.CategorySelectingActivity"></activity>
+        <activity android:name="com.forboss.news.FlippingArticleListByCategoryActivity"></activity>
     </application>
 
 </manifest>

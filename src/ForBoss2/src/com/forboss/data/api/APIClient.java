@@ -49,16 +49,36 @@ public class APIClient {
 	}
 
 	public void signup(String email, String phoneNumber, String cmnd, Handler successHandler, Handler failureHandler) {
+		template(	new String[] {"email", email, "phone", phoneNumber, "id", cmnd}, 
+					"login.aspx", HttpMethod.GET, successHandler, failureHandler	);
+	}
+	
+	public void getArticleForCategory(String categoryId, int start, int end, Handler successHandler, Handler failureHandler) {
+		template(	new String[] {"category", categoryId, "start", Integer.toString(start), "end", Integer.toString(end)}, 
+					"posts.aspx", HttpMethod.GET, successHandler, failureHandler	);
+	}
+	
+	public void getArticleDetail(String articleId, Handler successHandler, Handler failureHandler) {
+		template(	new String[] {"id", articleId}, 
+					"post.aspx", HttpMethod.GET, successHandler, failureHandler	);
+	}
+	
+	public void likeArticle(String articleId, Handler successHandler, Handler failureHandler) {
+		template(new String[] {"id", articleId}, "like.aspx", HttpMethod.GET, successHandler, failureHandler);
+	}
+	
+	private void template(String[] paramsKeyVal, String path, HttpMethod method, Handler successHandler, Handler failureHandler) {
+		assert(paramsKeyVal.length % 2 == 0);
 		JSONObject jsonParams = new JSONObject();
 		try {
-			jsonParams.put("email", email);
-			jsonParams.put("phone", phoneNumber);
-			jsonParams.put("cmnd", cmnd);
+			for (int i = 0; i < paramsKeyVal.length/2; i++) {
+				jsonParams.put(paramsKeyVal[i*2], paramsKeyVal[i*2+1]);
+			}
 		} catch (JSONException e) {
 			// ignore
 		}
 		(new RequestTask()).setHandlers(successHandler, failureHandler)
-			.execute(new String[] {"signup", HttpMethod.POST.name(), jsonParams.toString()});
+			.execute(new String[] {path, method.name(), jsonParams.toString()});
 	}
 
 	private class RequestTask extends AsyncTask<String, Integer, Integer> {

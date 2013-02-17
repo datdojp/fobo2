@@ -1,0 +1,82 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:layout_width="39dp"
+        android:layout_height="18dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/but_down_arrow" />
+
+    <ImageView
+        android:layout_width="97dp"
+        android:layout_height="20dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/top_logo" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:weightSum="2" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="2" >
+
+            <ImageButton
+                android:id="@+id/buttonAttraction"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:scaleType="fitXY"
+                android:src="@drawable/but_attraction" />
+
+            <ImageButton
+                android:id="@+id/buttonLevel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:scaleType="fitXY"
+                android:src="@drawable/but_level" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="2" >
+
+            <ImageButton
+                android:id="@+id/buttonStyle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:scaleType="fitXY"
+                android:src="@drawable/but_style" />
+
+            <ImageButton
+                android:id="@+id/buttonSuccess"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:scaleType="fitXY"
+                android:src="@drawable/but_success" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
