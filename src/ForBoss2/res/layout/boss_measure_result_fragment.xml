@@ -22,13 +22,12 @@
                 android:text="Bạn là:"
                 android:textAppearance="@style/survey_white_text" />
 
-            <TextView
-                android:id="@+id/textSummary"
+            <ImageView
+                android:id="@+id/imgSummary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="27dp"
-                android:text="[Dummy] Nhà lãnh đạo thép"
-                android:textAppearance="@style/survey_summary_text" />
+                android:scaleType="centerInside" />
 
             <TextView
                 android:layout_width="match_parent"

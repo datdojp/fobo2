@@ -171,6 +171,27 @@ public class ForBossUtils {
 		}
 	}
 
+	public static Bitmap loadBitmapFromAssets(String imagePath, Context context) {
+		InputStream is = null;
+		Bitmap bitmap = null;
+		try {
+			is = context.getAssets().open(imagePath);
+			bitmap = BitmapFactory.decodeStream(is);
+		} catch (IOException e) {
+			Log.e(ForBossUtils.class.getName(), "Unalbe to get input stream for assets image", e);
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					Log.e(ForBossUtils.class.getName(), "Unalbe to close input stream for assets image", e);
+				}
+				is = null;
+			}
+		}
+		return bitmap;
+	}
+
 	public static Bitmap makeSquare(final Bitmap rectangle) {
 		if (rectangle == null) {
 			return null;
@@ -523,14 +544,14 @@ public class ForBossUtils {
 
 			return true;
 		}
-		
+
 		public static boolean isValidPhoneNumber(String phoneNumber) {
 			if (phoneNumber == null || phoneNumber.length() == 0) {
 				return false;
 			}
 			return phoneNumber.matches("\\A\\+?\\d{5,20}\\Z");
 		}
-		
+
 		public static boolean isValidCMND(String cmnd) {
 			if (cmnd == null || cmnd.length() == 0) {
 				return false;
@@ -558,8 +579,8 @@ public class ForBossUtils {
 		}
 		return true;
 	}
-	
-	
+
+
 	public static class Storage {
 		public static String SHARED_PREFERENCES_KEY_REGISTERED = "registered?";
 		public static SharedPreferences getSharedPreferences(Context context) {

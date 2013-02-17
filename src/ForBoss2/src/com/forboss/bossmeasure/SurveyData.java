@@ -115,14 +115,14 @@ public class SurveyData {
 	}
 
 	public static class Result extends SurveyItem {
-		public String summary;
+		public String summaryImagePath;
 		public String detail;
 		public String advice;
 
 		@Override
 		public SurveyItem loadFromJSON(JSONObject data) throws JSONException {
 			id = data.getString("id");
-			summary = data.getString("summary");
+			summaryImagePath = data.getString("summary_image_path");
 			detail = data.getString("detail");
 			advice = data.getString("advice");
 			return this;
