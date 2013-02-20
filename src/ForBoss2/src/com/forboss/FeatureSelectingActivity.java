@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.forboss.bossmeasure.BossMeasureActivity;
+import com.forboss.news.CategorySelectingActivity;
 
 
 public class FeatureSelectingActivity extends Activity {
@@ -23,10 +24,23 @@ public class FeatureSelectingActivity extends Activity {
 				navToBossMeasure();
 			}
 		});
+		
+		ImageButton buttonNews = (ImageButton) findViewById(R.id.buttonNews);
+		buttonNews.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				navToNews();
+			}
+		});
+		
 	}
 	
 	private void navToBossMeasure() {
 		startActivity(new Intent(this, BossMeasureActivity.class));
+	}
+	
+	private void navToNews() {
+		startActivity(new Intent(this, CategorySelectingActivity.class));
 	}
 
 }

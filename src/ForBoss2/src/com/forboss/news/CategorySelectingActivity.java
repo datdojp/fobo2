@@ -14,6 +14,7 @@ public class CategorySelectingActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.category_selecting);
 		
 		((ImageButton)findViewById(R.id.buttonAttraction)).setOnClickListener(new View.OnClickListener() {
 			@Override

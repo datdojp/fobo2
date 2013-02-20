@@ -9,9 +9,9 @@ import android.util.Log;
 import com.forboss.ForBossApplication;
 import com.forboss.R;
 import com.forboss.data.model.Article;
+import com.forboss.data.model.Category;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
@@ -28,7 +28,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
 	// the DAO object we use to access the SimpleData table
 	private Dao<Article, String> articleDao = null;
-	private RuntimeExceptionDao<Article, Integer> articleRuntimeDao = null;
+	private Dao<Category, Integer> categoryDao = null;
 
 	public DatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION, R.raw.ormlite_config);
@@ -43,6 +43,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		try {
 			Log.i(DatabaseHelper.class.getName(), "onCreate");
 			TableUtils.createTable(connectionSource, Article.class);
+			TableUtils.createTable(connectionSource, Category.class);
 		} catch (SQLException e) {
 			Log.e(DatabaseHelper.class.getName(), "Can't create database", e);
 			throw new RuntimeException(e);
@@ -58,6 +59,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		try {
 			Log.i(DatabaseHelper.class.getName(), "onUpgrade");
 			TableUtils.dropTable(connectionSource, Article.class, true);
+			TableUtils.dropTable(connectionSource, Category.class, true);
 			// after we drop the old databases, we create the new ones
 			onCreate(db, connectionSource);
 		} catch (SQLException e) {
@@ -76,16 +78,12 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		}
 		return articleDao;
 	}
-
-	/**
-	 * Returns the RuntimeExceptionDao (Database Access Object) version of a Dao for our SimpleData class. It will
-	 * create it or just give the cached value. RuntimeExceptionDao only through RuntimeExceptions.
-	 */
-	public RuntimeExceptionDao<Article, Integer> getArticleRuntimeExceptionDao() {
-		if (articleRuntimeDao == null) {
-			articleRuntimeDao = getRuntimeExceptionDao(Article.class);
+	
+	public Dao<Category, Integer> getCategoryDao() throws SQLException {
+		if (categoryDao == null) {
+			categoryDao = getDao(Category.class);
 		}
-		return articleRuntimeDao;
+		return categoryDao;
 	}
 
 	/**
@@ -94,7 +92,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	@Override
 	public void close() {
 		super.close();
-		articleRuntimeDao = null;
 	}
 	
 	/**
@@ -102,9 +99,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	 * call to {@link #close()}.
 	 */
 	private static DatabaseHelper helper;
-	public static synchronized DatabaseHelper getHelper() {
+	public static synchronized DatabaseHelper getHelper(Context context) {
 		if (helper == null) {
-			helper = new DatabaseHelper(ForBossApplication.getAppContext());
+			helper = new DatabaseHelper(context);
 		}
 		return helper;
 	}

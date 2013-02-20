@@ -4,15 +4,32 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 
+import com.forboss.data.api.APIHelper;
+import com.forboss.data.model.CommonData;
 import com.forboss.util.ForBossUtils;
 
 public class MainActivity extends Activity {
 
+	private MainActivity getContext() {
+		return this;
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		navToFirstScreen();
+		
+		ForBossUtils.alertProgress(this, "Đang tải dữ liệu...");
+		APIHelper.getInstance().getCategories(this, new Handler() {
+			@Override
+			public void handleMessage(Message msg) {
+				ForBossUtils.dismissProgress(getContext());
+				CommonData.getInstance().load(getContext());
+				navToFirstScreen();
+			}
+		});
 	}
 
 	private void navToFirstScreen() {
@@ -25,5 +42,4 @@ public class MainActivity extends Activity {
 		}
 		startActivity(new Intent(this, clazz));
 	}
-	
 }

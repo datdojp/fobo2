@@ -583,6 +583,7 @@ public class ForBossUtils {
 
 	public static class Storage {
 		public static String SHARED_PREFERENCES_KEY_REGISTERED = "registered?";
+		public static String SHARED_PREFERENCES_KEY_HAS_PREVIOUS_ERROR_AT_ARTICLE_LOADING = "has_previous_error_at_article_loading";
 		public static SharedPreferences getSharedPreferences(Context context) {
 			return context.getSharedPreferences("forboss2", Activity.MODE_PRIVATE);
 		}

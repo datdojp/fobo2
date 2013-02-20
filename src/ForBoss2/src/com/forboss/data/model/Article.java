@@ -1,64 +1,75 @@
 package com.forboss.data.model;
 
-import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
-import com.google.gson.annotations.SerializedName;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.content.Context;
+
+import com.forboss.data.util.DatabaseHelper;
+import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
+import com.j256.ormlite.stmt.QueryBuilder;
 
-@DatabaseTable(tableName="article")
-public class Article implements Serializable {
-	public static void copyContent(Article from, Article to) {
-		to.setTitle(from.getTitle());
-		to.setThumbnail(from.getThumbnail());
-		to.setBody(from.getBody());
-		//do not copy htmlContent, it is retrieved via another URL
-		//do not copy cateogry. Category never changes
-		to.setViews(from.getViews());
-		to.setLikes(from.getLikes());
-		to.setLink(from.getLink());
-		to.setCreatedTime(from.getCreatedTime());
-		to.setEventTime(from.getEventTime());
-		to.setEventPlace(from.getEventPlace());
+public class Article extends BaseModel {
+	public Article loadFromJSON(JSONObject json) throws JSONException {
+		id = json.getString("ID");
+		title = unescape(json.getString("Title"));
+		thumbnail = json.getString("Thumbnail");
+		body = unescape(json.getString("Body"));
+		views = json.getInt("Views");
+		likes = json.getInt("Likes");
+		link = json.getString("Link");
+		createdTime = json.getLong("CreatedTime");
+		return this;
 	}
 	
-	@SerializedName("ID")
+	public static List<Article> loadArticlesOrderedCreatedTimeDes(Context context, int categoryId, int subCategoryId) throws SQLException {
+		Dao<Article, String> dao = DatabaseHelper.getHelper(context).getArticleDao();
+		QueryBuilder<Article, String> builder = dao.queryBuilder();
+		if (categoryId != 0) {
+			builder.where().eq("categoryId", categoryId);
+		}
+		if (subCategoryId != 0) {
+			builder.where().eq("subCategoryId", subCategoryId);
+		}
+		builder.orderBy("createdTime", false);
+		return builder.query();
+	}
+	
 	@DatabaseField(id=true)
 	private String id;
 
-	@SerializedName("Title")
 	@DatabaseField
 	private String title;
 
-	@SerializedName("Thumbnail")
 	@DatabaseField
 	private String thumbnail;
 
-	@SerializedName("Body")
 	@DatabaseField
 	private String body;
 	
 	@DatabaseField
 	private String htmlContent;
 
-	@SerializedName("Category")
 	@DatabaseField
-	private String category;
+	private int categoryId;
+	
+	@DatabaseField
+	private int subCategoryId;
 
-	@SerializedName("Views")
 	@DatabaseField
 	private int views;
 
-	@SerializedName("Likes")
 	@DatabaseField
 	private int likes;
 
-	@SerializedName("Link")
 	@DatabaseField
 	private String link;
 
-	@SerializedName("CreatedTime")
 	@DatabaseField
 	private long createdTime;
 	
@@ -68,20 +79,9 @@ public class Article implements Serializable {
 		}
 		return null;
 	}
-	
-	@SerializedName("EventTime")
-	@DatabaseField
-	private String eventTime;
-	
-	@SerializedName("EventPlace")
-	@DatabaseField
-	private String eventPlace;
 
 	@DatabaseField
-	private boolean isLike;
-
-	@DatabaseField
-	private boolean isView;
+	private boolean isLiked;
 
 	@DatabaseField
 	private String pictureLocation;
@@ -92,14 +92,6 @@ public class Article implements Serializable {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
 	}
 
 	public String getTitle() {
@@ -167,38 +159,6 @@ public class Article implements Serializable {
 		this.pictureLocation = pictureLocation;
 	}
 
-	public boolean isLike() {
-		return isLike;
-	}
-
-	public void setLike(boolean isLike) {
-		this.isLike = isLike;
-	}
-
-	public boolean isView() {
-		return isView;
-	}
-
-	public void setView(boolean isView) {
-		this.isView = isView;
-	}
-
-	public String getEventTime() {
-		return eventTime;
-	}
-
-	public void setEventTime(String eventTime) {
-		this.eventTime = eventTime;
-	}
-
-	public String getEventPlace() {
-		return eventPlace;
-	}
-
-	public void setEventPlace(String eventPlace) {
-		this.eventPlace = eventPlace;
-	}
-
 	public String getHtmlContent() {
 		return htmlContent;
 	}
@@ -206,6 +166,28 @@ public class Article implements Serializable {
 	public void setHtmlContent(String htmlContent) {
 		this.htmlContent = htmlContent;
 	}
-	
-	
+
+	public boolean isLiked() {
+		return isLiked;
+	}
+
+	public void setLiked(boolean isLiked) {
+		this.isLiked = isLiked;
+	}
+
+	public int getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public int getSubCategoryId() {
+		return subCategoryId;
+	}
+
+	public void setSubCategoryId(int subCategoryId) {
+		this.subCategoryId = subCategoryId;
+	}
 }

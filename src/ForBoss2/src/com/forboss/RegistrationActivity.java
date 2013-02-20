@@ -34,23 +34,25 @@ public class RegistrationActivity extends Activity {
 		editEmail = (EditText) findViewById(R.id.editEmail);
 		editPhoneNumber = (EditText) findViewById(R.id.editPhoneNumber);
 		editCMND = (EditText) findViewById(R.id.editCMND);
+		
+		handleRegistrationSuccess();//TODO: remove this line
 	}
 
 	private void submit() {
 		String email = editEmail.getText().toString().trim();
 		String phoneNumber = editPhoneNumber.getText().toString().trim();
 		String cmnd = editCMND.getText().toString().trim();
-		if (ForBossUtils.Validation.isValidEmailAddress(email)) {
+		if (!ForBossUtils.Validation.isValidEmailAddress(email)) {
 			ForBossUtils.alert(this, "Email không hợp lệ");
 			editEmail.requestFocus();
 			return;
 		}
-		if (ForBossUtils.Validation.isValidPhoneNumber(phoneNumber)) {
+		if (!ForBossUtils.Validation.isValidPhoneNumber(phoneNumber)) {
 			ForBossUtils.alert(this, "Số điện thoại không hợp lệ");
 			editPhoneNumber.requestFocus();
 			return;
 		}
-		if (ForBossUtils.Validation.isValidCMND(cmnd)) {
+		if (!ForBossUtils.Validation.isValidCMND(cmnd)) {
 			ForBossUtils.alert(this, "CMND không hợp lệ");
 			editCMND.requestFocus();
 			return;
@@ -67,7 +69,6 @@ public class RegistrationActivity extends Activity {
 				handleRegistrationFailed();
 			}
 		});
-		handleRegistrationSuccess();
 	}
 	
 	private void handleRegistrationSuccess() {

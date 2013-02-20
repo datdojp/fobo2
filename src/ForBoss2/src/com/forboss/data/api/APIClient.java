@@ -28,6 +28,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.forboss.BuildConfig;
 import com.forboss.util.ForBossUtils;
 
 public class APIClient {
@@ -51,6 +52,10 @@ public class APIClient {
 	public void signup(String email, String phoneNumber, String cmnd, Handler successHandler, Handler failureHandler) {
 		template(	new String[] {"email", email, "phone", phoneNumber, "id", cmnd}, 
 					"login.aspx", HttpMethod.GET, successHandler, failureHandler	);
+	}
+	
+	public void getCategories(Handler successHandler, Handler failureHandler) {
+		template (new String[] {}, "categories.aspx", HttpMethod.GET, successHandler, failureHandler);
 	}
 	
 	public void getArticleForCategory(String categoryId, int start, int end, Handler successHandler, Handler failureHandler) {
@@ -119,7 +124,7 @@ public class APIClient {
 						}
 						extraURL = URLEncodedUtils.format(nameValuePairs, "utf-8");
 					} 
-					request = new HttpGet(ForBossUtils.getBaseApi() + path + extraURL);
+					request = new HttpGet(ForBossUtils.getBaseApi() + path + "?" + extraURL);
 				} catch (JSONException e) {
 					Log.e(this.getClass().getName(), "parse params into json failed!");
 				}
@@ -143,6 +148,10 @@ public class APIClient {
 			try {
 				HttpResponse response = client.execute(request);
 				jsonString = EntityUtils.toString(response.getEntity());
+				if (BuildConfig.DEBUG) {
+					Log.d(this.getClass().getName(), "REQUEST:" + request.getURI());
+					Log.d(this.getClass().getName(), "RESPONSE:" + jsonString);
+				}
 				return response.getStatusLine().getStatusCode();
 			} catch (ClientProtocolException e) {
 				Log.e(this.getClass().getName(), "http protocol error");
