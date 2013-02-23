@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+
+    <WebView
+        android:id="@+id/web"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    
+
+    <include
+        android:id="@+id/layoutTopPanel"
+        layout="@layout/news_top_panel" />
+
+    <com.aphidmobile.flip.FlipViewController
+        android:id="@+id/flipViewController"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layoutLikeAndShare"
+        android:layout_below="@+id/layoutTopPanel" >
+    </com.aphidmobile.flip.FlipViewController>
+
+    <LinearLayout
+        android:id="@+id/layoutLikeAndShare"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ImageButton
+                android:layout_width="76dp"
+                android:layout_height="34dp"
+                android:background="#00000000"
+                android:scaleType="fitXY"
+                android:src="@drawable/but_like" />
+
+            <ImageButton
+                android:layout_width="76dp"
+                android:layout_height="34dp"
+                android:layout_marginLeft="5dp"
+                android:background="#00000000"
+                android:scaleType="fitXY"
+                android:src="@drawable/but_share" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:scaleType="fitXY"
+        android:id="@+id/img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" 
+        android:background="#33000000"/>
+    
+    
+
+</RelativeLayout>

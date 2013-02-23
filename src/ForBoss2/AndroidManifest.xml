@@ -28,6 +28,7 @@
         <activity android:name="com.forboss.bossmeasure.BossMeasureActivity"></activity>
         <activity android:name="com.forboss.news.CategorySelectingActivity"></activity>
         <activity android:name="com.forboss.news.FlippingArticleListByCategoryActivity"></activity>
+        <activity android:name="com.forboss.news.FlippingArticleDetailActivity"></activity>
     </application>
 
 </manifest>

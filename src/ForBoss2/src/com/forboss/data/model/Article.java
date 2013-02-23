@@ -1,6 +1,7 @@
 package com.forboss.data.model;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.forboss.data.util.DatabaseHelper;
 import com.j256.ormlite.dao.Dao;
@@ -15,6 +17,15 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.stmt.QueryBuilder;
 
 public class Article extends BaseModel {
+	@Override
+	protected List<String> getServerDataFieldNames() {
+		if (serverDataFieldNames == null) {
+			serverDataFieldNames = Arrays.asList("id", "title", "thumbnail", "body", "views", 
+												"likes", "link", "createdTime", "categoryId", "subCategoryId");
+		}
+		return serverDataFieldNames;
+	}
+	
 	public Article loadFromJSON(JSONObject json) throws JSONException {
 		id = json.getString("ID");
 		title = unescape(json.getString("Title"));
@@ -24,11 +35,47 @@ public class Article extends BaseModel {
 		likes = json.getInt("Likes");
 		link = json.getString("Link");
 		createdTime = json.getLong("CreatedTime");
+		
+		int categoryId = json.getInt("CategoryID");
+		Category category = CommonData.getInstance().getCategory(categoryId);
+		if (category.isParent()) {
+			this.categoryId = categoryId;
+			this.subCategoryId = 0;
+		} else {
+			this.categoryId = category.getParentId();
+			this.subCategoryId = categoryId;
+		}
+		
 		return this;
 	}
-	
-	public static List<Article> loadArticlesOrderedCreatedTimeDes(Context context, int categoryId, int subCategoryId) throws SQLException {
-		Dao<Article, String> dao = DatabaseHelper.getHelper(context).getArticleDao();
+
+	public static List<Article> loadArticlesOrderedCreatedTimeDesc(Context context, int categoryId, int subCategoryId) {
+		try {
+			QueryBuilder builder = getBuilder(getDao(context), categoryId, subCategoryId);
+			builder.orderBy("createdTime", false);
+			return builder.query();
+		} catch (SQLException e) {
+			Log.e(Article.class.getName(), "Unable to load articles from database", e);
+		}
+		return null;
+	}
+
+	public static long count(Context context, int categoryId, int subCategoryId) {
+		try {
+			Dao dao = getDao(context);
+			QueryBuilder builder = getBuilder(dao, categoryId, subCategoryId);
+			builder.setCountOf(true);
+			return dao.countOf(builder.prepare());
+		} catch (SQLException e) {
+			Log.e(Article.class.getName(), "Unable to count articles in database", e);
+		}
+		return -1;
+	}
+
+	private static Dao<Article, String> getDao(Context context) throws SQLException {
+		return DatabaseHelper.getHelper(context).getArticleDao();
+	}
+	private static QueryBuilder<Article, String> getBuilder(Dao<Article, String> dao, int categoryId, int subCategoryId) throws SQLException {
 		QueryBuilder<Article, String> builder = dao.queryBuilder();
 		if (categoryId != 0) {
 			builder.where().eq("categoryId", categoryId);
@@ -36,10 +83,9 @@ public class Article extends BaseModel {
 		if (subCategoryId != 0) {
 			builder.where().eq("subCategoryId", subCategoryId);
 		}
-		builder.orderBy("createdTime", false);
-		return builder.query();
+		return builder;
 	}
-	
+
 	@DatabaseField(id=true)
 	private String id;
 
@@ -51,13 +97,13 @@ public class Article extends BaseModel {
 
 	@DatabaseField
 	private String body;
-	
+
 	@DatabaseField
 	private String htmlContent;
 
 	@DatabaseField
 	private int categoryId;
-	
+
 	@DatabaseField
 	private int subCategoryId;
 
@@ -72,7 +118,7 @@ public class Article extends BaseModel {
 
 	@DatabaseField
 	private long createdTime;
-	
+
 	public Date getCreatedTimeInDate() {
 		if (createdTime != 0) {
 			return new Date(createdTime);
@@ -190,4 +236,5 @@ public class Article extends BaseModel {
 	public void setSubCategoryId(int subCategoryId) {
 		this.subCategoryId = subCategoryId;
 	}
+	
 }

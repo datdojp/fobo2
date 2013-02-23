@@ -21,4 +21,13 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="article_overview_title_big" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">#FBD687</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="article_overview_title_small" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">#FBD687</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
 </resources>

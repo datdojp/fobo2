@@ -1,7 +1,9 @@
 package com.forboss.data.model;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
 import android.util.Log;
@@ -19,8 +21,11 @@ public class CommonData {
 	
 	public void load(Context context){
 		try {
-			// load all categories
 			allCategories = DatabaseHelper.getHelper(context).getCategoryDao().queryForAll();
+			mappingOfIdAndCategories = new HashMap<Integer, Category>();
+			for (Category cat : allCategories) {
+				mappingOfIdAndCategories.put(cat.getId(), cat);
+			}
 		} catch (SQLException e) {
 			Log.e(this.getClass().getName(), "Database error", e);
 		}
@@ -31,4 +36,9 @@ public class CommonData {
 		return allCategories;
 	}
 	
+	private Map<Integer, Category> mappingOfIdAndCategories;
+	public Category getCategory(int categoryId) {
+		return mappingOfIdAndCategories.get(categoryId);
+	}
+		
 }

@@ -58,9 +58,9 @@ public class APIClient {
 		template (new String[] {}, "categories.aspx", HttpMethod.GET, successHandler, failureHandler);
 	}
 	
-	public void getArticleForCategory(String categoryId, int start, int end, Handler successHandler, Handler failureHandler) {
-		template(	new String[] {"category", categoryId, "start", Integer.toString(start), "end", Integer.toString(end)}, 
-					"posts.aspx", HttpMethod.GET, successHandler, failureHandler	);
+	public void getArticleForCategory(int categoryId, int start, int end, long last, Handler successHandler, Handler failureHandler) {
+		template(	new String[] {"category", Integer.toString(categoryId), "start", Integer.toString(start), "end", Integer.toString(end), "last", Long.toString(last)}, 
+					"postsbytime.aspx", HttpMethod.GET, successHandler, failureHandler	);
 	}
 	
 	public void getArticleDetail(String articleId, Handler successHandler, Handler failureHandler) {
