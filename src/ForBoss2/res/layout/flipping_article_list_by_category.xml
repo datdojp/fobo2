@@ -2,7 +2,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <include layout="@layout/news_top_panel"/>
+    <include
+        android:id="@+id/layoutTopPanel"
+        layout="@layout/news_top_panel" />
 
     <com.aphidmobile.flip.FlipViewController
         android:id="@+id/flipViewController"
@@ -10,5 +12,10 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/layoutTopPanel" >
     </com.aphidmobile.flip.FlipViewController>
+
+    <include
+        android:id="@+id/layoutSubcategriesSelecting"
+        layout="@layout/subcategories_selecting" 
+        android:visibility="invisible"/>
 
 </RelativeLayout>

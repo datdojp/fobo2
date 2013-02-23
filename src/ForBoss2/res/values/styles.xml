@@ -29,5 +29,15 @@
         <item name="android:textColor">#FBD687</item>
         <item name="android:textSize">15sp</item>
     </style>
+    
+    <style name="subcategory_name" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    
+    <style name="event_title" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">#E8C874</item>
+        <item name="android:textSize">20sp</item>
+    </style>
 
 </resources>

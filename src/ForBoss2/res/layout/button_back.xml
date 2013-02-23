@@ -1,0 +1,11 @@
+<ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="42dp"
+    android:layout_height="33dp"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true"
+    android:layout_marginLeft="10dp"
+    android:background="#00000000"
+    android:scaleType="fitXY"
+    android:src="@drawable/back_button" >
+
+</ImageButton>

@@ -43,6 +43,28 @@ public class CategorySelectingActivity extends Activity {
 				navToCategory(Integer.parseInt(ForBossUtils.getConfig("CATEGORY_SUCCESS_ID")));
 			}
 		});
+		
+		// button back
+		ImageButton buttonBack = (ImageButton) findViewById(R.id.buttonBack);
+		buttonBack.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				finish();
+			}
+		});
+		
+		// button event
+		ImageButton buttonEvent = (ImageButton) findViewById(R.id.buttonEvent);
+		buttonEvent.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				navToEvents();
+			}
+		});
+	}
+	
+	private void navToEvents() {
+		startActivity(new Intent(this, EventListActivity.class));
 	}
 
 	private void navToCategory(int categoryId) {

@@ -214,14 +214,30 @@ public class FlipViewController extends AdapterView<Adapter> {
 
 	//--------------------------------------------------------------------------------------------------------------------
 	// Touch Event
+	private boolean isTouchEnable = true;
+	public boolean isTouchEnable() {
+		return isTouchEnable;
+	}
+	public void setTouchEnable(boolean isTouchEnable) {
+		this.isTouchEnable = isTouchEnable;
+	}
+
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent event) {
-		return cards.handleTouchEvent(event, false);
+		if (isTouchEnable) {
+			return cards.handleTouchEvent(event, false);
+		} else {
+			return true;
+		}
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		return cards.handleTouchEvent(event, true);
+		if (isTouchEnable) {
+			return cards.handleTouchEvent(event, true);
+		} else {
+			return true;
+		}
 	}
 
 	//--------------------------------------------------------------------------------------------------------------------

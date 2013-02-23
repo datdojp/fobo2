@@ -1,6 +1,7 @@
 package com.forboss.data.model;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,5 +41,15 @@ public class CommonData {
 	public Category getCategory(int categoryId) {
 		return mappingOfIdAndCategories.get(categoryId);
 	}
-		
+	
+	public List<Category> getSubcategories(int categoryId) {
+		List<Category> results = new ArrayList<Category>();
+		for (Category category : allCategories) {
+			if (category.getParentId() == categoryId) {
+				results.add(category);
+			}
+		}
+		return results;
+	}
+	
 }

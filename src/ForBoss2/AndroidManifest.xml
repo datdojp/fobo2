@@ -29,6 +29,7 @@
         <activity android:name="com.forboss.news.CategorySelectingActivity"></activity>
         <activity android:name="com.forboss.news.FlippingArticleListByCategoryActivity"></activity>
         <activity android:name="com.forboss.news.FlippingArticleDetailActivity"></activity>
+        <activity android:name="com.forboss.news.EventListActivity"></activity>
     </application>
 
 </manifest>

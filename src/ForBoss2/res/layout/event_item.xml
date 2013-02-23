@@ -1,0 +1,32 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp" >
+
+    <ImageView
+        android:id="@+id/imgThumbnail"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:paddingBottom="1dp"
+        android:paddingTop="1dp"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:id="@+id/imgMask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg_event_item_even" />
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="110dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:lines="2"
+        android:text="Uy luc chien ham Dinh Tien Hoang cua Hai Quan Viet Nam"
+        android:textAppearance="@style/event_title" />
+
+</RelativeLayout>

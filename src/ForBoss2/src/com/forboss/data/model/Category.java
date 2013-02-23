@@ -12,20 +12,25 @@ import com.j256.ormlite.field.DatabaseField;
 
 public class Category extends BaseModel {
 	
-	private static final Map<String, String> mappOfSubcatAndIcon = new HashMap<String, String>();
+	private static final Map<String, String[]> mappOfSubcatAndIcon = new HashMap<String, String[]>();
 	static {
-		mappOfSubcatAndIcon.put("Tin Tức", "icon_news.png");
-		mappOfSubcatAndIcon.put("Giải Trí", "icon_entertainment.png");
-		mappOfSubcatAndIcon.put("Góc Doanh Nhân", "icon_businesscorner.png");
-		mappOfSubcatAndIcon.put("Phong Cách", "icon_style.png");
-		mappOfSubcatAndIcon.put("Thể Thao", "icon_sport.png");
-		mappOfSubcatAndIcon.put("Du Lịch", "icon_tourism.png");
-		mappOfSubcatAndIcon.put("Thế Giới Số", "icon_digital.png");
-		mappOfSubcatAndIcon.put("Sức Khỏe", "icon_health.png");
+		mappOfSubcatAndIcon.put("Tin Tức", new String[] {"icon_news.png", "Tintuc.png"});
+		mappOfSubcatAndIcon.put("Giải Trí", new String[] {"icon_entertainment.png", "Giaitri.png"});
+		mappOfSubcatAndIcon.put("Góc Doanh Nhân", new String[] {"icon_businesscorner.png", "Gocdoanhnhan.png"});
+		mappOfSubcatAndIcon.put("Phong Cách", new String[] {"icon_style.png", "Phongcach.png"});
+		mappOfSubcatAndIcon.put("Thể Thao", new String[] {"icon_sport.png", "Thethao.png"});
+		mappOfSubcatAndIcon.put("Du Lịch", new String[] {"icon_tourism.png", "Dulich.png"});
+		mappOfSubcatAndIcon.put("Thế Giới Số", new String[] {"icon_digital.png", "Thegioiso.png"});
+		mappOfSubcatAndIcon.put("Sức Khỏe", new String[] {"icon_health.png", "Suckhoe.png"});
+		mappOfSubcatAndIcon.put("Sự Kiện", new String[] {null, "Sukien.png"});
+		
 	}
 	
 	public String getIconAssetPath() {
-		return mappOfSubcatAndIcon.get(title);
+		return mappOfSubcatAndIcon.get(title)[0];
+	}
+	public String getTextAssetPath() {
+		return mappOfSubcatAndIcon.get(title)[1];
 	}
 	
 	@Override
