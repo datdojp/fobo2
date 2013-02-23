@@ -2,7 +2,6 @@ package com.forboss.news;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
@@ -26,6 +25,7 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.aphidmobile.flip.FlipViewController;
+import com.forboss.ForBossApplication;
 import com.forboss.R;
 import com.forboss.data.api.APIHelper;
 import com.forboss.data.model.Article;
@@ -35,8 +35,7 @@ import com.forboss.data.model.CommonData;
 import com.forboss.util.ForBossUtils;
 
 public class FlippingArticleListByCategoryActivity extends Activity {
-	private int categoryId;
-	private int subcategoryId;
+	private Category category;
 	private FlipViewController flipViewController;
 	private ArticleGroupAdapter flipViewControllerAdapter;
 	private ViewGroup root;
@@ -48,23 +47,12 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		root = (ViewGroup) getLayoutInflater().inflate(R.layout.flipping_article_list_by_category, null);
 		setContentView(root);
-		categoryId = (Integer) ForBossUtils.getBundleData("category_id");
+		category = (Category) ForBossUtils.getBundleData("category");
+		ForBossUtils.putBundleData("category", null);
 		
-		// get subcat id
-		Integer tempSubcategoryId = (Integer) ForBossUtils.getBundleData("sub_category_id");
-		if (tempSubcategoryId != null) {
-			subcategoryId = tempSubcategoryId.intValue();
-		}
-
 		// category text
 		ImageView imgCategoryText = (ImageView) findViewById(R.id.imgCategoryText);
-		if (subcategoryId == 0) {
-			imgCategoryText.setImageBitmap(ForBossUtils.loadBitmapFromAssets(ForBossUtils.getConfig(Integer.toString(categoryId)), this));
-		}
-		else {
-			imgCategoryText.setImageBitmap(ForBossUtils.loadBitmapFromAssets(
-					CommonData.getInstance().getCategory(subcategoryId).getTextAssetPath(), this));
-		}
+		imgCategoryText.setImageBitmap(category.getTextBitmap(this));
 		
 		// button option
 		ImageButton buttonOption = (ImageButton) findViewById(R.id.buttonOption);
@@ -93,13 +81,13 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		flipViewController.setAdapter(flipViewControllerAdapter);
 
 		// load data
-		final boolean needToDisplayProgressAlert = Article.count(this, categoryId, 0) < 3;
+		final boolean needToDisplayProgressAlert = Article.count(this, category.getQueryCategoryId(), category.getQuerySubcategoryId()) < 3;
 		if (needToDisplayProgressAlert) {
 			ForBossUtils.alertProgress(this, "Đang tải dữ liệu...");
 		} else {
 			updateFlipperAdapter();
 		}
-		APIHelper.getInstance().getArticles(subcategoryId > 0 ? subcategoryId : categoryId, this, new Handler() {
+		APIHelper.getInstance().getArticles(category.getId(), this, new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
 				if (needToDisplayProgressAlert) ForBossUtils.dismissProgress(getContext());
@@ -111,8 +99,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 	private void initSubcategoriesSelecting() {
 		layoutSubcategriesSelecting = (RelativeLayout) findViewById(R.id.layoutSubcategriesSelecting);
 		final LinearLayout layoutSubcategories = (LinearLayout) layoutSubcategriesSelecting.findViewById(R.id.layoutSubcategories);
-		List<Category> listSubcategories = CommonData.getInstance().getSubcategories(categoryId);
-		Locale locale = new Locale("vi");
+		List<Category> listSubcategories = CommonData.getInstance().getSubcategories(category.getQueryCategoryId());
 		for (final Category subcat : listSubcategories) {
 			// add view for each sub-category
 			View viewSubcat = getLayoutInflater().inflate(R.layout.subcategory, null);
@@ -122,11 +109,11 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 												));
 			
 			ImageView imgIcon = (ImageView) viewSubcat.findViewById(R.id.imgIcon);
-			imgIcon.setImageBitmap(ForBossUtils.loadBitmapFromAssets(subcat.getIconAssetPath(), this));
+			imgIcon.setImageBitmap(subcat.getIconBitmap(getContext()));
 			
 			TextView txtName = (TextView) viewSubcat.findViewById(R.id.txtName);
-			txtName.setText(subcat.getTitle().toUpperCase(locale));
-			if (subcat.getId() == subcategoryId) {
+			txtName.setText(subcat.getTitle().toUpperCase(ForBossApplication.getDefaultLocale()));
+			if (subcat.getId() == category.getQuerySubcategoryId()) {
 				viewSubcat.setBackgroundColor(0xff262626);
 			}
 			layoutSubcategories.addView(viewSubcat);
@@ -138,8 +125,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 						@Override
 						public void handleMessage(Message msg) {
 							// navigate to next subcat
-							ForBossUtils.putBundleData("category_id", categoryId);
-							ForBossUtils.putBundleData("sub_category_id", subcat.getId());
+							ForBossUtils.putBundleData("category", subcat);
 							startActivity(new Intent(getContext(), FlippingArticleListByCategoryActivity.class));
 						}
 					});
@@ -210,7 +196,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
-				List<ArticleGroup> list = ArticleGroup.loadArticleGroups(getContext(), categoryId, subcategoryId);
+				List<ArticleGroup> list = ArticleGroup.loadArticleGroups(getContext(), category.getQueryCategoryId(), category.getQuerySubcategoryId());
 				flipViewControllerAdapter.getData().clear();
 				flipViewControllerAdapter.getData().addAll(list);
 				if (flipViewControllerAdapter.getData().size() != 0) {
@@ -226,7 +212,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 						for (int i = 0; i < flipViewController.getChildCount(); i++) {
 							View page = flipViewController.getChildAt(i);
 							ArticleGroup articleGroup = (ArticleGroup) page.getTag();
-							if (articleGroup != null && articleGroup.contains(article)) {
+							if (article != null && articleGroup != null && articleGroup.contains(article)) {
 								needUpdate = true;
 								break;
 							}
@@ -344,19 +330,13 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 
 	private void navToArticleDetail(Article article) {
 		ForBossUtils.putBundleData("article", article);
+		ForBossUtils.putBundleData("list_articles", ArticleGroup.convertToArticles(flipViewControllerAdapter.getData()));
+		ForBossUtils.putBundleData("category", category);
 		startActivity(new Intent(this, FlippingArticleDetailActivity.class));
 	}
 	
 	private Context getContext() {
 		return this;
-	}
-	
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		ForBossUtils.putBundleData("category_id", null);
-		ForBossUtils.putBundleData("sub_category_id", null);
-		
 	}
 	
 	@Override

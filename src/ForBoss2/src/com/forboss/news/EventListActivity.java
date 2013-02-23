@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,36 +18,44 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.forboss.ForBossApplication;
 import com.forboss.R;
 import com.forboss.data.api.APIHelper;
 import com.forboss.data.model.Article;
+import com.forboss.data.model.Category;
+import com.forboss.data.model.CommonData;
 import com.forboss.util.ForBossUtils;
 
 public class EventListActivity extends Activity {
 	private ListView layoutEventList;
 	private EventListAdapter layoutEventListAdapter;
-	private static final int categoryId = Integer.parseInt(ForBossUtils.getConfig("CATEGORY_EVENT_ID")); 
+	private static final int categoryId = Category.CATEGORY_EVENT_ID;
+	private Category category;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.event_list);
 
+		// category
+		category = CommonData.getInstance().getCategory(categoryId);
+		
 		// list view
 		layoutEventList = (ListView) findViewById(R.id.layoutEventList);
 		layoutEventListAdapter = new EventListAdapter(new ArrayList<Article>());
 		layoutEventList.setAdapter(layoutEventListAdapter);
 
 		// load data
-		final boolean needToDisplayProgressAlert = Article.count(this, categoryId, 0) == 0;
+		final boolean needToDisplayProgressAlert = Article.count(this, category.getQueryCategoryId(), category.getQuerySubcategoryId()) == 0;
 		if (needToDisplayProgressAlert) {
 			ForBossUtils.alertProgress(this, "Đang tải dữ liệu...");
 		} else {
 			updateEventListAdapter();
 		}
-		APIHelper.getInstance().getArticles(categoryId, this, new Handler() {
+		APIHelper.getInstance().getArticles(category.getId(), this, new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
 				if (needToDisplayProgressAlert) ForBossUtils.dismissProgress(getContext());
@@ -54,6 +63,14 @@ public class EventListActivity extends Activity {
 			}
 		});
 
+		// category text
+		ImageView imgCategoryText = (ImageView) findViewById(R.id.imgCategoryText);
+		imgCategoryText.setImageBitmap(category.getTextBitmap(this));
+		
+		// button option
+		ImageButton buttonOption = (ImageButton) findViewById(R.id.buttonOption);
+		buttonOption.setVisibility(View.INVISIBLE);
+		
 		// button back
 		ImageButton buttonBack = (ImageButton) findViewById(R.id.buttonBack);
 		buttonBack.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +85,7 @@ public class EventListActivity extends Activity {
 		new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
-				List<Article> list = Article.loadArticlesOrderedCreatedTimeDesc(getContext(), categoryId, 0);
+				List<Article> list = Article.loadArticlesOrderedCreatedTimeDesc(getContext(), category.getQueryCategoryId(), category.getQuerySubcategoryId());
 				layoutEventListAdapter.getData().clear();
 				layoutEventListAdapter.getData().addAll(list);
 				if (layoutEventListAdapter.getData().size() != 0) {
@@ -84,7 +101,7 @@ public class EventListActivity extends Activity {
 						for (int i = 0; i < layoutEventList.getChildCount(); i++) {
 							View item = layoutEventList.getChildAt(i);
 							Article itemArticle = (Article) item.getTag();
-							if (itemArticle.getId() == article.getId()) {
+							if (article != null && itemArticle != null && itemArticle.getId() == article.getId()) {
 								needUpdate = true;
 								break;
 							}
@@ -118,13 +135,13 @@ public class EventListActivity extends Activity {
 
 		@Override
 		public Object getItem(int i) {
-			if (data != null) return data.get(i);
+			if (data != null && i < data.size()) return data.get(i);
 			return null;
 		}
 
 		@Override
 		public long getItemId(int i) {
-			return 0;
+			return i;
 		}
 
 		@Override
@@ -141,6 +158,7 @@ public class EventListActivity extends Activity {
 
 			// set thumbnail
 			ImageView imgThumbnail = (ImageView) view.findViewById(R.id.imgThumbnail);
+			imgThumbnail.getLayoutParams().width = ForBossApplication.getWindowDisplay().getWidth() * 193 / 640;
 			// recycle thumbnail if needed
 			ForBossUtils.recycleBitmapOfImage(imgThumbnail, getContext().getClass().getName());
 			// set thumbnail if it is downloaded to internal storage
@@ -160,8 +178,18 @@ public class EventListActivity extends Activity {
 
 			// set title
 			TextView txtTitle = (TextView) view.findViewById(R.id.txtTitle);
+			((RelativeLayout.LayoutParams)txtTitle.getLayoutParams()).leftMargin = 
+					imgThumbnail.getLayoutParams().width + ForBossUtils.convertDpToPixel(3, getContext());
 			txtTitle.setText(article.getTitle());
 
+			// click
+			view.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					navToArticleDetail((Article) v.getTag());
+				}
+			});
+			
 			// return view
 			view.setTag(article);
 			return view;
@@ -169,6 +197,13 @@ public class EventListActivity extends Activity {
 
 	}
 
+	private void navToArticleDetail(Article article) {
+		ForBossUtils.putBundleData("article", article);
+		ForBossUtils.putBundleData("list_articles", layoutEventListAdapter.getData());
+		ForBossUtils.putBundleData("category", category);
+		startActivity(new Intent(this, FlippingArticleDetailActivity.class));
+	}
+	
 	private Context getContext() {
 		return this;
 	}

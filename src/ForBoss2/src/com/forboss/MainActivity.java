@@ -21,15 +21,23 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		ForBossUtils.alertProgress(this, "Đang tải dữ liệu...");
-		APIHelper.getInstance().getCategories(this, new Handler() {
-			@Override
-			public void handleMessage(Message msg) {
-				ForBossUtils.dismissProgress(getContext());
-				CommonData.getInstance().load(getContext());
-				navToFirstScreen();
-			}
-		});
+		CommonData.getInstance().load(getContext());
+		final boolean needToGetCategoriesFromServer = CommonData.getInstance().getAllCategories() == null 
+														|| CommonData.getInstance().getAllCategories().size() == 0;
+		if (needToGetCategoriesFromServer) {
+			ForBossUtils.alertProgress(this, "Đang tải dữ liệu...");
+			APIHelper.getInstance().getCategories(this, new Handler() {
+				@Override
+				public void handleMessage(Message msg) {
+					ForBossUtils.dismissProgress(getContext());
+					CommonData.getInstance().load(getContext());
+					navToFirstScreen();
+				}
+			});
+		} else {
+			CommonData.getInstance().load(getContext());
+			navToFirstScreen();
+		}
 	}
 
 	private void navToFirstScreen() {

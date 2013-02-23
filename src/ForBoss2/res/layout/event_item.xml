@@ -7,8 +7,7 @@
         android:layout_width="100dp"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:paddingBottom="1dp"
-        android:paddingTop="1dp"
+        android:padding="2dp"
         android:scaleType="centerCrop" />
 
     <ImageView

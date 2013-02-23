@@ -1,5 +1,7 @@
 package com.forboss;
 
+import java.util.Locale;
+
 import android.app.Application;
 import android.content.Context;
 import android.view.Display;
@@ -38,14 +40,19 @@ public class ForBossApplication extends Application {
 
 	// support checking if the app is running in foreground
 	// from here: http://stackoverflow.com/questions/3667022/android-is-application-running-in-background/5862048#5862048
-	public static boolean isActivityVisible() {
-		return activityVisible;
-	}  
-	public static void activityResumed() {
-		activityVisible = true;
+//	public static boolean isActivityVisible() {
+//		return activityVisible;
+//	}  
+//	public static void activityResumed() {
+//		activityVisible = true;
+//	}
+//	public static void activityPaused() {
+//		activityVisible = false;
+//	}
+//	private static boolean activityVisible;
+	
+	private static Locale locale = new Locale("vi");
+	public static Locale getDefaultLocale() {
+		return locale;
 	}
-	public static void activityPaused() {
-		activityVisible = false;
-	}
-	private static boolean activityVisible;
 }

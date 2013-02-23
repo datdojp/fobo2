@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.forboss.R;
+import com.forboss.data.model.Category;
+import com.forboss.data.model.CommonData;
 import com.forboss.util.ForBossUtils;
 
 public class CategorySelectingActivity extends Activity {
@@ -19,28 +21,28 @@ public class CategorySelectingActivity extends Activity {
 		((ImageButton)findViewById(R.id.buttonAttraction)).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				navToCategory(Integer.parseInt(ForBossUtils.getConfig("CATEGORY_ATTENTION_ID")));
+				navToCategory(Category.CATEGORY_ATTENTION_ID);
 			}
 		});
 		
 		((ImageButton)findViewById(R.id.buttonLevel)).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				navToCategory(Integer.parseInt(ForBossUtils.getConfig("CATEGORY_LEVEL_ID")));
+				navToCategory(Category.CATEGORY_LEVEL_ID);
 			}
 		});
 		
 		((ImageButton)findViewById(R.id.buttonStyle)).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				navToCategory(Integer.parseInt(ForBossUtils.getConfig("CATEGORY_STYLE_ID")));				
+				navToCategory(Category.CATEGORY_STYLE_ID);
 			}
 		});
 		
 		((ImageButton)findViewById(R.id.buttonSuccess)).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				navToCategory(Integer.parseInt(ForBossUtils.getConfig("CATEGORY_SUCCESS_ID")));
+				navToCategory(Category.CATEGORY_SUCCESS_ID);
 			}
 		});
 		
@@ -68,7 +70,7 @@ public class CategorySelectingActivity extends Activity {
 	}
 
 	private void navToCategory(int categoryId) {
-		ForBossUtils.putBundleData("category_id", categoryId);
+		ForBossUtils.putBundleData("category", CommonData.getInstance().getCategory(categoryId));
 		startActivity(new Intent(this, FlippingArticleListByCategoryActivity.class));
 	}
 	

@@ -8,31 +8,60 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+
+import com.forboss.ForBossApplication;
+import com.forboss.util.ForBossUtils;
 import com.j256.ormlite.field.DatabaseField;
 
 public class Category extends BaseModel {
-	
-	private static final Map<String, String[]> mappOfSubcatAndIcon = new HashMap<String, String[]>();
+
+	public static final int CATEGORY_ATTENTION_ID=1;
+	public static final int CATEGORY_LEVEL_ID=2;
+	public static final int CATEGORY_STYLE_ID=3;
+	public static final int CATEGORY_SUCCESS_ID=4;
+	public static final int CATEGORY_EVENT_ID=25;
+
+	private static final Map<String, String[]> mapOfSubcatAndIcon = new HashMap<String, String[]>();
 	static {
-		mappOfSubcatAndIcon.put("Tin Tức", new String[] {"icon_news.png", "Tintuc.png"});
-		mappOfSubcatAndIcon.put("Giải Trí", new String[] {"icon_entertainment.png", "Giaitri.png"});
-		mappOfSubcatAndIcon.put("Góc Doanh Nhân", new String[] {"icon_businesscorner.png", "Gocdoanhnhan.png"});
-		mappOfSubcatAndIcon.put("Phong Cách", new String[] {"icon_style.png", "Phongcach.png"});
-		mappOfSubcatAndIcon.put("Thể Thao", new String[] {"icon_sport.png", "Thethao.png"});
-		mappOfSubcatAndIcon.put("Du Lịch", new String[] {"icon_tourism.png", "Dulich.png"});
-		mappOfSubcatAndIcon.put("Thế Giới Số", new String[] {"icon_digital.png", "Thegioiso.png"});
-		mappOfSubcatAndIcon.put("Sức Khỏe", new String[] {"icon_health.png", "Suckhoe.png"});
-		mappOfSubcatAndIcon.put("Sự Kiện", new String[] {null, "Sukien.png"});
-		
+		mapOfSubcatAndIcon.put("tin tức", new String[] {"icon_news.png", "Tintuc.png"});
+		mapOfSubcatAndIcon.put("giải trí", new String[] {"icon_entertainment.png", "Giaitri.png"});
+		mapOfSubcatAndIcon.put("góc doanh nhân", new String[] {"icon_businesscorner.png", "Gocdoanhnhan.png"});
+		mapOfSubcatAndIcon.put("phong cách", new String[] {"icon_style.png", "Phongcach.png"});
+		mapOfSubcatAndIcon.put("thể thao", new String[] {"icon_sport.png", "Thethao.png"});
+		mapOfSubcatAndIcon.put("du lịch", new String[] {"icon_tourism.png", "Dulich.png"});
+		mapOfSubcatAndIcon.put("thế giới số", new String[] {"icon_digital.png", "Thegioiso.png"});
+		mapOfSubcatAndIcon.put("sức khỏe", new String[] {"icon_health.png", "Suckhoe.png"});
+		mapOfSubcatAndIcon.put("lôi cuốn", new String[] {null, "Loi cuon.png"});
+		mapOfSubcatAndIcon.put("đẳng cấp", new String[] {null, "Dang cap.png"});
+		mapOfSubcatAndIcon.put("lịch lãm", new String[] {null, "Lich lam.png"});
+		mapOfSubcatAndIcon.put("thành đạt", new String[] {null, "Thanh dat.png"});
+		mapOfSubcatAndIcon.put("sự kiện", new String[] {null, "Sukien.png"});
+	}
+
+	public Bitmap getIconBitmap(Context context) {
+		String path = mapOfSubcatAndIcon.get(title.toLowerCase(ForBossApplication.getDefaultLocale()))[0];
+		return ForBossUtils.loadBitmapFromAssets(path, context);
+	}
+	public Bitmap getTextBitmap(Context context) {
+		String path = mapOfSubcatAndIcon.get(title.toLowerCase(ForBossApplication.getDefaultLocale()))[1];
+		return ForBossUtils.loadBitmapFromAssets(path, context);
 	}
 	
-	public String getIconAssetPath() {
-		return mappOfSubcatAndIcon.get(title)[0];
+	public int getQueryCategoryId() {
+		if (isParent())
+			return id;
+		else
+			return parentId;
 	}
-	public String getTextAssetPath() {
-		return mappOfSubcatAndIcon.get(title)[1];
+	public int getQuerySubcategoryId() {
+		if (isParent())
+			return 0;
+		else
+			return id;
 	}
-	
+
 	@Override
 	protected List<String> getServerDataFieldNames() {
 		if (serverDataFieldNames == null) {
@@ -40,7 +69,7 @@ public class Category extends BaseModel {
 		}
 		return serverDataFieldNames;
 	}
-	
+
 	public boolean isParent() {
 		return parentId == 0;
 	}
@@ -48,21 +77,18 @@ public class Category extends BaseModel {
 		id = json.getInt("ID");
 		title = unescape(json.getString("Title"));
 		parentId = json.getInt("ParentID");
-		
-		
-		
 		return this;
 	}
-	
+
 	@DatabaseField (id=true)
 	private int id;
-	
+
 	@DatabaseField
 	private int parentId;
-	
+
 	@DatabaseField
 	private String title;
-	
+
 	@DatabaseField
 	private long last;
 

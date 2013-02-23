@@ -98,6 +98,7 @@ public class APIHelper {
 						if (dbArticle != null) {
 							if (!dbArticle.dataIdenticalTo(article)) {
 								dbArticle.copyFrom(article);
+								dbArticle.setHtmlContent(null); // set html content to null so that its latest content will be loaded in article detail screen 
 								articleDao.update(dbArticle);
 								needRefresh = true;
 							}

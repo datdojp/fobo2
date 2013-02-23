@@ -1,6 +1,7 @@
 package com.forboss.data.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import android.content.Context;
@@ -13,8 +14,8 @@ public class ArticleGroup {
 	}
 	
 	public boolean contains(Article article) {
-		return top.getId() == article.getId() || 
-			left.getId() == article.getId() || right.getId() == article.getId();
+		return (top != null && top.getId() == article.getId()) || 
+			(left != null && left.getId() == article.getId()) || (right != null && right.getId() == article.getId());
 	}
 	
 	public static List<ArticleGroup> loadArticleGroups(Context context, int categoryId, int subCategoryId) {
@@ -38,6 +39,14 @@ public class ArticleGroup {
 		if (articleGroup != null)
 			listArticleGroups.add(articleGroup);
 		return listArticleGroups;
+	}
+	
+	public static List<Article> convertToArticles(List<ArticleGroup> listArticleGroups) {
+		List<Article> listArticles = new ArrayList<Article>();
+		for (ArticleGroup articleGroup : listArticleGroups) {
+			listArticles.addAll(Arrays.asList(articleGroup.getAll()));
+		}
+		return listArticles;
 	}
 
 }
