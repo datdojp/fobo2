@@ -9,8 +9,13 @@ import android.content.Context;
 public class ArticleGroup {
 	public Article top, left, right;
 	
-	public Article[] getAll() {
-		return new Article[] {top, left, right};
+	public List<Article> getAll() {
+		List<Article> list = new ArrayList<Article>();
+		if (top != null) list.add(top);
+		if (left != null) list.add(left);
+		if (right != null) list.add(right);
+		return list;
+		
 	}
 	
 	public boolean contains(Article article) {
@@ -44,7 +49,7 @@ public class ArticleGroup {
 	public static List<Article> convertToArticles(List<ArticleGroup> listArticleGroups) {
 		List<Article> listArticles = new ArrayList<Article>();
 		for (ArticleGroup articleGroup : listArticleGroups) {
-			listArticles.addAll(Arrays.asList(articleGroup.getAll()));
+			listArticles.addAll(articleGroup.getAll());
 		}
 		return listArticles;
 	}

@@ -358,8 +358,11 @@ public class FlipViewController extends AdapterView<Adapter> {
 
 	//--------------------------------------------------------------------------------------------------------------------
 	//internal exposed properties & methods
-	float getTouchSlop() {
+	public float getTouchSlop() {
 		return touchSlop;
+	}
+	public void setTouchSlop(float val) {
+		touchSlop = val;
 	}
 
 	GLSurfaceView getSurfaceView() {

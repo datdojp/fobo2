@@ -304,6 +304,10 @@ public class ForBossUtils {
 	public static int convertDpToPixel(final int dp, final Context context) {
 		return Math.round( dp * (context.getResources().getDisplayMetrics().densityDpi / 160f) );
 	}
+	
+	public static int convertPixelToDp(int px, Context context) {
+		return Math.round(px * 160f /context.getResources().getDisplayMetrics().densityDpi);
+	}
 
 
 	public static boolean isNetworkAvailable(Context context) {

@@ -165,7 +165,9 @@ public class APIHelper {
 					if (obj instanceof Article) {
 						arrArticles = new Article[] {(Article) obj};
 					} else {
-						arrArticles = ((ArticleGroup)obj).getAll();
+						List<Article> temp = ((ArticleGroup)obj).getAll();
+						arrArticles = new Article[temp.size()];
+						temp.toArray(arrArticles);
 					}
 					for (Article article : arrArticles) {
 						if (article != null && article.getThumbnail() != null && article.getPictureLocation() == null) {
