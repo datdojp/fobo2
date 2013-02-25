@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="vertical" android:weightSum="4">
+
+
+	<WebView android:layout_width="fill_parent"
+		android:layout_height="fill_parent" android:layout_weight="2"
+		android:id="@+id/webview1"></WebView>
+
+	<ScrollView android:orientation="vertical"
+		android:layout_weight="2" android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		<LinearLayout android:orientation="vertical"
+			android:layout_width="fill_parent" android:layout_height="fill_parent"
+			android:weightSum="3">
+
+			<TextView android:text="@string/selectanybuttontitle"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:layout_margin="5dip" android:layout_weight="1">
+			</TextView>
+
+			<LinearLayout android:orientation="horizontal"
+				android:layout_width="fill_parent" android:layout_height="wrap_content"
+				android:layout_weight="0.5" android:weightSum="3">
+
+				<TextView android:text="Default Button"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:layout_margin="2dip" android:layout_weight="1"
+					android:gravity="center">
+				</TextView>
+
+				<TextView android:text="Create your own menu"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:layout_margin="2dip" android:layout_weight="1"
+					android:gravity="center">
+				</TextView>
+
+				<TextView android:text="Custom Button"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:layout_margin="2dip" android:layout_weight="1"
+					android:gravity="center">
+				</TextView>
+
+			</LinearLayout>
+
+
+			<LinearLayout android:orientation="horizontal"
+				android:layout_width="fill_parent" android:layout_height="wrap_content"
+				android:layout_weight="0.5" android:weightSum="3">
+
+				<!-- AddThis button is added here -->
+				<com.addthis.ui.views.ATButton
+					android:id="@+id/addthisButton" android:layout_height="wrap_content"
+					android:layout_width="70dip" android:layout_margin="3dip"
+					android:layout_weight="1"></com.addthis.ui.views.ATButton>
+					
+					
+					<ImageButton android:text="Facebook"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:layout_margin="3dip" android:src="@drawable/custommenubutton"
+					android:background="@android:color/transparent"
+					android:layout_weight="1" android:gravity="center" android:onClick="onClickedCustomMenu"></ImageButton>
+					
+					<ImageButton android:text="Facebook"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:layout_margin="3dip" android:src="@drawable/sharebutton"
+					android:background="@android:color/transparent"
+					android:layout_weight="1" android:gravity="center" android:onClick="onClickedCustomButton"></ImageButton>
+
+			</LinearLayout>
+
+			<LinearLayout android:orientation="horizontal"
+				android:layout_width="fill_parent" android:layout_height="wrap_content"
+				android:layout_weight="0.5" android:weightSum="2">
+
+				<TextView android:text="Single Service Buttons"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:layout_margin="2dip" android:layout_weight="1"
+					android:gravity="left">
+				</TextView>
+
+				<TextView android:text="Image Sharing"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:layout_margin="2dip" android:layout_weight="1"
+					android:gravity="right">
+				</TextView>
+
+			</LinearLayout>
+
+			<LinearLayout android:orientation="horizontal"
+				android:layout_width="fill_parent" android:layout_height="wrap_content"
+				android:layout_weight="0.5" android:weightSum="5">
+
+				<ImageButton android:text="Facebook"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:layout_margin="3dip" android:src="@drawable/fbbutton"
+					android:background="@android:color/transparent"
+					android:layout_weight="1" android:gravity="center" android:onClick="onClickedFacebook"></ImageButton>
+					
+				<ImageButton android:text="Twitter"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:layout_margin="3dip" android:src="@drawable/twitterbutton"
+					android:background="@android:color/transparent"
+					android:layout_weight="1" android:gravity="center" android:onClick="onClickedTwitter"></ImageButton>
+					
+					
+				<ImageButton android:text="Button"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:layout_margin="3dip" android:src="@drawable/diggbutton"
+					android:background="@android:color/transparent"
+					android:layout_weight="1" android:gravity="center" android:onClick="onClickedDigg"></ImageButton>
+					
+					<ImageButton android:text="Button"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:layout_margin="3dip" android:src="@drawable/emailbutton"
+					android:background="@android:color/transparent"
+					android:layout_weight="1" android:gravity="center" android:onClick="onClickedEmail"></ImageButton>
+				
+					<ImageButton android:text="Button"
+					android:layout_width="wrap_content" android:layout_height="wrap_content"
+					android:layout_margin="3dip" android:src="@drawable/sharebutton"
+					android:background="@android:color/transparent"
+					android:layout_weight="1" android:gravity="center" android:onClick="onImageCustomButton"></ImageButton>
+
+
+			</LinearLayout>
+
+		</LinearLayout>
+	</ScrollView>
+</LinearLayout>

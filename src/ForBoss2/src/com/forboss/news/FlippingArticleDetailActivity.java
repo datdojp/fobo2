@@ -18,6 +18,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.addthis.core.AddThis;
+import com.addthis.core.Config;
+import com.addthis.error.ATDatabaseException;
+import com.addthis.ui.views.ATButton;
 import com.aphidmobile.flip.FlipViewController;
 import com.forboss.R;
 import com.forboss.data.api.APIHelper;
@@ -59,6 +63,18 @@ public class FlippingArticleDetailActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				finish();
+			}
+		});
+		
+		// share button
+		ImageButton shareButton = (ImageButton) root.findViewById(R.id.buttonShare);
+		Config.configObject().setAddThisAppId("5126e88b62e8ac4a");
+		Config.configObject().setAddThisPubId("ra-4d6b6eea0ddc20be");
+		shareButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Article article = getCurrentArticle();
+				AddThis.presentAddThisMenu(getContext(), article.getLink(), article.getTitle(), article.getBody());
 			}
 		});
 
@@ -137,6 +153,10 @@ public class FlippingArticleDetailActivity extends Activity {
 	private class FlipViewControllerAdapter extends BaseAdapter {
 		private List<Article> data;
 
+		private List<Article> getData() {
+			return data;
+		}
+		
 		public FlipViewControllerAdapter(List<Article> data) {
 			super();
 			this.data = data;
@@ -197,4 +217,21 @@ public class FlippingArticleDetailActivity extends Activity {
 	private Context getContext() {
 		return this;
 	}
+
+
+	private Article getCurrentArticle() {
+		return flipViewControllerAdapter.getData().get(flipViewController.getSelectedItemPosition());
+	}
+	
+	/*
+	 * SNS 
+	 */
+	
+	private void initSNS() {
+		
+	}
+	
+	/*
+	 * END OF SNS 
+	 */
 }

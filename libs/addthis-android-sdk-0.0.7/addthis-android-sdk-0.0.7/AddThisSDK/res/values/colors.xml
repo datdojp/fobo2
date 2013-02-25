@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<!-- List view color values -->
+	<color name = "cell_active_state">#FE6D4C</color>
+	<color name = "cell_inactive_state">#FFFFFF</color>
+	<color name = "cell_divider">#000000</color>
+	<color name = "list_item_font_color">#000000</color>
+	
+	<!-- General color values -->
+	<color name = "background_color">#FFFFFF</color>
+	<color name = "info_bg_color">#F8E370</color>
+	<color name = "info_text_color">#000000</color>
+	
+	<!--  Action bar color values -->
+	<color name = "actionbar_background_color">#000000</color>
+	<color name = "actionbar_title_color">#FFFFFF</color>
+	
+</resources>

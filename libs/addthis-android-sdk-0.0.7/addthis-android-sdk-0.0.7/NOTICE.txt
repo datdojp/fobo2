@@ -1,0 +1,27 @@
+=========================================================================
+==	NOTICE file corresponding to the Android SDK.                  ==
+=========================================================================
+AddThis
+Copyright 2010-2011 AddThis LLC. All rights reserved.
+
+
+=========================================================================
+==	Facebook Connect Android SDK                                   ==
+=========================================================================
+
+The Facebook native sharing for the library is implemented using the 
+Facebook Connect Android SDK which is under Apache License-2.0
+Facebook
+Copyright 2010 Facebook, Inc.
+
+
+=========================================================================
+==	OAuth library with Signpost                                    ==
+=========================================================================
+
+The Twitter and Twitpic authentication with OAuth is implemented using 
+the Signpost OAuth library.
+Signpost
+Copyright (c) 2009 Matthias Kaeppler
+
+

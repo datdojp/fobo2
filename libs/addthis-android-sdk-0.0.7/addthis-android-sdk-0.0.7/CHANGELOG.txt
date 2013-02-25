@@ -1,0 +1,32 @@
+Android SDK ChangeLog
+
+Version 0.0.7
+
+- Added new FB library
+- Fixed issue with Twitter Auth view 
+- Fixed UI issues in share web view
+- Added api for dismissing the modal view
+
+Version 0.0.6 (released 2012-03-20)
+
+- Updated the database file
+- Made all links to load inside the webview while using OExchange endpoints
+
+Version 0.0.5 (released 2011-12-28)
+
+- Added a new method for showing/hiding the 'More' services from AddThis Menu.
+
+Version 0.0.4 (released 2011-11-01)
+
+- Fixed issue with scrolling in webview of OExchange sharing.
+- Removed the reloading of webview on device orientation change.
+- Fixed view alignment issue in email OExchange view.
+
+Version 0.0.3 (released 2011-10-18)
+
+- Made the pubid a permanent field and an alert will be shown if the id is not provided.
+
+Version 0.0.2 (released 2011-09-20)
+
+- Fixed issue with Resource files.
+- Fixed the Facebook session expiry issue.

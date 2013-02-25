@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="app_name">AddThis</string>
+    
+     <string name="selectanybuttontitle">Select any of the following button options to share the page above:</string>
+</resources>

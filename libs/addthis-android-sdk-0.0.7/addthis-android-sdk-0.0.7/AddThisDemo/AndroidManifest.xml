@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.addthis.demo"
+      android:versionCode="1"
+      android:versionName="1.0">
+
+
+    <application android:icon="@drawable/icon" android:label="@string/app_name">
+        <activity android:name=".HomeActivity"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name=".CustomMenuActivity">
+        
+        </activity>
+        
+    <!-- AddThis SDK activities -->
+    <activity android:name="com.addthis.ui.activities.ATAllServiceActivity" />
+	<activity android:name="com.addthis.ui.activities.ATFavoriteServiceActivity" />
+	<activity android:name="com.addthis.ui.activities.ATShareActivity" />
+	<activity android:name="com.addthis.ui.activities.ATActivityGroup" 
+	android:configChanges="orientation" />
+    </application>
+    
+	<uses-permission android:name="android.permission.INTERNET"/>
+	
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<supports-screens android:resizeable="true" />
+</manifest>

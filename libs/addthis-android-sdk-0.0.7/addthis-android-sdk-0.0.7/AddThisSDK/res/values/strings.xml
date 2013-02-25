@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="fav_activity_title">Share</string>
+	<string name="allservice_activity_title">Find a service</string>
+
+	<string name="nonetwork_msg">No network available</string>
+	<string name="loading_please_wait_msg">Loading, please wait ...</string>
+
+	<string name="username">Username</string>
+	<string name="password">Password</string>
+	<string name="login">Login</string>
+	<string name="cancel">Cancel</string>
+	<string name="loging_out">Logging out...</string>
+	<string name="confirm">Confirm</string>
+	<string name="delete_msg">Delete this favorite?</string>
+	<string name="send_email">Send Mail</string>
+	<string name="editview_info_text">Add or Remove services in this list. Tap the plus sign from the Action bar above to add more services. Long press a particular service to delete. Tap the back button to go back to the normal view.</string>
+
+	<string name="external_memory_for_image">External memory card should be present for sharing the image through email</string>
+	<string name="an_error_occured">An error occurred, please try again later</string>
+	<string name="uploading_please_wait">Uploading. Please wait...</string>
+	<string name="connecting_twitpic">Connecting TwitPic...</string>
+	<string name="posting_the_tweet">Posting the message...</string>
+	<string name="successfully_posted">Successfully posted</string>
+	<string name="title">Title</string>
+	<string name="description">Description</string>
+	<string name="image_attached">Image Attached</string>
+	
+</resources>

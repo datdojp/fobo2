@@ -29,27 +29,6 @@ public class ForBossApplication extends Application {
 	public static Display getWindowDisplay() {
 		return display;
 	}
-
-//	private static Typeface montserratTypeface;
-//	public static Typeface getMontserratTypeface() {
-//		if (montserratTypeface == null) {
-//			montserratTypeface = Typeface.createFromAsset(ForBossApplication.getAppContext().getAssets(), "font/Montserrat-Regular.ttf");
-//		}
-//		return montserratTypeface;
-//	}
-
-	// support checking if the app is running in foreground
-	// from here: http://stackoverflow.com/questions/3667022/android-is-application-running-in-background/5862048#5862048
-//	public static boolean isActivityVisible() {
-//		return activityVisible;
-//	}  
-//	public static void activityResumed() {
-//		activityVisible = true;
-//	}
-//	public static void activityPaused() {
-//		activityVisible = false;
-//	}
-//	private static boolean activityVisible;
 	
 	private static Locale locale = new Locale("vi");
 	public static Locale getDefaultLocale() {
