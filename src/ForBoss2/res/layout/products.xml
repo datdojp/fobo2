@@ -1,0 +1,90 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp" >
+
+            <include
+                android:id="@+id/buttonBack"
+                layout="@layout/button_back" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:layout_width="97dp"
+                    android:layout_height="20dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/top_logo" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/bg_product" >
+            </ImageView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:text="Xmen For Boss Gold"
+                android:textAppearance="@style/products_title" />
+        </RelativeLayout>
+
+        <include
+            android:id="@+id/layoutFirstProductLine"
+            layout="@layout/product_line" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="bottom"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:text="Xmen For Boss Black"
+            android:textAppearance="@style/products_title" />
+
+        <include
+            android:id="@+id/layoutSecondProductLine"
+            layout="@layout/product_line" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/product_intro"
+                android:textAppearance="@style/products_intro" />
+        </ScrollView>
+    </LinearLayout>
+
+    <include
+        android:id="@+id/layoutProductDetail"
+        layout="@layout/product_detail"
+        android:visibility="invisible" />
+
+</RelativeLayout>

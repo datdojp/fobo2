@@ -25,19 +25,30 @@
         <item name="android:textColor">#FBD687</item>
         <item name="android:textSize">20sp</item>
     </style>
+
     <style name="article_overview_title_small" parent="@android:style/Widget.TextView">
         <item name="android:textColor">#FBD687</item>
         <item name="android:textSize">15sp</item>
     </style>
-    
+
     <style name="subcategory_name" parent="@android:style/Widget.TextView">
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textSize">20sp</item>
     </style>
-    
+
     <style name="event_title" parent="@android:style/Widget.TextView">
         <item name="android:textColor">#E8C874</item>
         <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="products_title" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">#CE9D45</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="products_intro" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">#EAEAB5</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
 </resources>

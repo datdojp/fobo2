@@ -33,6 +33,15 @@ public class FeatureSelectingActivity extends Activity {
 			}
 		});
 		
+		ImageButton buttonProducts = (ImageButton) findViewById(R.id.buttonProducts);
+		buttonProducts.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				navToProducts();
+			}
+		});
+		
+		
 	}
 	
 	private void navToBossMeasure() {
@@ -41,6 +50,10 @@ public class FeatureSelectingActivity extends Activity {
 	
 	private void navToNews() {
 		startActivity(new Intent(this, CategorySelectingActivity.class));
+	}
+	
+	private void navToProducts() {
+		startActivity(new Intent(this, ProductsActivity.class));
 	}
 
 }

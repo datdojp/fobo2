@@ -50,6 +50,7 @@
                 android:src="@drawable/but_news" />
 
             <ImageButton
+                android:id="@+id/buttonProducts"
                 android:layout_width="155dp"
                 android:layout_height="122dp"
                 android:layout_marginBottom="25dp"

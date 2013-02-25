@@ -4,8 +4,8 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="17" />
@@ -13,9 +13,9 @@
     <application
         android:name="com.forboss.ForBossApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" 
-        android:theme="@android:style/Theme.NoTitleBar">
+        android:icon="@drawable/icon"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.NoTitleBar" >
         <activity android:name="com.forboss.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,13 +23,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.forboss.RegistrationActivity"></activity>
-        <activity android:name="com.forboss.FeatureSelectingActivity"></activity>
-        <activity android:name="com.forboss.bossmeasure.BossMeasureActivity"></activity>
-        <activity android:name="com.forboss.news.CategorySelectingActivity"></activity>
-        <activity android:name="com.forboss.news.FlippingArticleListByCategoryActivity"></activity>
-        <activity android:name="com.forboss.news.FlippingArticleDetailActivity"></activity>
-        <activity android:name="com.forboss.news.EventListActivity"></activity>
+        <activity android:name="com.forboss.RegistrationActivity" >
+        </activity>
+        <activity android:name="com.forboss.FeatureSelectingActivity" >
+        </activity>
+        <activity android:name="com.forboss.ProductsActivity" >
+        </activity>
+        <activity android:name="com.forboss.bossmeasure.BossMeasureActivity" >
+        </activity>
+        <activity android:name="com.forboss.news.CategorySelectingActivity" >
+        </activity>
+        <activity android:name="com.forboss.news.FlippingArticleListByCategoryActivity" >
+        </activity>
+        <activity android:name="com.forboss.news.FlippingArticleDetailActivity" >
+        </activity>
+        <activity android:name="com.forboss.news.EventListActivity" >
+        </activity>
     </application>
 
 </manifest>
