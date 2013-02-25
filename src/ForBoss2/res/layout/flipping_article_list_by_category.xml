@@ -10,12 +10,39 @@
         android:id="@+id/flipViewController"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/layoutOuterPagingIndicatorImages"
         android:layout_below="@+id/layoutTopPanel" >
     </com.aphidmobile.flip.FlipViewController>
 
+    <LinearLayout
+        android:id="@+id/layoutOuterPagingIndicatorImages"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:id="@+id/layoutPagingIndicatorImages"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center" >
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/buttonRefresh"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="#00000000"
+        android:scaleType="centerInside"
+        android:src="@drawable/icon_refresh" />
+
     <include
         android:id="@+id/layoutSubcategriesSelecting"
-        layout="@layout/subcategories_selecting" 
-        android:visibility="invisible"/>
+        layout="@layout/subcategories_selecting"
+        android:visibility="invisible" />
 
 </RelativeLayout>

@@ -44,35 +44,36 @@ public class APIClient {
 	}
 
 	public static final int SC_CONNECTION_ERROR = -1;
+	public static final int SC_CANCELED = -2;
 
 	private APIClient() {
 		client = new DefaultHttpClient();
 	}
 
-	public void signup(String email, String phoneNumber, String cmnd, Handler successHandler, Handler failureHandler) {
-		template(	new String[] {"email", email, "phone", phoneNumber, "id", cmnd}, 
+	public AsyncTask signup(String email, String phoneNumber, String cmnd, Handler successHandler, Handler failureHandler) {
+		return template(	new String[] {"email", email, "phone", phoneNumber, "id", cmnd}, 
 					"login.aspx", HttpMethod.GET, successHandler, failureHandler	);
 	}
 	
-	public void getCategories(Handler successHandler, Handler failureHandler) {
-		template (new String[] {}, "categories.aspx", HttpMethod.GET, successHandler, failureHandler);
+	public AsyncTask getCategories(Handler successHandler, Handler failureHandler) {
+		return template (new String[] {}, "categories.aspx", HttpMethod.GET, successHandler, failureHandler);
 	}
 	
-	public void getArticleForCategory(int categoryId, int start, int end, long last, Handler successHandler, Handler failureHandler) {
-		template(	new String[] {"category", Integer.toString(categoryId), "start", Integer.toString(start), "end", Integer.toString(end), "last", Long.toString(last)}, 
+	public AsyncTask getArticleForCategory(int categoryId, int start, int end, long last, Handler successHandler, Handler failureHandler) {
+		return template(	new String[] {"category", Integer.toString(categoryId), "start", Integer.toString(start), "end", Integer.toString(end), "last", Long.toString(last)}, 
 					"postsbytime.aspx", HttpMethod.GET, successHandler, failureHandler	);
 	}
 	
-	public void getArticleDetail(String articleId, Handler successHandler, Handler failureHandler) {
-		template(	new String[] {"id", articleId}, 
+	public AsyncTask getArticleDetail(String articleId, Handler successHandler, Handler failureHandler) {
+		return template(	new String[] {"id", articleId}, 
 					"post.aspx", HttpMethod.GET, successHandler, failureHandler	);
 	}
 	
-	public void likeArticle(String articleId, Handler successHandler, Handler failureHandler) {
-		template(new String[] {"id", articleId}, "like.aspx", HttpMethod.GET, successHandler, failureHandler);
+	public AsyncTask likeArticle(String articleId, Handler successHandler, Handler failureHandler) {
+		return template(new String[] {"id", articleId}, "like.aspx", HttpMethod.GET, successHandler, failureHandler);
 	}
 	
-	private void template(String[] paramsKeyVal, String path, HttpMethod method, Handler successHandler, Handler failureHandler) {
+	private AsyncTask template(String[] paramsKeyVal, String path, HttpMethod method, Handler successHandler, Handler failureHandler) {
 		assert(paramsKeyVal.length % 2 == 0);
 		JSONObject jsonParams = new JSONObject();
 		try {
@@ -82,7 +83,7 @@ public class APIClient {
 		} catch (JSONException e) {
 			// ignore
 		}
-		(new RequestTask()).setHandlers(successHandler, failureHandler)
+		return (new RequestTask()).setHandlers(successHandler, failureHandler)
 			.execute(new String[] {path, method.name(), jsonParams.toString()});
 	}
 
@@ -147,6 +148,7 @@ public class APIClient {
 			jsonString = null;
 			try {
 				HttpResponse response = client.execute(request);
+				if (isCancelled()) return SC_CANCELED;
 				jsonString = EntityUtils.toString(response.getEntity());
 				if (BuildConfig.DEBUG) {
 					Log.d(this.getClass().getName(), "REQUEST:" + request.getURI());
@@ -170,7 +172,7 @@ public class APIClient {
 			} else {
 				handler = failureHandler;
 			}
-			if (handler != null) {
+			if (handler != null && !isCancelled()) {
 				Message message = handler.obtainMessage();
 				message.what = result;
 				message.obj = jsonString;

@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,6 +21,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
@@ -40,7 +43,10 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 	private ArticleGroupAdapter flipViewControllerAdapter;
 	private ViewGroup root;
 	private RelativeLayout layoutSubcategriesSelecting;
+	private LinearLayout layoutPagingIndicatorImages;
 	private static final int SUBCAT_SELECTIONG_ANIMATION_DURATIO = 300;
+	private AsyncTask articleGettingTask;
+	private AsyncTask imageLoadingTask;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +55,11 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		setContentView(root);
 		category = (Category) ForBossUtils.getBundleData("category");
 		ForBossUtils.putBundleData("category", null);
-		
+
 		// category text
 		ImageView imgCategoryText = (ImageView) findViewById(R.id.imgCategoryText);
 		imgCategoryText.setImageBitmap(category.getTextBitmap(this));
-		
+
 		// button option
 		ImageButton buttonOption = (ImageButton) findViewById(R.id.buttonOption);
 		buttonOption.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +68,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 				showSubCategoriesSelecting();
 			}
 		});
-		
+
 		// button back
 		ImageButton buttonBack = (ImageButton) findViewById(R.id.buttonBack);
 		buttonBack.setOnClickListener(new View.OnClickListener() {
@@ -71,12 +77,30 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 				finish();
 			}
 		});
-		
+
+		// button refresh
+		ImageButton buttonRefresh = (ImageButton) root.findViewById(R.id.buttonRefresh);
+		buttonRefresh.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				refreshData();
+			}
+		});
+
+		// layout for paging indicator images
+		layoutPagingIndicatorImages = (LinearLayout) root.findViewById(R.id.layoutPagingIndicatorImages);
+
 		// layout to select subcategory
 		initSubcategoriesSelecting();
-		
+
 		// flipper
 		flipViewController = (FlipViewController) findViewById(R.id.flipViewController);
+		flipViewController.setOnViewFlipListener(new FlipViewController.ViewFlipListener() {
+			@Override
+			public void onViewFlipped(View view, int position) {
+				setPagingIndicatorPosition(position);
+			}
+		});
 		flipViewControllerAdapter = new ArticleGroupAdapter(new ArrayList<ArticleGroup>());
 		flipViewController.setAdapter(flipViewControllerAdapter);
 
@@ -87,7 +111,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		} else {
 			updateFlipperAdapter();
 		}
-		APIHelper.getInstance().getArticles(category.getId(), this, new Handler() {
+		articleGettingTask = APIHelper.getInstance().getArticles(category.getId(), this, new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
 				if (needToDisplayProgressAlert) ForBossUtils.dismissProgress(getContext());
@@ -104,20 +128,20 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 			// add view for each sub-category
 			View viewSubcat = getLayoutInflater().inflate(R.layout.subcategory, null);
 			viewSubcat.setLayoutParams(new LinearLayout.LayoutParams(
-												LinearLayout.LayoutParams.MATCH_PARENT,
-												ForBossUtils.convertDpToPixel(50, this)
-												));
-			
+					LinearLayout.LayoutParams.MATCH_PARENT,
+					ForBossUtils.convertDpToPixel(50, this)
+					));
+
 			ImageView imgIcon = (ImageView) viewSubcat.findViewById(R.id.imgIcon);
 			imgIcon.setImageBitmap(subcat.getIconBitmap(getContext()));
-			
+
 			TextView txtName = (TextView) viewSubcat.findViewById(R.id.txtName);
 			txtName.setText(subcat.getTitle().toUpperCase(ForBossApplication.getDefaultLocale()));
 			if (subcat.getId() == category.getQuerySubcategoryId()) {
 				viewSubcat.setBackgroundColor(0xff262626);
 			}
 			layoutSubcategories.addView(viewSubcat);
-			
+
 			viewSubcat.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View arg0) {
@@ -131,20 +155,20 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 					});
 				}
 			});
-			
+
 			// add deviders
 			if (listSubcategories.indexOf(subcat) != listSubcategories.size() - 1) {
 				View divider = new View(this);
 				divider.setLayoutParams(new LinearLayout.LayoutParams(
-											LinearLayout.LayoutParams.MATCH_PARENT,
-											ForBossUtils.convertDpToPixel(1, this)
-										));
+						LinearLayout.LayoutParams.MATCH_PARENT,
+						ForBossUtils.convertDpToPixel(1, this)
+						));
 				divider.setBackgroundResource(R.drawable.subcat_layout_divider);
 				layoutSubcategories.addView(divider);
 			}
-			
+
 		}
-		
+
 		ImageButton buttonClose = (ImageButton) layoutSubcategriesSelecting.findViewById(R.id.buttonClose);
 		buttonClose.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -152,7 +176,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 				hideSubCategoriesSelecting(null);
 			}
 		});
-		
+
 		layoutSubcategriesSelecting.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 			@Override
 			public void onGlobalLayout() {
@@ -163,7 +187,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 			}
 		});
 	}
-	
+
 	private void showSubCategoriesSelecting() {
 		layoutSubcategriesSelecting.setVisibility(View.VISIBLE);
 		flipViewController.setTouchEnable(false);
@@ -171,7 +195,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		animation.setDuration(SUBCAT_SELECTIONG_ANIMATION_DURATIO);
 		layoutSubcategriesSelecting.startAnimation(animation);
 	}
-	
+
 	private void hideSubCategoriesSelecting(final Handler finishHandler) {
 		Animation animation = new TranslateAnimation(0, 0, 0, -layoutSubcategriesSelecting.getHeight());
 		animation.setDuration(SUBCAT_SELECTIONG_ANIMATION_DURATIO);
@@ -191,20 +215,25 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		});
 		layoutSubcategriesSelecting.startAnimation(animation);
 	}
-	
+
 	private void updateFlipperAdapter() {
 		new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
+				if (imageLoadingTask != null) {
+					imageLoadingTask.cancel(true);
+					imageLoadingTask = null;
+				}
+
 				List<ArticleGroup> list = ArticleGroup.loadArticleGroups(getContext(), category.getQueryCategoryId(), category.getQuerySubcategoryId());
 				flipViewControllerAdapter.getData().clear();
 				flipViewControllerAdapter.getData().addAll(list);
 				if (flipViewControllerAdapter.getData().size() != 0) {
 					flipViewControllerAdapter.notifyDataSetChanged();
 				}
-				
+
 				// load images
-				APIHelper.getInstance().getImages(list, getContext(), new Handler() {
+				imageLoadingTask = APIHelper.getInstance().getImages(list, getContext(), new Handler() {
 					@Override
 					public void handleMessage(Message msg) {
 						Article article = (Article) msg.obj;
@@ -292,7 +321,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 
 		private View applyArticleToView(Article article, View view, boolean isBigArticle) {
 			view.setVisibility(View.VISIBLE);
-			
+
 			ImageView imgThumbnail = (ImageView) view.findViewById(R.id.imgThumbnail);
 			TextView textTitle = (TextView) view.findViewById(R.id.textTitle);
 			if (isBigArticle) {
@@ -313,7 +342,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 
 			// set title and body
 			textTitle.setText(article.getTitle());
-			
+
 			// tap on view, navigate to detail
 			view.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -326,6 +355,12 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 			view.setTag(article);
 			return view;
 		}
+
+		@Override
+		public void notifyDataSetChanged() {
+			super.notifyDataSetChanged();
+			initPagingIndicatorImages();
+		}
 	}
 
 	private void navToArticleDetail(Article article) {
@@ -334,11 +369,11 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		ForBossUtils.putBundleData("category", category);
 		startActivity(new Intent(this, FlippingArticleDetailActivity.class));
 	}
-	
+
 	private Context getContext() {
 		return this;
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		if (layoutSubcategriesSelecting.getVisibility() == View.VISIBLE) {
@@ -346,5 +381,57 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		} else {
 			super.onBackPressed();
 		}
+	}
+
+	private void initPagingIndicatorImages() {
+		layoutPagingIndicatorImages.removeAllViews();
+		int width = ForBossUtils.convertDpToPixel(7, this);
+		int height = width;
+		int gap = ForBossApplication.getWindowDisplay().getWidth() - flipViewControllerAdapter.getCount() * width;
+		gap = Math.max(0, gap);
+		gap = Math.min(gap, 2 * width);
+		for (int i = 0; i < flipViewControllerAdapter.getCount(); i++) {
+			ImageView img = new ImageView(this);
+			img.setImageResource(R.drawable.selected_page);
+			img.setBackgroundColor(Color.TRANSPARENT);
+			img.setScaleType(ScaleType.FIT_XY);
+
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, height);
+			if (i != 0) lp.leftMargin = gap; 
+			img.setLayoutParams(lp);
+
+			layoutPagingIndicatorImages.addView(img);
+		}
+
+		setPagingIndicatorPosition(flipViewController.getSelectedItemPosition());
+	}
+
+	private void setPagingIndicatorPosition(int pos) {
+		for (int i = 0; i < layoutPagingIndicatorImages.getChildCount(); i++) {
+			ImageView img = (ImageView) layoutPagingIndicatorImages.getChildAt(i);
+			if (i == pos) {
+				img.setImageResource(R.drawable.selected_page);
+			} else {
+				img.setImageResource(R.drawable.unselected_page);
+			}
+		}
+	}
+
+	private void refreshData() {
+		if (articleGettingTask != null) {
+			articleGettingTask.cancel(true);
+			articleGettingTask = null;
+		}
+		
+		ForBossUtils.alertProgress(this, "Đang tải dữ liệu...");
+		articleGettingTask = APIHelper.getInstance().getArticles(category.getId(), this, new Handler() {
+			@Override
+			public void handleMessage(Message msg) {
+				ForBossUtils.dismissProgress(getContext());
+				boolean needRefresh = (Boolean) msg.obj;
+				if (needRefresh) updateFlipperAdapter();
+			}
+		});
+
 	}
 }

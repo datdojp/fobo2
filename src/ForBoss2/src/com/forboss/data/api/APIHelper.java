@@ -33,8 +33,8 @@ public class APIHelper {
 		return instance;
 	}
 
-	public void getCategories(final Context context, final Handler finishHandler) {
-		APIClient.getClient().getCategories(new Handler() {
+	public AsyncTask getCategories(final Context context, final Handler finishHandler) {
+		return APIClient.getClient().getCategories(new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
 				try {
@@ -74,13 +74,13 @@ public class APIHelper {
 		});
 	}
 
-	public void getArticles(final int categoryId, final Context context, final Handler finishHandler) {
-		getArticles(categoryId, 1, Integer.MAX_VALUE, context, finishHandler);
+	public AsyncTask getArticles(final int categoryId, final Context context, final Handler finishHandler) {
+		return getArticles(categoryId, 1, Integer.MAX_VALUE, context, finishHandler);
 	}
 
-	private void getArticles(final int categoryId, final int start, final int end, final Context context, final Handler finishHandler) {
+	private AsyncTask getArticles(final int categoryId, final int start, final int end, final Context context, final Handler finishHandler) {
 		final Category category = CommonData.getInstance().getCategory(categoryId);
-		APIClient.getClient().getArticleForCategory(categoryId, start, end, category.getLast(), 
+		return APIClient.getClient().getArticleForCategory(categoryId, start, end, category.getLast(), 
 				new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
@@ -129,12 +129,12 @@ public class APIHelper {
 		});
 	}
 
-	public void getImages(List list, Context context, Handler finishOneImageHandler, Handler finishAllHandler) {
-		new ImageLoadingAsyncTask()
-		.setContext(context)
-		.setFinishOneImageHandler(finishOneImageHandler)
-		.setFinishAllHandler(finishAllHandler)
-		.execute(list);
+	public AsyncTask getImages(List list, Context context, Handler finishOneImageHandler, Handler finishAllHandler) {
+		return new ImageLoadingAsyncTask()
+				.setContext(context)
+				.setFinishOneImageHandler(finishOneImageHandler)
+				.setFinishAllHandler(finishAllHandler)
+				.execute(list);
 	}
 
 	private class ImageLoadingAsyncTask extends AsyncTask<List, Integer, Integer> {
@@ -181,7 +181,9 @@ public class APIHelper {
 								finishOneImageHandler.sendMessage(msg);
 							}
 						}
+						if (isCancelled()) break;
 					}
+					if (isCancelled()) break;
 				}
 				if (finishAllHandler != null) finishAllHandler.sendEmptyMessage(0);
 			} catch (IOException e) {
@@ -195,8 +197,8 @@ public class APIHelper {
 
 	}
 
-	public void getArticleDetail(final Article article, final Context context, final Handler finishHandler) {
-		APIClient.getClient().getArticleDetail(article.getId(), new Handler() {
+	public AsyncTask getArticleDetail(final Article article, final Context context, final Handler finishHandler) {
+		return APIClient.getClient().getArticleDetail(article.getId(), new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
 				try {
