@@ -311,7 +311,6 @@ public class ForBossUtils {
 
 
 	public static boolean isNetworkAvailable(Context context) {
-		//TODO need to improve the network detection
 		final ConnectivityManager connectivityManager
 		= (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		final NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();

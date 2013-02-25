@@ -35,7 +35,7 @@ public class RegistrationActivity extends Activity {
 		editPhoneNumber = (EditText) findViewById(R.id.editPhoneNumber);
 		editCMND = (EditText) findViewById(R.id.editCMND);
 		
-		handleRegistrationSuccess();//TODO: remove this line
+//		handleRegistrationSuccess();//TODO: remove this line
 	}
 
 	private void submit() {

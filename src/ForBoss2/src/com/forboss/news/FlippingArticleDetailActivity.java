@@ -20,8 +20,6 @@ import android.widget.TextView;
 
 import com.addthis.core.AddThis;
 import com.addthis.core.Config;
-import com.addthis.error.ATDatabaseException;
-import com.addthis.ui.views.ATButton;
 import com.aphidmobile.flip.FlipViewController;
 import com.forboss.R;
 import com.forboss.data.api.APIHelper;
