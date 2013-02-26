@@ -34,6 +34,7 @@ public class APIHelper {
 	}
 
 	public AsyncTask getCategories(final Context context, final Handler finishHandler) {
+		if (!ForBossUtils.isNetworkAvailable(context)) return null;
 		return APIClient.getClient().getCategories(new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
@@ -75,6 +76,7 @@ public class APIHelper {
 	}
 
 	public AsyncTask getArticles(final int categoryId, final Context context, final Handler finishHandler) {
+		if (!ForBossUtils.isNetworkAvailable(context)) return null;
 		return getArticles(categoryId, 1, Integer.MAX_VALUE, context, finishHandler);
 	}
 
@@ -130,6 +132,7 @@ public class APIHelper {
 	}
 
 	public AsyncTask getImages(List list, Context context, Handler finishOneImageHandler, Handler finishAllHandler) {
+		if (!ForBossUtils.isNetworkAvailable(context)) return null;
 		return new ImageLoadingAsyncTask()
 				.setContext(context)
 				.setFinishOneImageHandler(finishOneImageHandler)
@@ -198,6 +201,7 @@ public class APIHelper {
 	}
 
 	public AsyncTask getArticleDetail(final Article article, final Context context, final Handler finishHandler) {
+		if (!ForBossUtils.isNetworkAvailable(context)) return null;
 		return APIClient.getClient().getArticleDetail(article.getId(), new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
