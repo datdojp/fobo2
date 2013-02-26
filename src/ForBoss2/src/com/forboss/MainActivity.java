@@ -21,6 +21,13 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		Boolean shouldCloseApp = (Boolean) ForBossUtils.getBundleData("shouldCloseApp");
+		if (shouldCloseApp != null && shouldCloseApp.booleanValue()) {
+			ForBossUtils.putBundleData("shouldCloseApp", false);
+			finish();
+			return;
+		}
+		
 		CommonData.getInstance().load(getContext());
 		final boolean needToGetCategoriesFromServer = CommonData.getInstance().getAllCategories() == null 
 														|| CommonData.getInstance().getAllCategories().size() == 0;

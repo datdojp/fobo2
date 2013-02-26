@@ -64,6 +64,7 @@ import android.widget.TextView;
 
 import com.forboss.FeatureSelectingActivity;
 import com.forboss.ForBossApplication;
+import com.forboss.MainActivity;
 import com.forboss.R;
 
 public class ForBossUtils {
@@ -606,6 +607,13 @@ public class ForBossUtils {
 					activity.startActivity(intent);
 				}
 			});
+		}
+		
+		public static void closeApp(Activity activity) {
+			Intent intent = new Intent(activity, MainActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			ForBossUtils.putBundleData("shouldCloseApp", true);
+			activity.startActivity(intent);
 		}
 	}
 }

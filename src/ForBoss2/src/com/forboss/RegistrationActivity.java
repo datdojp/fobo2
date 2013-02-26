@@ -84,4 +84,9 @@ public class RegistrationActivity extends Activity {
 	private void handleRegistrationFailed() {
 		ForBossUtils.alert(this, "Đăng ký thất bại. Máy chủ bị lỗi hoặc bạn chưa bật kết nối mạng");
 	}
+	
+	@Override
+	public void onBackPressed() {
+		ForBossUtils.UI.closeApp(this);
+	}
 }

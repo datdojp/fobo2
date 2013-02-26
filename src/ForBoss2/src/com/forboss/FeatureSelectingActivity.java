@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 
 import com.forboss.bossmeasure.BossMeasureActivity;
 import com.forboss.news.CategorySelectingActivity;
+import com.forboss.util.ForBossUtils;
 
 
 public class FeatureSelectingActivity extends Activity {
@@ -54,6 +55,11 @@ public class FeatureSelectingActivity extends Activity {
 	
 	private void navToProducts() {
 		startActivity(new Intent(this, ProductsActivity.class));
+	}
+	
+	@Override
+	public void onBackPressed() {
+		ForBossUtils.UI.closeApp(this);
 	}
 
 }
