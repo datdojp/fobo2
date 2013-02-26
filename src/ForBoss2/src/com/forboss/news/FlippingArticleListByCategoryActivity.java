@@ -86,6 +86,8 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 				refreshData();
 			}
 		});
+		
+		ForBossUtils.UI.initHomeButton(this);
 
 		// layout for paging indicator images
 		layoutPagingIndicatorImages = (LinearLayout) root.findViewById(R.id.layoutPagingIndicatorImages);

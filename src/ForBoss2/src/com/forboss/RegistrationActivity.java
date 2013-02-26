@@ -3,6 +3,7 @@ package com.forboss;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -32,10 +33,11 @@ public class RegistrationActivity extends Activity {
 		});
 
 		editEmail = (EditText) findViewById(R.id.editEmail);
+		editEmail.setTextColor(Color.WHITE);
 		editPhoneNumber = (EditText) findViewById(R.id.editPhoneNumber);
+		editPhoneNumber.setTextColor(Color.WHITE);
 		editCMND = (EditText) findViewById(R.id.editCMND);
-		
-//		handleRegistrationSuccess();//TODO: remove this line
+		editCMND.setTextColor(Color.WHITE);
 	}
 
 	private void submit() {

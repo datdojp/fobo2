@@ -17,23 +17,35 @@
         android:src="@drawable/top_line" />
 
     <LinearLayout
+        android:id="@+id/layoutButtonHome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center" >
 
-        <ImageView
+        <ImageButton
+            android:id="@+id/buttonHome"
             android:layout_width="92dp"
             android:layout_height="42dp"
             android:layout_alignParentTop="true"
+            android:background="#00000000"
             android:scaleType="fitXY"
             android:src="@drawable/but_arrow" />
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/layoutFragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layoutNavButtons"
+        android:layout_below="@+id/layoutButtonHome" >
+    </FrameLayout>
 
     <RelativeLayout
         android:id="@+id/layoutNavButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imgTopLine" >
+        android:layout_above="@+id/imgBottomLine" 
+        android:layout_marginBottom="20dp">
 
         <ImageButton
             android:id="@+id/buttonPrevSurveyItem"
@@ -55,14 +67,6 @@
             android:scaleType="fitXY"
             android:src="@drawable/but_next_survey" />
     </RelativeLayout>
-
-    <FrameLayout
-        android:id="@+id/layoutFragmentContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/imgBottomLine"
-        android:layout_below="@+id/layoutNavButtons" >
-    </FrameLayout>
 
     <ImageView
         android:id="@+id/imgBottomLine"

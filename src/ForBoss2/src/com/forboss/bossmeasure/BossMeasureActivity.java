@@ -49,6 +49,8 @@ public class BossMeasureActivity extends FragmentActivity {
 				navToNextSurveyItem();
 			}
 		});
+		
+		ForBossUtils.UI.initHomeButton(this);
 
 		fragmentManager = getSupportFragmentManager();
 
@@ -63,7 +65,7 @@ public class BossMeasureActivity extends FragmentActivity {
 		transaction.commit();
 
 		if (fragment instanceof BossMeasureQuestionFragment) {
-			buttonPrevSurveyItem.setVisibility(View.VISIBLE);
+			buttonPrevSurveyItem.setVisibility(surveyItemsStack.size() == 1 ? View.GONE : View.VISIBLE);
 			buttonNextSurveyItem.setVisibility(View.VISIBLE);
 		} else {
 			buttonPrevSurveyItem.setVisibility(View.INVISIBLE);

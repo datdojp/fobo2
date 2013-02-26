@@ -8,8 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
+import com.forboss.ForBossApplication;
 import com.forboss.R;
 import com.forboss.bossmeasure.SurveyData.Result;
 import com.forboss.util.ForBossUtils;
@@ -42,6 +45,8 @@ public class BossMeasureResultFragment extends Fragment {
 				BossMeasureActivity.getInstance().startOver();
 			}
 		});
+		RelativeLayout.LayoutParams lp = (LayoutParams) buttonContinueSurvey.getLayoutParams();
+		lp.leftMargin = (ForBossApplication.getWindowDisplay().getWidth() - lp.width) / 2;
 		
 		return root;
 	}

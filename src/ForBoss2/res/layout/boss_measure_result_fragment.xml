@@ -60,14 +60,29 @@
                 android:textAppearance="@style/survey_white_text" />
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/buttonContinueSurvey"
-            android:layout_width="275dp"
-            android:layout_height="38dp"
-            android:layout_marginTop="52dp"
-            android:background="#00000000"
-            android:scaleType="fitXY"
-            android:src="@drawable/but_continue_survey" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="90dp" >
+
+            <ImageButton
+                android:id="@+id/buttonContinueSurvey"
+                android:layout_width="275dp"
+                android:layout_height="38dp"
+                android:layout_alignParentBottom="true"
+                android:background="#00000000"
+                android:scaleType="fitXY"
+                android:src="@drawable/but_continue_survey" />
+
+            <ImageView
+                android:layout_width="34dp"
+                android:layout_height="39dp"
+                android:layout_above="@+id/buttonContinueSurvey"
+                android:layout_marginBottom="-30dp"
+                android:layout_marginLeft="-20dp"
+                android:layout_toRightOf="@+id/buttonContinueSurvey"
+                android:scaleType="fitXY"
+                android:src="@drawable/glow" />
+        </RelativeLayout>
     </LinearLayout>
 
 </ScrollView>

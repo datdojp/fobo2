@@ -21,9 +21,11 @@
         android:gravity="center"
         android:orientation="vertical" >
 
-        <ImageView
+        <ImageButton
+            android:id="@+id/buttonHome"
             android:layout_width="39dp"
             android:layout_height="18dp"
+            android:background="#ff000000"
             android:scaleType="fitXY"
             android:src="@drawable/but_down_arrow" />
 

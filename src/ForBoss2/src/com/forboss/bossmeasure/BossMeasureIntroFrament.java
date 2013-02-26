@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
+import com.forboss.ForBossApplication;
 import com.forboss.R;
 
 public class BossMeasureIntroFrament extends Fragment {
@@ -22,6 +24,8 @@ public class BossMeasureIntroFrament extends Fragment {
 				BossMeasureActivity.getInstance().startOver();
 			}
 		});
+		RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)buttonJoinSurvey.getLayoutParams();
+		lp.leftMargin = (ForBossApplication.getWindowDisplay().getWidth() - lp.width) / 2;
 
 		return root;
 	}

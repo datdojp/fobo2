@@ -79,6 +79,8 @@ public class EventListActivity extends Activity {
 				finish();
 			}
 		});
+		
+		ForBossUtils.UI.initHomeButton(this);
 	}
 
 	private void updateEventListAdapter() {

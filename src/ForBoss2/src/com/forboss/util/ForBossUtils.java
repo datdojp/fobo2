@@ -37,6 +37,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -57,10 +58,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.forboss.FeatureSelectingActivity;
 import com.forboss.ForBossApplication;
+import com.forboss.R;
 
 public class ForBossUtils {
 	private static Map<String, Object> bundleData = new HashMap<String, Object>();
@@ -552,14 +556,14 @@ public class ForBossUtils {
 			if (phoneNumber == null || phoneNumber.length() == 0) {
 				return false;
 			}
-			return phoneNumber.matches("\\A\\+?\\d{5,20}\\Z");
+			return phoneNumber.matches("\\A\\+?[0-9.-]{5,20}\\Z");
 		}
 
 		public static boolean isValidCMND(String cmnd) {
 			if (cmnd == null || cmnd.length() == 0) {
 				return false;
 			}
-			return cmnd.matches("\\A\\d{9}\\Z");
+			return cmnd.matches("\\A\\d{5,20}\\Z");
 		}
 	}
 
@@ -588,6 +592,20 @@ public class ForBossUtils {
 		public static String SHARED_PREFERENCES_KEY_REGISTERED = "registered?";
 		public static SharedPreferences getSharedPreferences(Context context) {
 			return context.getSharedPreferences("forboss2", Activity.MODE_PRIVATE);
+		}
+	}
+	
+	public static class UI {
+		public static void initHomeButton(final Activity activity) {
+			View buttonHome = activity.findViewById(R.id.buttonHome);
+			buttonHome.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View arg0) {
+					Intent intent = new Intent(activity, FeatureSelectingActivity.class);
+					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					activity.startActivity(intent);
+				}
+			});
 		}
 	}
 }

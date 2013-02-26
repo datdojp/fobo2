@@ -64,6 +64,8 @@ public class FlippingArticleDetailActivity extends Activity {
 			}
 		});
 		
+		ForBossUtils.UI.initHomeButton(this);
+		
 		// share button
 		ImageButton shareButton = (ImageButton) root.findViewById(R.id.buttonShare);
 		Config.configObject().setAddThisAppId("5126e88b62e8ac4a");

@@ -31,14 +31,29 @@
             android:text="Hãy khám phá phong cách lãnh đạo của bạn và tìm ra bí quyết giúp bạn trở thành người sếp lịch lãm nhất!"
             android:textAppearance="@style/survey_white_text" />
 
-        <ImageButton
-            android:id="@+id/buttonJoinSurvey"
-            android:layout_width="220dp"
-            android:layout_height="68dp"
-            android:layout_marginTop="70dp"
-            android:background="#00000000"
-            android:scaleType="fitXY"
-            android:src="@drawable/but_join_survey" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="138dp" >
+
+            <ImageButton
+                android:id="@+id/buttonJoinSurvey"
+                android:layout_width="220dp"
+                android:layout_height="68dp"
+                android:layout_alignParentBottom="true"
+                android:background="#00000000"
+                android:scaleType="fitXY"
+                android:src="@drawable/but_join_survey" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="69dp"
+                android:layout_above="@+id/buttonJoinSurvey"
+                android:layout_marginBottom="-50dp"
+                android:layout_marginLeft="-35dp"
+                android:layout_toRightOf="@+id/buttonJoinSurvey"
+                android:scaleType="fitXY"
+                android:src="@drawable/glow" />
+        </RelativeLayout>
     </LinearLayout>
 
 </ScrollView>
