@@ -1,7 +1,6 @@
 package com.forboss.data.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import android.content.Context;

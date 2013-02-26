@@ -107,7 +107,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		flipViewController.setAdapter(flipViewControllerAdapter);
 
 		// load data
-		final boolean needToDisplayProgressAlert = Article.count(this, category.getQueryCategoryId(), category.getQuerySubcategoryId()) < 3;
+		final boolean needToDisplayProgressAlert = Article.count(this, category.getQueryCategoryId(), category.getQuerySubcategoryId()) == 0;
 		if (needToDisplayProgressAlert) {
 			ForBossUtils.alertProgress(this, "Đang tải dữ liệu...");
 		} else {

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.forboss.ForBossApplication;
 import com.forboss.R;
 import com.forboss.data.model.Article;
 import com.forboss.data.model.Category;

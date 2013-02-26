@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -124,21 +123,6 @@ public class ProductsActivity extends Activity {
 				scrollProductLine(layoutProductImages, -1);
 			}
 		});
-		
-//		layoutProductLine.setOnTouchListener(new View.OnTouchListener() {
-//			@Override
-//			public boolean onTouch(View v, MotionEvent event) {
-//				int curX = (Integer) layoutProductImages.getTag();
-//				int idx = Math.round(event.getX() / productThumbnailWidth);
-//				if (curX < 0) {
-//					idx += 4;
-//				}
-//				if (idx < arr2Res.length) {
-//					showProductDetail(arr2Res[idx][1]);
-//				}
-//				return true;
-//			}
-//		});
 	}
 
 	private void scrollProductLine(LinearLayout layoutProductImages, int direction) {
