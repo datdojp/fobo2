@@ -481,9 +481,9 @@ public class ForBossUtils {
 
 	public static void recycleBitmapOfImage(final ImageView img, final String tag) {
 		Bitmap oldBm = null;
-		if (img.getTag() instanceof Bitmap) {
+		if (img.getTag() != null && img.getTag() instanceof Bitmap) {
 			oldBm = (Bitmap) img.getTag();
-		} else if (img.getTag() instanceof Map) {
+		} else if (img.getTag() != null && img.getTag() instanceof Map) {
 			oldBm = (Bitmap) ((Map)img.getTag()).get("bm");
 		}
 		if (oldBm != null) {

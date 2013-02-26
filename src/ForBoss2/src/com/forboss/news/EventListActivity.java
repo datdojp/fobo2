@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,6 +35,8 @@ public class EventListActivity extends Activity {
 	private EventListAdapter layoutEventListAdapter;
 	private static final int categoryId = Category.CATEGORY_EVENT_ID;
 	private Category category;
+	private AsyncTask articleGettingTask;
+	private AsyncTask imageLoadingTask;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +58,7 @@ public class EventListActivity extends Activity {
 		} else {
 			updateEventListAdapter();
 		}
-		APIHelper.getInstance().getArticles(category.getId(), this, new Handler() {
+		articleGettingTask = APIHelper.getInstance().getArticles(category.getId(), this, new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
 				if (needToDisplayProgressAlert) ForBossUtils.dismissProgress(getContext());
@@ -87,6 +90,11 @@ public class EventListActivity extends Activity {
 		new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
+				if (imageLoadingTask != null) {
+					imageLoadingTask.cancel(true);
+					imageLoadingTask = null;
+				}
+				
 				List<Article> list = Article.loadArticlesOrderedCreatedTimeDesc(getContext(), category.getQueryCategoryId(), category.getQuerySubcategoryId());
 				layoutEventListAdapter.getData().clear();
 				layoutEventListAdapter.getData().addAll(list);
@@ -95,7 +103,7 @@ public class EventListActivity extends Activity {
 				}
 
 				// load images
-				APIHelper.getInstance().getImages(list, getContext(), new Handler() {
+				imageLoadingTask = APIHelper.getInstance().getImages(list, getContext(), new Handler() {
 					@Override
 					public void handleMessage(Message msg) {
 						Article article = (Article) msg.obj;
@@ -208,5 +216,27 @@ public class EventListActivity extends Activity {
 	
 	private Context getContext() {
 		return this;
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (articleGettingTask != null) {
+			articleGettingTask.cancel(true);
+			articleGettingTask = null;
+		}
+		
+		if (imageLoadingTask != null) {
+			imageLoadingTask.cancel(true);
+			imageLoadingTask = null;
+		}
+		
+		// deallocate images
+		for (int i = 0; i < layoutEventList.getChildCount(); i++) {
+			View view = layoutEventList.getChildAt(i);
+			ImageView imgThumbnail = (ImageView) view.findViewById(R.id.imgThumbnail);
+			ForBossUtils.recycleBitmapOfImage(imgThumbnail, getContext().getClass().getName());
+		}
+		System.gc();
 	}
 }

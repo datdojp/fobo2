@@ -436,4 +436,33 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		});
 
 	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (articleGettingTask != null) {
+			articleGettingTask.cancel(true);
+			articleGettingTask = null;
+		}
+		
+		if (imageLoadingTask != null) {
+			imageLoadingTask.cancel(true);
+			imageLoadingTask = null;
+		}
+		
+		// deallocate images
+		for (int i = 0; i < flipViewController.getChildCount(); i++) {
+			View view = flipViewController.getChildAt(i);
+			View[] children = new View[] { 
+					view.findViewById(R.id.topArticle),
+					view.findViewById(R.id.leftArticle),
+					view.findViewById(R.id.rightArticle)	};
+			for (View child : children) {
+				if (child == null) continue;
+				ImageView imgThumbnail = (ImageView) child.findViewById(R.id.imgThumbnail);
+				ForBossUtils.recycleBitmapOfImage((ImageView) imgThumbnail, getContext().getClass().getName());
+			}
+		}
+		System.gc();
+	}
 }
