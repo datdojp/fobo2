@@ -244,12 +244,16 @@ public class ForBossUtils {
 	 * @param message
 	 */
 	public static void alert(final Context context, final String message) {
+		alert(context, message, null);
+	}
+	public static void alert(final Context context, final String message, final Handler finishHandler) {
 		final AlertDialog.Builder	builder = new AlertDialog.Builder(context);
 		builder.setMessage(message)
 		.setPositiveButton("Close", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(final DialogInterface dialog, final int which) {
 				dialog.dismiss();
+				if (finishHandler != null) finishHandler.sendEmptyMessage(0);
 			}
 		});
 		final AlertDialog alert = builder.create();

@@ -1,7 +1,10 @@
 package com.forboss.bossmeasure;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +45,12 @@ public class BossMeasureResultFragment extends Fragment {
 		buttonContinueSurvey.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				BossMeasureActivity.getInstance().startOver();
+				ForBossUtils.alert(getContext(), getResources().getString(R.string.finish_survey), new Handler() {
+					@Override
+					public void handleMessage(Message msg) {
+						getActivity().finish();
+					}
+				});
 			}
 		});
 		RelativeLayout.LayoutParams lp = (LayoutParams) buttonContinueSurvey.getLayoutParams();
@@ -50,5 +58,8 @@ public class BossMeasureResultFragment extends Fragment {
 		
 		return root;
 	}
-
+	
+	private Context getContext() {
+		return getActivity();
+	}
 }
