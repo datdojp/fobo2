@@ -111,7 +111,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		final boolean needToDisplayProgressAlert = shouldAlwaysDisplayProgressAlert ||
 													Article.count(this, category.getQueryCategoryId(), category.getQuerySubcategoryId()) == 0;
 		if (needToDisplayProgressAlert) {
-			ForBossUtils.alertProgress(this, "Đang tải dữ liệu...");
+			ForBossUtils.alertProgress(this, getResources().getString(R.string.loading_data));
 		} else {
 			updateFlipperAdapter();
 		}

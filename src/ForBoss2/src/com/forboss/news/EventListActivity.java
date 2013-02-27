@@ -74,7 +74,7 @@ public class EventListActivity extends Activity {
 	private void loadData() {
 		final boolean needToDisplayProgressAlert = Article.count(this, category.getQueryCategoryId(), category.getQuerySubcategoryId()) == 0;
 		if (needToDisplayProgressAlert) {
-			ForBossUtils.alertProgress(this, "Đang tải dữ liệu...");
+			ForBossUtils.alertProgress(this, getResources().getString(R.string.loading_data));
 		} else {
 			updateEventListAdapter();
 		}

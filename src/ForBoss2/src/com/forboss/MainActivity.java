@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
 		final boolean needToGetCategoriesFromServer = CommonData.getInstance().getAllCategories() == null 
 														|| CommonData.getInstance().getAllCategories().size() == 0;
 		if (needToGetCategoriesFromServer) {
-			ForBossUtils.alertProgress(this, "Đang tải dữ liệu...");
+			ForBossUtils.alertProgress(this, getResources().getString(R.string.loading_data));
 			APIHelper.getInstance().getCategories(this, new Handler() {
 				@Override
 				public void handleMessage(Message msg) {

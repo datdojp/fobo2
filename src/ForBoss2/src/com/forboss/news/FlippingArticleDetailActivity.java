@@ -118,7 +118,7 @@ public class FlippingArticleDetailActivity extends Activity {
 	private void displayHtmlContent(View view) {
 		Article article = (Article) view.getTag();
 		if (article == null) return;
-		String html = "<h3>Đang tải dữ liệu....</h3>";
+		String html = "";
 		if (article.getHtmlContent() != null) {
 			html = article.getHtmlContent();
 		} else {
@@ -196,9 +196,11 @@ public class FlippingArticleDetailActivity extends Activity {
 	}
 
 	private void loadArticleHtmlContentFromServer(Article article) {
+		ForBossUtils.alertProgress(getContext(), getResources().getString(R.string.loading_data));
 		APIHelper.getInstance().getArticleDetail(article, getContext(), new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
+				ForBossUtils.dismissProgress(getContext());
 				Object[] objs = (Object[]) msg.obj;
 				Article article = (Article) objs[0];
 				boolean needRefresh = (Boolean) objs[1];
