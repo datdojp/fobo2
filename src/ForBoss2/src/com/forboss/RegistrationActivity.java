@@ -7,9 +7,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.forboss.data.api.APIClient;
 import com.forboss.util.ForBossUtils;
@@ -38,6 +40,13 @@ public class RegistrationActivity extends Activity {
 		editPhoneNumber.setTextColor(Color.WHITE);
 		editCMND = (EditText) findViewById(R.id.editCMND);
 		editCMND.setTextColor(Color.WHITE);
+		editCMND.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				submit();
+				return true;
+			}
+		});
 	}
 
 	private void submit() {
