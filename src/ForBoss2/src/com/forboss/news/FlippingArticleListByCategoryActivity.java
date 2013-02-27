@@ -138,7 +138,9 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 					));
 
 			ImageView imgIcon = (ImageView) viewSubcat.findViewById(R.id.imgIcon);
-			imgIcon.setImageBitmap(subcat.getIconBitmap(getContext()));
+			Bitmap bm = subcat.getIconBitmap(getContext());
+			imgIcon.getLayoutParams().height = imgIcon.getLayoutParams().width * bm.getHeight() / bm.getWidth(); 
+			imgIcon.setImageBitmap(bm);
 
 			TextView txtName = (TextView) viewSubcat.findViewById(R.id.txtName);
 			txtName.setText(subcat.getTitle().toUpperCase(ForBossApplication.getDefaultLocale()));
