@@ -16,8 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
 public class ProductsActivity extends Activity {
-	private static final int PRODUCT_IMAGE_WIDTH = 188;
-	private static final int PRODUCT_IMAGE_HEIGHT = 280;
+	private static final int PRODUCT_IMAGE_WIDTH = 2162;
+	private static final int PRODUCT_IMAGE_HEIGHT = 2862;
 	private static final int PRODUCT_LINE_SCROLL_ANIMATION_DURATION = 300;
 	private static final int PRODUCT_DETAIL_ANIMATION_DURATION = 300;
 	private static final float PRODUCT_DETAIL_IMAGE_RATIO = 0.7f;
@@ -89,8 +89,7 @@ public class ProductsActivity extends Activity {
 		for(int i = 0; i < arr2Res.length; i++) {
 			int[] arrRes = arr2Res[i];
 			ImageView img = new ImageView(this);
-			img.setLayoutParams(new LinearLayout.LayoutParams(productThumbnailWidth, productThumbnailHeight));
-			img.setImageResource(arrRes[0]);
+			img.setLayoutParams(new LinearLayout.LayoutParams(productThumbnailWidth, productThumbnailHeight));		
 			img.setScaleType(ScaleType.FIT_XY);
 			img.setTag(i);
 			img.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +102,18 @@ public class ProductsActivity extends Activity {
 					showProductDetail(arr2Res[idx][1]);
 				}
 			});
+			
+			// set padding left for special images
+			if (arrRes[0] == R.drawable.gold_product_1 || arrRes[0] == R.drawable.black_product_1 
+					|| arrRes[0] == R.drawable.black_product_7) {
+				Bitmap bm = BitmapFactory.decodeResource(getResources(), arrRes[0]);
+				img.setImageBitmap(bm);
+				int left = productThumbnailWidth - bm.getWidth() * productThumbnailHeight / bm.getHeight();
+				img.setPadding(left, 0, 0, 0);
+			} else {
+				img.setImageResource(arrRes[0]);
+			}
+			
 			layoutProductImages.addView(img);
 		}
 
