@@ -10,7 +10,7 @@
 
     <ImageButton
         android:id="@+id/buttonLeft"
-        android:layout_width="20dp"
+        android:layout_width="25dp"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:background="#00000000"
@@ -32,7 +32,7 @@
 
     <ImageButton
         android:id="@+id/buttonRight"
-        android:layout_width="20dp"
+        android:layout_width="25dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:background="#00000000"
