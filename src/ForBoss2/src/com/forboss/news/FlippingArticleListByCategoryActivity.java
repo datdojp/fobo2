@@ -188,7 +188,8 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 				// set position of layoutSubcategories
 				RelativeLayout.LayoutParams lpOfLayoutSubcategories = (LayoutParams) layoutSubcategories.getLayoutParams();
 				lpOfLayoutSubcategories.leftMargin = (layoutSubcategriesSelecting.getWidth() - layoutSubcategories.getWidth())/2;
-				lpOfLayoutSubcategories.topMargin = (layoutSubcategriesSelecting.getHeight() - layoutSubcategories.getHeight())/2;
+//				lpOfLayoutSubcategories.topMargin = (layoutSubcategriesSelecting.getHeight() - layoutSubcategories.getHeight())/2;
+				lpOfLayoutSubcategories.topMargin = ForBossUtils.convertDpToPixel(50, getContext());
 			}
 		});
 	}
