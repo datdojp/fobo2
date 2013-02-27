@@ -105,9 +105,11 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		});
 		flipViewControllerAdapter = new ArticleGroupAdapter(new ArrayList<ArticleGroup>());
 		flipViewController.setAdapter(flipViewControllerAdapter);
-
-		// load data
-		final boolean needToDisplayProgressAlert = Article.count(this, category.getQueryCategoryId(), category.getQuerySubcategoryId()) == 0;
+	}
+	
+	private void loadData(boolean shouldAlwaysDisplayProgressAlert) {
+		final boolean needToDisplayProgressAlert = shouldAlwaysDisplayProgressAlert ||
+													Article.count(this, category.getQueryCategoryId(), category.getQuerySubcategoryId()) == 0;
 		if (needToDisplayProgressAlert) {
 			ForBossUtils.alertProgress(this, "Đang tải dữ liệu...");
 		} else {
@@ -117,7 +119,8 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 			@Override
 			public void handleMessage(Message msg) {
 				if (needToDisplayProgressAlert) ForBossUtils.dismissProgress(getContext());
-				updateFlipperAdapter();
+				boolean needRefresh = (Boolean) msg.obj;
+				if (needRefresh) updateFlipperAdapter();
 			}
 		});
 	}
@@ -420,26 +423,31 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 	}
 
 	private void refreshData() {
-		if (articleGettingTask != null) {
-			articleGettingTask.cancel(true);
-			articleGettingTask = null;
-		}
-		
-		ForBossUtils.alertProgress(this, "Đang tải dữ liệu...");
-		articleGettingTask = APIHelper.getInstance().getArticles(category.getId(), this, new Handler() {
-			@Override
-			public void handleMessage(Message msg) {
-				ForBossUtils.dismissProgress(getContext());
-				boolean needRefresh = (Boolean) msg.obj;
-				if (needRefresh) updateFlipperAdapter();
-			}
-		});
-
+		stopAllTasks();
+		loadData(true);
 	}
 	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		stopAllTasks();
+		deallocateAllBitmaps();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		stopAllTasks();
+		deallocateAllBitmaps();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		loadData(false);
+	}
+	
+	private void stopAllTasks() {
 		if (articleGettingTask != null) {
 			articleGettingTask.cancel(true);
 			articleGettingTask = null;
@@ -449,8 +457,9 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 			imageLoadingTask.cancel(true);
 			imageLoadingTask = null;
 		}
-		
-		// deallocate images
+	}
+	
+	private void deallocateAllBitmaps() {
 		for (int i = 0; i < flipViewController.getChildCount(); i++) {
 			View view = flipViewController.getChildAt(i);
 			View[] children = new View[] { 

@@ -173,9 +173,9 @@ public class APIHelper {
 						temp.toArray(arrArticles);
 					}
 					for (Article article : arrArticles) {
-						if (article != null && article.getThumbnail() != null && article.getPictureLocation() == null) {
+						if (article != null && article.getThumbnailForDevice() != null && article.getPictureLocation() == null) {
 							String filename = "forboss2_article_thumbnail_" + article.getId();
-							ForBossUtils.downloadAndSaveToInternalStorage(article.getThumbnail(), filename, (ContextWrapper)context);
+							ForBossUtils.downloadAndSaveToInternalStorage(article.getThumbnailForDevice(), filename, (ContextWrapper)context);
 							article.setPictureLocation(filename);
 							dao.update(article);
 							if (finishOneImageHandler != null) {

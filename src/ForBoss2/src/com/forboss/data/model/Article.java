@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.util.Log;
 
+import com.forboss.ForBossApplication;
 import com.forboss.data.util.DatabaseHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DatabaseField;
@@ -20,7 +21,7 @@ public class Article extends BaseModel {
 	@Override
 	protected List<String> getServerDataFieldNames() {
 		if (serverDataFieldNames == null) {
-			serverDataFieldNames = Arrays.asList("id", "title", "thumbnail", "body", "views", 
+			serverDataFieldNames = Arrays.asList("id", "title", "thumbnail", "smallThumbnail", "body", "views", 
 												"likes", "link", "createdTime", "categoryId", "subCategoryId");
 		}
 		return serverDataFieldNames;
@@ -30,6 +31,7 @@ public class Article extends BaseModel {
 		id = json.getString("ID");
 		title = unescape(json.getString("Title"));
 		thumbnail = json.getString("Thumbnail");
+		smallThumbnail = json.getString("SmallThumbnail");
 		body = unescape(json.getString("Body"));
 		views = json.getInt("Views");
 		likes = json.getInt("Likes");
@@ -96,6 +98,9 @@ public class Article extends BaseModel {
 	private String thumbnail;
 
 	@DatabaseField
+	private String smallThumbnail;
+	
+	@DatabaseField
 	private String body;
 
 	@DatabaseField
@@ -148,8 +153,16 @@ public class Article extends BaseModel {
 		this.title = title;
 	}
 
-	public String getThumbnail() {
-		return thumbnail;
+//	public String getThumbnail() {
+//		return thumbnail;
+//	}
+	
+	public String getThumbnailForDevice() {
+		if (ForBossApplication.getDensityDpi() <= 160) {
+			return smallThumbnail;
+		} else {
+			return thumbnail;
+		}
 	}
 
 	public void setThumbnail(String thumbnail) {
@@ -235,6 +248,14 @@ public class Article extends BaseModel {
 
 	public void setSubCategoryId(int subCategoryId) {
 		this.subCategoryId = subCategoryId;
+	}
+
+//	public String getSmallThumbnail() {
+//		return smallThumbnail;
+//	}
+
+	public void setSmallThumbnail(String smallThumbnail) {
+		this.smallThumbnail = smallThumbnail;
 	}
 	
 }

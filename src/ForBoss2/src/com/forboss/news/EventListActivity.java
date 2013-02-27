@@ -51,21 +51,6 @@ public class EventListActivity extends Activity {
 		layoutEventListAdapter = new EventListAdapter(new ArrayList<Article>());
 		layoutEventList.setAdapter(layoutEventListAdapter);
 
-		// load data
-		final boolean needToDisplayProgressAlert = Article.count(this, category.getQueryCategoryId(), category.getQuerySubcategoryId()) == 0;
-		if (needToDisplayProgressAlert) {
-			ForBossUtils.alertProgress(this, "Đang tải dữ liệu...");
-		} else {
-			updateEventListAdapter();
-		}
-		articleGettingTask = APIHelper.getInstance().getArticles(category.getId(), this, new Handler() {
-			@Override
-			public void handleMessage(Message msg) {
-				if (needToDisplayProgressAlert) ForBossUtils.dismissProgress(getContext());
-				updateEventListAdapter();
-			}
-		});
-
 		// category text
 		ImageView imgCategoryText = (ImageView) findViewById(R.id.imgCategoryText);
 		imgCategoryText.setImageBitmap(category.getTextBitmap(this));
@@ -86,6 +71,23 @@ public class EventListActivity extends Activity {
 		ForBossUtils.UI.initHomeButton(this);
 	}
 
+	private void loadData() {
+		final boolean needToDisplayProgressAlert = Article.count(this, category.getQueryCategoryId(), category.getQuerySubcategoryId()) == 0;
+		if (needToDisplayProgressAlert) {
+			ForBossUtils.alertProgress(this, "Đang tải dữ liệu...");
+		} else {
+			updateEventListAdapter();
+		}
+		articleGettingTask = APIHelper.getInstance().getArticles(category.getId(), this, new Handler() {
+			@Override
+			public void handleMessage(Message msg) {
+				if (needToDisplayProgressAlert) ForBossUtils.dismissProgress(getContext());
+				boolean needRefresh = (Boolean) msg.obj;
+				if (needRefresh) updateEventListAdapter();
+			}
+		});
+	}
+	
 	private void updateEventListAdapter() {
 		new Handler() {
 			@Override
@@ -221,6 +223,24 @@ public class EventListActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		stopAllTasks();
+		deallocateAllBitmaps();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		loadData();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		stopAllTasks();
+		deallocateAllBitmaps();
+	}
+	
+	private void stopAllTasks() {
 		if (articleGettingTask != null) {
 			articleGettingTask.cancel(true);
 			articleGettingTask = null;
@@ -230,8 +250,9 @@ public class EventListActivity extends Activity {
 			imageLoadingTask.cancel(true);
 			imageLoadingTask = null;
 		}
-		
-		// deallocate images
+	}
+	
+	private void deallocateAllBitmaps() {
 		for (int i = 0; i < layoutEventList.getChildCount(); i++) {
 			View view = layoutEventList.getChildAt(i);
 			ImageView imgThumbnail = (ImageView) view.findViewById(R.id.imgThumbnail);

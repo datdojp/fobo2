@@ -34,4 +34,12 @@ public class ForBossApplication extends Application {
 	public static Locale getDefaultLocale() {
 		return locale;
 	}
+	
+	private static int densityDpi;
+	public static int getDensityDpi() {
+		if (densityDpi == 0) {
+			densityDpi = getAppContext().getResources().getDisplayMetrics().densityDpi;
+		}
+		return densityDpi;
+	}
 }
