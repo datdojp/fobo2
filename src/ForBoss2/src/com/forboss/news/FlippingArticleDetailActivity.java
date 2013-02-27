@@ -106,6 +106,7 @@ public class FlippingArticleDetailActivity extends Activity {
 				RelativeLayout.LayoutParams.MATCH_PARENT);
 		lpOfFlipViewController.addRule(RelativeLayout.ABOVE, R.id.layoutLikeAndShare);
 		lpOfFlipViewController.addRule(RelativeLayout.BELOW, R.id.layoutTopPanel);
+		lpOfFlipViewController.topMargin = ForBossUtils.convertDpToPixel(10, this);
 		flipViewController.setLayoutParams(lpOfFlipViewController);
 		root.addView(flipViewController);
 		flipViewControllerAdapter = new FlipViewControllerAdapter(listArticles);
