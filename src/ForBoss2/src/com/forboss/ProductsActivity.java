@@ -1,5 +1,7 @@
 package com.forboss;
 
+import com.forboss.util.ForBossUtils;
+
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +26,7 @@ public class ProductsActivity extends Activity {
 	private int productThumbnailWidth;
 	private int productThumbnailHeight;
 	private RelativeLayout layoutProductDetail;
+	private ImageButton buttonClose;
 
 	private static final int[][] PRODUCT_IMAGES_GOLD = new int[][] {
 		new int[] {R.drawable.gold_product_1, R.drawable._1},
@@ -60,7 +63,7 @@ public class ProductsActivity extends Activity {
 
 		// layout to show detail of product
 		layoutProductDetail = (RelativeLayout) findViewById(R.id.layoutProductDetail);
-		ImageButton buttonClose = (ImageButton) layoutProductDetail.findViewById(R.id.buttonClose);
+		buttonClose = (ImageButton) layoutProductDetail.findViewById(R.id.buttonClose);
 		buttonClose.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -151,8 +154,8 @@ public class ProductsActivity extends Activity {
 	private void showProductDetail(int productResourceId) {
 		Bitmap bm = BitmapFactory.decodeResource(getResources(), productResourceId);
 		ImageView imgProductDetail = (ImageView) layoutProductDetail.findViewById(R.id.imgProductDetail);
-		float screenRatio = ForBossApplication.getWindowDisplay().getHeight() / ForBossApplication.getWindowDisplay().getWidth(); 
-		float bmRatio = bm.getHeight() / bm.getWidth();
+		float screenRatio = 1f * ForBossApplication.getWindowDisplay().getHeight() / ForBossApplication.getWindowDisplay().getWidth(); 
+		float bmRatio = 1.0f * bm.getHeight() / bm.getWidth();
 		int width = 0;
 		int height = 0;
 		if (bmRatio > screenRatio) {
@@ -166,7 +169,9 @@ public class ProductsActivity extends Activity {
 		lp.width = width;
 		lp.height = height;
 		lp.leftMargin = (ForBossApplication.getWindowDisplay().getWidth() - width) / 2;
-		lp.topMargin = (ForBossApplication.getWindowDisplay().getHeight() - height) / 2;
+		lp.topMargin = Math.min(
+						(ForBossApplication.getWindowDisplay().getHeight() - height) / 2,
+						ForBossApplication.getWindowDisplay().getHeight() - buttonClose.getLayoutParams().height/2 - height - ForBossUtils.convertDpToPixel(5, this)); // need to do this so that button close is always displayed
 		imgProductDetail.setImageBitmap(bm);
 
 		new Handler().post(new Runnable() {
@@ -199,4 +204,13 @@ public class ProductsActivity extends Activity {
 		layoutProductDetail.startAnimation(animation);
 	}
 
+	
+	@Override
+	public void onBackPressed() {
+		if (layoutProductDetail.getVisibility() == View.VISIBLE) {
+			hideProductDetail();
+		} else {
+			super.onBackPressed();
+		}
+	}
 }

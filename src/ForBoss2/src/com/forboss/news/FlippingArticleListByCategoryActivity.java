@@ -47,6 +47,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 	private static final int SUBCAT_SELECTIONG_ANIMATION_DURATIO = 300;
 	private AsyncTask articleGettingTask;
 	private AsyncTask imageLoadingTask;
+	private ImageButton buttonClose;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +177,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 
 		}
 
-		ImageButton buttonClose = (ImageButton) layoutSubcategriesSelecting.findViewById(R.id.buttonClose);
+		buttonClose = (ImageButton) layoutSubcategriesSelecting.findViewById(R.id.buttonClose);
 		buttonClose.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -190,8 +191,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 				// set position of layoutSubcategories
 				RelativeLayout.LayoutParams lpOfLayoutSubcategories = (LayoutParams) layoutSubcategories.getLayoutParams();
 				lpOfLayoutSubcategories.leftMargin = (layoutSubcategriesSelecting.getWidth() - layoutSubcategories.getWidth())/2;
-//				lpOfLayoutSubcategories.topMargin = (layoutSubcategriesSelecting.getHeight() - layoutSubcategories.getHeight())/2;
-				lpOfLayoutSubcategories.topMargin = ForBossUtils.convertDpToPixel(50, getContext());
+				lpOfLayoutSubcategories.topMargin = ForBossUtils.convertDpToPixel(30, getContext());
 			}
 		});
 	}
