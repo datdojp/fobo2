@@ -37,7 +37,7 @@
 			"content":"Thành công mà nhóm của bạn có được phần lớn là nhờ:",
 			"options": [
 				{"content":"Một tay bạn làm nên", "next":"q6"},
-				{"content":"Bạn có một kế hoặch tốt và người đồng sự tuyệt vời.", "next":"q9"}
+				{"content":"Bạn có một kế hoạch tốt và người đồng sự tuyệt vời.", "next":"q9"}
 			]
 		},
 		{
@@ -53,7 +53,7 @@
 			"content":"Để khuyến khích nhân viên đi làm đúng giờ. Bí quyết của bạn là gì?",
 			"options": [
 				{"content":"Làm tấm gương đi đúng giờ để mọi người noi theo", "next":"r6"},
-				{"content":"Thưởng cho ai không bao giờ đi trể", "next":"r2"}
+				{"content":"Thưởng cho ai không bao giờ đi trễ", "next":"r2"}
 			]
 		},
 		{
@@ -66,7 +66,7 @@
 		},
 		{
 			"id":"q9",
-			"content":"Phát hiện thấy nhân viên đi làm trể nhiều lần. Bạn sẽ làm gì?",
+			"content":"Phát hiện thấy nhân viên đi làm trễ nhiều lần. Bạn sẽ làm gì?",
 			"options": [
 				{"content":"Cắt thưởng của nhân viên đó", "next":"r5"},
 				{"content":"Sa thải. Nhân viên thiếu trách nhiệm sẽ ảnh hưởng lâu dài tới công ty.", "next":"r3"}

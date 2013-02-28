@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
             android:gravity="center_horizontal"
-            android:text="Trong mắt nhân viên dười quyền, bạn là người sếp như thế nào?"
+            android:text="Trong mắt nhân viên dưới quyền, bạn là người sếp như thế nào?"
             android:textAppearance="@style/survey_white_text" />
 
         <TextView
