@@ -82,7 +82,8 @@ public class EventListActivity extends Activity {
 			@Override
 			public void handleMessage(Message msg) {
 				if (needToDisplayProgressAlert) ForBossUtils.dismissProgress(getContext());
-				boolean needRefresh = (Boolean) msg.obj;
+				Boolean temp = (Boolean) msg.obj;
+				boolean needRefresh = temp != null && temp.booleanValue();
 				if (needRefresh) updateEventListAdapter();
 			}
 		});
