@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.addthis.core.AddThis;
 import com.addthis.core.Config;
+import com.addthis.error.ATDatabaseException;
 import com.aphidmobile.flip.FlipViewController;
 import com.forboss.R;
 import com.forboss.data.api.APIHelper;
@@ -74,6 +75,12 @@ public class FlippingArticleDetailActivity extends Activity {
 			@Override
 			public void onClick(View view) {
 				Article article = getCurrentArticle();
+				try {
+					AddThis.setFavoriteMenuServices(getContext(), "facebook", "twitter", "linkedin", "google_plusone", "yahoomail", "email");
+				} catch (ATDatabaseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				AddThis.presentAddThisMenu(getContext(), article.getLink(), article.getTitle(), article.getBody());
 			}
 		});

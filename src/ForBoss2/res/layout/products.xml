@@ -48,7 +48,7 @@
                 android:layout_alignParentBottom="true"
                 android:paddingBottom="5dp"
                 android:paddingLeft="10dp"
-                android:text="Xmen For Boss Gold"
+                android:text="X-men For Boss Gold"
                 android:textAppearance="@style/products_title" />
         </RelativeLayout>
 
@@ -62,7 +62,7 @@
             android:gravity="bottom"
             android:paddingBottom="5dp"
             android:paddingLeft="10dp"
-            android:text="Xmen For Boss Black"
+            android:text="X-men For Boss Black"
             android:textAppearance="@style/products_title" />
 
         <include
