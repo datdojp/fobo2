@@ -64,6 +64,11 @@ public class APIClient {
 					"postsbytime.aspx", HttpMethod.GET, successHandler, failureHandler	);
 	}
 	
+	public AsyncTask getArticleForCategory(int categoryId, int start, int end, Handler successHandler, Handler failureHandler) {
+		return template(	new String[] {"category", Integer.toString(categoryId), "start", Integer.toString(start), "end", Integer.toString(end)}, 
+					"posts.aspx", HttpMethod.GET, successHandler, failureHandler	);
+	}
+	
 	public AsyncTask getArticleDetail(String articleId, Handler successHandler, Handler failureHandler) {
 		return template(	new String[] {"id", articleId}, 
 					"post.aspx", HttpMethod.GET, successHandler, failureHandler	);
@@ -151,8 +156,8 @@ public class APIClient {
 				if (isCancelled()) return SC_CANCELED;
 				jsonString = EntityUtils.toString(response.getEntity());
 				if (BuildConfig.DEBUG) {
-					Log.d(this.getClass().getName(), "REQUEST:" + request.getURI());
-					Log.d(this.getClass().getName(), "RESPONSE:" + jsonString);
+					Log.d(this.getClass().getName(), "=====REQUEST:" + request.getURI());
+					Log.d(this.getClass().getName(), "=====RESPONSE:" + jsonString);
 				}
 				return response.getStatusLine().getStatusCode();
 			} catch (ClientProtocolException e) {

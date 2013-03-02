@@ -2,6 +2,7 @@ package com.forboss.news;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import android.app.Activity;
 import android.content.Context;
@@ -46,8 +47,11 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 	private LinearLayout layoutPagingIndicatorImages;
 	private static final int SUBCAT_SELECTIONG_ANIMATION_DURATIO = 300;
 	private AsyncTask articleGettingTask;
-	private AsyncTask imageLoadingTask;
+	private Stack<AsyncTask> imageLoadingTasks = new Stack<AsyncTask>();
 	private ImageButton buttonClose;
+	
+	private static final int N_ARTICLES_TO_LOAD = 9;
+	private int nLoadedArticle = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,27 +106,34 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 			@Override
 			public void onViewFlipped(View view, int position) {
 				setPagingIndicatorPosition(position);
+				if (position == flipViewControllerAdapter.getData().size() - 2 && !didReachTheLastArticle) {
+					loadNextDataFromServer();
+				}
 			}
 		});
 		flipViewControllerAdapter = new ArticleGroupAdapter(new ArrayList<ArticleGroup>());
 		flipViewController.setAdapter(flipViewControllerAdapter);
 	}
 	
-	private void loadData(boolean shouldAlwaysDisplayProgressAlert) {
-		final boolean needToDisplayProgressAlert = shouldAlwaysDisplayProgressAlert ||
-													Article.count(this, category.getQueryCategoryId(), category.getQuerySubcategoryId()) == 0;
+	private boolean didReachTheLastArticle = false;
+	private void loadNextDataFromServer() {
+		if (!ForBossUtils.isNetworkAvailable(this)) {
+			nLoadedArticle += N_ARTICLES_TO_LOAD;
+			loadDataFromDatabase();
+			return;
+		}
+		final boolean needToDisplayProgressAlert = flipViewControllerAdapter.getData() == null || flipViewControllerAdapter.getData().isEmpty();
 		if (needToDisplayProgressAlert) {
 			ForBossUtils.alertProgress(this, getResources().getString(R.string.loading_data));
-		} else {
-			updateFlipperAdapter();
 		}
-		articleGettingTask = APIHelper.getInstance().getArticles(category.getId(), this, new Handler() {
+		articleGettingTask = APIHelper.getInstance().getArticles(category.getId(), nLoadedArticle + 1, N_ARTICLES_TO_LOAD, this, new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
 				if (needToDisplayProgressAlert) ForBossUtils.dismissProgress(getContext());
-				Boolean temp = (Boolean) msg.obj;
-				boolean needRefresh = temp != null && temp.booleanValue();
-				if (needRefresh) updateFlipperAdapter();
+				int nReturnedArticles = (Integer) ((Object[])msg.obj)[1];
+				nLoadedArticle += nReturnedArticles;
+				if (nReturnedArticles < N_ARTICLES_TO_LOAD) didReachTheLastArticle = true;
+				loadDataFromDatabase();
 			}
 		});
 	}
@@ -225,16 +236,12 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		layoutSubcategriesSelecting.startAnimation(animation);
 	}
 
-	private void updateFlipperAdapter() {
+	private void loadDataFromDatabase() {
 		new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
-				if (imageLoadingTask != null) {
-					imageLoadingTask.cancel(true);
-					imageLoadingTask = null;
-				}
-
-				List<ArticleGroup> list = ArticleGroup.loadArticleGroups(getContext(), category.getQueryCategoryId(), category.getQuerySubcategoryId());
+				List<ArticleGroup> list = ArticleGroup.loadArticleGroups(getContext(), category.getQueryCategoryId(), category.getQuerySubcategoryId(),
+																			0, nLoadedArticle);
 				flipViewControllerAdapter.getData().clear();
 				flipViewControllerAdapter.getData().addAll(list);
 				if (flipViewControllerAdapter.getData().size() != 0) {
@@ -242,7 +249,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 				}
 
 				// load images
-				imageLoadingTask = APIHelper.getInstance().getImages(list, getContext(), new Handler() {
+				imageLoadingTasks.push(APIHelper.getInstance().getImages(list, getContext(), new Handler() {
 					@Override
 					public void handleMessage(Message msg) {
 						Article article = (Article) msg.obj;
@@ -257,7 +264,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 						}
 						if (needUpdate) flipViewControllerAdapter.notifyDataSetChanged(); 
 					};
-				}, null);
+				}, null));
 			};
 		}.sendEmptyMessage(0);
 	}
@@ -428,7 +435,10 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 
 	private void refreshData() {
 		stopAllTasks();
-		loadData(true);
+		flipViewController.setSelection(0);
+		nLoadedArticle = 0;
+		didReachTheLastArticle = false;
+		loadNextDataFromServer();
 	}
 	
 	@Override
@@ -448,7 +458,11 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		loadData(false);
+		if (flipViewControllerAdapter.getData() != null && !flipViewControllerAdapter.getData().isEmpty()) {
+			flipViewControllerAdapter.notifyDataSetChanged();
+		} else {
+			loadNextDataFromServer();
+		}
 	}
 	
 	private void stopAllTasks() {
@@ -457,9 +471,11 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 			articleGettingTask = null;
 		}
 		
-		if (imageLoadingTask != null) {
-			imageLoadingTask.cancel(true);
-			imageLoadingTask = null;
+		if (imageLoadingTasks != null) {
+			while (!imageLoadingTasks.isEmpty()) {
+				AsyncTask task = imageLoadingTasks.pop();
+				if (task != null) task.cancel(true);
+			}
 		}
 	}
 	

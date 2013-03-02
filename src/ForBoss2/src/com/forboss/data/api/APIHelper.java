@@ -77,10 +77,8 @@ public class APIHelper {
 
 	public AsyncTask getArticles(final int categoryId, final Context context, final Handler finishHandler) {
 		if (!ForBossUtils.isNetworkAvailable(context)) return null;
-		return getArticles(categoryId, 1, Integer.MAX_VALUE, context, finishHandler);
-	}
-
-	private AsyncTask getArticles(final int categoryId, final int start, final int end, final Context context, final Handler finishHandler) {
+		int start = 1;
+		int end = Integer.MAX_VALUE;
 		final Category category = CommonData.getInstance().getCategory(categoryId);
 		return APIClient.getClient().getArticleForCategory(categoryId, start, end, category.getLast(), 
 				new Handler() {
@@ -131,13 +129,61 @@ public class APIHelper {
 		});
 	}
 
+	public AsyncTask getArticles(final int categoryId, final int start, final int number, final Context context, final Handler finishHandler) {
+		if (!ForBossUtils.isNetworkAvailable(context)) return null;
+		return APIClient.getClient().getArticleForCategory(categoryId, start, start + number - 1, new Handler() {
+			@Override
+			public void handleMessage(Message msg) {
+				String jsonString = (String)msg.obj;
+				try {
+					Dao<Article, String> articleDao = DatabaseHelper.getHelper(context).getArticleDao();
+					JSONArray jsonArticles = new JSONArray(jsonString);
+					boolean needRefresh = false;
+					for (int i = 0; i < jsonArticles.length(); i++) {
+						Article article = new Article().loadFromJSON(jsonArticles.getJSONObject(i));
+						Article dbArticle = articleDao.queryForId(article.getId());
+						if (dbArticle != null) {
+							if (!dbArticle.dataIdenticalTo(article)) {
+								boolean needReloadImage =	dbArticle.getThumbnailForDevice() != null &&
+															article.getThumbnailForDevice() != null &&
+															!dbArticle.getThumbnailForDevice().equals(article.getThumbnailForDevice());
+								dbArticle.copyFrom(article);
+								dbArticle.setHtmlContent(null); // set html content to null so that its latest content will be loaded in article detail screen
+								if (needReloadImage) dbArticle.setPictureLocation(null); // set picture location to null so that it will be reloaded
+								articleDao.update(dbArticle);
+								needRefresh = true;
+							}
+						} else {
+							articleDao.create(article);
+							needRefresh = true;
+						}
+					}
+					if (finishHandler != null) {
+						Message msg1 = finishHandler.obtainMessage();
+						msg1.obj = new Object[] {needRefresh, jsonArticles.length()};
+						finishHandler.sendMessage(msg1);
+					}
+				} catch (JSONException e) {
+					Log.e(this.getClass().getName(), "Unable to parse json data from server:" + jsonString, e);
+				} catch (SQLException e) {
+					Log.e(this.getClass().getName(), null, e);
+				} 
+			}
+		}, new Handler() {
+			@Override
+			public void handleMessage(Message msg) {
+				if (finishHandler != null) finishHandler.sendEmptyMessage(0);
+			}
+		});
+	}
+
 	public AsyncTask getImages(List list, Context context, Handler finishOneImageHandler, Handler finishAllHandler) {
 		if (!ForBossUtils.isNetworkAvailable(context)) return null;
 		return new ImageLoadingAsyncTask()
-				.setContext(context)
-				.setFinishOneImageHandler(finishOneImageHandler)
-				.setFinishAllHandler(finishAllHandler)
-				.execute(list);
+		.setContext(context)
+		.setFinishOneImageHandler(finishOneImageHandler)
+		.setFinishAllHandler(finishAllHandler)
+		.execute(list);
 	}
 
 	private class ImageLoadingAsyncTask extends AsyncTask<List, Integer, Integer> {
@@ -173,6 +219,7 @@ public class APIHelper {
 						temp.toArray(arrArticles);
 					}
 					for (Article article : arrArticles) {
+						dao.refresh(article);
 						if (article != null && article.getThumbnailForDevice() != null && article.getPictureLocation() == null) {
 							String filename = "forboss2_article_thumbnail_" + article.getId();
 							ForBossUtils.downloadAndSaveToInternalStorage(article.getThumbnailForDevice(), filename, (ContextWrapper)context);

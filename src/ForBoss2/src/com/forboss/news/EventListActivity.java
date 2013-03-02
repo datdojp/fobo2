@@ -98,7 +98,7 @@ public class EventListActivity extends Activity {
 					imageLoadingTask = null;
 				}
 				
-				List<Article> list = Article.loadArticlesOrderedCreatedTimeDesc(getContext(), category.getQueryCategoryId(), category.getQuerySubcategoryId());
+				List<Article> list = Article.loadArticlesOrderedCreatedTimeDesc(getContext(), category.getQueryCategoryId(), category.getQuerySubcategoryId(), 0, Integer.MAX_VALUE);; 
 				layoutEventListAdapter.getData().clear();
 				layoutEventListAdapter.getData().addAll(list);
 				if (layoutEventListAdapter.getData().size() != 0) {

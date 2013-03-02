@@ -31,7 +31,7 @@ public class Article extends BaseModel {
 		id = json.getString("ID");
 		title = unescape(json.getString("Title"));
 		thumbnail = json.getString("Thumbnail");
-		smallThumbnail = json.getString("SmallThumbnail");
+		if (json.has("SmallThumbnail")) smallThumbnail = json.getString("SmallThumbnail");
 		body = unescape(json.getString("Body"));
 		views = json.getInt("Views");
 		likes = json.getInt("Likes");
@@ -51,10 +51,12 @@ public class Article extends BaseModel {
 		return this;
 	}
 
-	public static List<Article> loadArticlesOrderedCreatedTimeDesc(Context context, int categoryId, int subCategoryId) {
+	public static List<Article> loadArticlesOrderedCreatedTimeDesc(Context context, int categoryId, int subCategoryId, int start, int number) {
 		try {
 			QueryBuilder builder = getBuilder(getDao(context), categoryId, subCategoryId);
 			builder.orderBy("createdTime", false);
+			if (start != 0) builder.offset(new Long(start));
+			if (number != 0) builder.limit(new Long(number));
 			return builder.query();
 		} catch (SQLException e) {
 			Log.e(Article.class.getName(), "Unable to load articles from database", e);
@@ -158,7 +160,7 @@ public class Article extends BaseModel {
 //	}
 	
 	public String getThumbnailForDevice() {
-		if (ForBossApplication.getDensityDpi() <= 160) {
+		if (ForBossApplication.getDensityDpi() <= 160 && smallThumbnail != null) {
 			return smallThumbnail;
 		} else {
 			return thumbnail;

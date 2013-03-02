@@ -22,8 +22,8 @@ public class ArticleGroup {
 			(left != null && left.getId() == article.getId()) || (right != null && right.getId() == article.getId());
 	}
 	
-	public static List<ArticleGroup> loadArticleGroups(Context context, int categoryId, int subCategoryId) {
-		List<Article> listArticles = Article.loadArticlesOrderedCreatedTimeDesc(context, categoryId, subCategoryId);
+	public static List<ArticleGroup> loadArticleGroups(Context context, int categoryId, int subCategoryId, int start, int number) {
+		List<Article> listArticles = Article.loadArticlesOrderedCreatedTimeDesc(context, categoryId, subCategoryId, start, number);
 		ArticleGroup articleGroup = null;
 		List<ArticleGroup> listArticleGroups = new ArrayList<ArticleGroup>();
 		int i = 0;
