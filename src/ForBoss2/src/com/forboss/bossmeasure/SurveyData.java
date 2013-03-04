@@ -10,9 +10,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.util.Log;
 
-import com.forboss.ForBossApplication;
 import com.forboss.R;
 import com.forboss.bossmeasure.SurveyData.Question.Option;
 
@@ -20,22 +20,16 @@ public class SurveyData {
 	private static SurveyItem firstSurveyItem;
 	private static List<SurveyItem> listSurveyItems;
 	public static SurveyItem getFirstSurveyItem() {
-		if (firstSurveyItem == null) {
-			init();
-		}
 		return firstSurveyItem;
 	}
 	public static List<SurveyItem> getAllSurveyItems() {
-		if (listSurveyItems == null) {
-			init();
-		}
 		return listSurveyItems;
 	}
 
-	private static void init() {
+	public static void init(Context context) {
 		try {
 			// read from survey.txt and parse to json object
-			InputStream is = ForBossApplication.getAppContext().getResources().openRawResource(R.raw.survey);
+			InputStream is = context.getResources().openRawResource(R.raw.survey);
 			byte[] b = new byte[is.available()];
 			is.read(b);
 			JSONObject jsonEverything = new JSONObject(new String(b));

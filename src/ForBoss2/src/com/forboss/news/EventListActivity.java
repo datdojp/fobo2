@@ -22,7 +22,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.forboss.ForBossApplication;
 import com.forboss.R;
 import com.forboss.data.api.APIHelper;
 import com.forboss.data.model.Article;
@@ -44,7 +43,7 @@ public class EventListActivity extends Activity {
 		setContentView(R.layout.event_list);
 
 		// category
-		category = CommonData.getInstance().getCategory(categoryId);
+		category = CommonData.getInstance().getCategory(categoryId, this);
 		
 		// list view
 		layoutEventList = (ListView) findViewById(R.id.layoutEventList);
@@ -171,7 +170,7 @@ public class EventListActivity extends Activity {
 
 			// set thumbnail
 			ImageView imgThumbnail = (ImageView) view.findViewById(R.id.imgThumbnail);
-			imgThumbnail.getLayoutParams().width = ForBossApplication.getWindowDisplay().getWidth() * 193 / 640;
+			imgThumbnail.getLayoutParams().width = ForBossUtils.App.getWindowDisplay().getWidth() * 193 / 640;
 			// recycle thumbnail if needed
 			ForBossUtils.recycleBitmapOfImage(imgThumbnail, getContext().getClass().getName());
 			// set thumbnail if it is downloaded to internal storage

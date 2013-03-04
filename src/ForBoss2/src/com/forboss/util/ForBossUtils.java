@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
@@ -55,14 +56,15 @@ import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.forboss.FeatureSelectingActivity;
-import com.forboss.ForBossApplication;
 import com.forboss.MainActivity;
 import com.forboss.R;
 
@@ -358,10 +360,10 @@ public class ForBossUtils {
 		return file.exists();
 	}
 
-	public static void copyAssetFile(final String src, final String dst) throws IOException {
+	public static void copyAssetFile(final String src, final String dst, Context context) throws IOException {
 		InputStream in = null;
 		OutputStream out = null;
-		final AssetManager assets = ForBossApplication.getAppContext().getAssets();
+		final AssetManager assets = context.getAssets();
 		try {
 			in = assets.open(src);
 			out = new FileOutputStream(dst);
@@ -617,6 +619,30 @@ public class ForBossUtils {
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			ForBossUtils.putBundleData("shouldCloseApp", true);
 			activity.startActivity(intent);
+		}
+	}
+	
+	public static class App {
+		public static void init(Context context) {
+			WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+			display = wm.getDefaultDisplay();
+			
+			densityDpi = context.getResources().getDisplayMetrics().densityDpi;
+		}
+		
+		private static Display display;	
+		public static Display getWindowDisplay() {
+			return display;
+		}
+		
+		private static Locale locale = new Locale("vi");
+		public static Locale getDefaultLocale() {
+			return locale;
+		}
+		
+		private static int densityDpi;
+		public static int getDensityDpi() {
+			return densityDpi;
 		}
 	}
 }

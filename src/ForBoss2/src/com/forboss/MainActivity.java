@@ -21,6 +21,8 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		ForBossUtils.App.init(this);
+		
 		Boolean shouldCloseApp = (Boolean) ForBossUtils.getBundleData("shouldCloseApp");
 		if (shouldCloseApp != null && shouldCloseApp.booleanValue()) {
 			ForBossUtils.putBundleData("shouldCloseApp", false);
@@ -29,8 +31,8 @@ public class MainActivity extends Activity {
 		}
 		
 		CommonData.getInstance().load(getContext());
-		final boolean needToGetCategoriesFromServer = CommonData.getInstance().getAllCategories() == null 
-														|| CommonData.getInstance().getAllCategories().size() == 0;
+		final boolean needToGetCategoriesFromServer = CommonData.getInstance().getAllCategories(this) == null 
+														|| CommonData.getInstance().getAllCategories(this).size() == 0;
 		if (needToGetCategoriesFromServer) {
 			ForBossUtils.alertProgress(this, getResources().getString(R.string.loading_data));
 			APIHelper.getInstance().getCategories(this, new Handler() {

@@ -79,7 +79,7 @@ public class APIHelper {
 		if (!ForBossUtils.isNetworkAvailable(context)) return null;
 		int start = 1;
 		int end = Integer.MAX_VALUE;
-		final Category category = CommonData.getInstance().getCategory(categoryId);
+		final Category category = CommonData.getInstance().getCategory(categoryId, context);
 		return APIClient.getClient().getArticleForCategory(categoryId, start, end, category.getLast(), 
 				new Handler() {
 			@Override
@@ -93,7 +93,7 @@ public class APIHelper {
 					long last = jsonResult.getLong("last");
 					boolean needRefresh = false;
 					for (int i = 0; i < jsonArticles.length(); i++) {
-						Article article = new Article().loadFromJSON(jsonArticles.getJSONObject(i));
+						Article article = new Article().loadFromJSON(jsonArticles.getJSONObject(i), context);
 						Article dbArticle = articleDao.queryForId(article.getId());
 						if (dbArticle != null) {
 							if (!dbArticle.dataIdenticalTo(article)) {
@@ -140,7 +140,7 @@ public class APIHelper {
 					JSONArray jsonArticles = new JSONArray(jsonString);
 					boolean needRefresh = false;
 					for (int i = 0; i < jsonArticles.length(); i++) {
-						Article article = new Article().loadFromJSON(jsonArticles.getJSONObject(i));
+						Article article = new Article().loadFromJSON(jsonArticles.getJSONObject(i), context);
 						Article dbArticle = articleDao.queryForId(article.getId());
 						if (dbArticle != null) {
 							if (!dbArticle.dataIdenticalTo(article)) {

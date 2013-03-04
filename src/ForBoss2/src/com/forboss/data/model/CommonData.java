@@ -9,7 +9,6 @@ import java.util.Map;
 import android.content.Context;
 import android.util.Log;
 
-import com.forboss.ForBossApplication;
 import com.forboss.data.util.DatabaseHelper;
 
 public class CommonData {
@@ -34,28 +33,28 @@ public class CommonData {
 	}
 	
 	private List<Category> allCategories;
-	public List<Category> getAllCategories() {
+	public List<Category> getAllCategories(Context context) {
 		if (allCategories == null) {
-			load(ForBossApplication.getAppContext());
+			load(context);
 		}
 		return allCategories;
 	}
 	
 	private Map<Integer, Category> mapOfIdAndCategories;
-	private Map<Integer, Category> getMapOfIdAndCategories() {
+	private Map<Integer, Category> getMapOfIdAndCategories(Context context) {
 		if (mapOfIdAndCategories == null) {
-			load(ForBossApplication.getAppContext());
+			load(context);
 		}
 		return mapOfIdAndCategories;
 	}
 	
-	public Category getCategory(int categoryId) {
-		return getMapOfIdAndCategories().get(categoryId);
+	public Category getCategory(int categoryId, Context context) {
+		return getMapOfIdAndCategories(context).get(categoryId);
 	}
 	
-	public List<Category> getSubcategories(int categoryId) {
+	public List<Category> getSubcategories(int categoryId, Context context) {
 		List<Category> results = new ArrayList<Category>();
-		for (Category category : getAllCategories()) {
+		for (Category category : getAllCategories(context)) {
 			if (category.getParentId() == categoryId) {
 				results.add(category);
 			}

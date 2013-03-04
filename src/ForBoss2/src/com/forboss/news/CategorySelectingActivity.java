@@ -70,7 +70,7 @@ public class CategorySelectingActivity extends Activity {
 	}
 
 	private void navToCategory(int categoryId) {
-		ForBossUtils.putBundleData("category", CommonData.getInstance().getCategory(categoryId));
+		ForBossUtils.putBundleData("category", CommonData.getInstance().getCategory(categoryId, this));
 		startActivity(new Intent(this, FlippingArticleListByCategoryActivity.class));
 	}
 	

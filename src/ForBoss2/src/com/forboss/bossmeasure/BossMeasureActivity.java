@@ -33,6 +33,7 @@ public class BossMeasureActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		instance = this;
 		setContentView(R.layout.boss_measure);
+		SurveyData.init(this);
 
 		buttonPrevSurveyItem = (ImageButton) findViewById(R.id.buttonPrevSurveyItem);
 		buttonPrevSurveyItem.setOnClickListener(new View.OnClickListener() {

@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.forboss.ForBossApplication;
 import com.forboss.R;
 import com.forboss.bossmeasure.SurveyData.Result;
 import com.forboss.util.ForBossUtils;
@@ -54,7 +53,7 @@ public class BossMeasureResultFragment extends Fragment {
 			}
 		});
 		RelativeLayout.LayoutParams lp = (LayoutParams) buttonContinueSurvey.getLayoutParams();
-		lp.leftMargin = (ForBossApplication.getWindowDisplay().getWidth() - lp.width) / 2;
+		lp.leftMargin = (ForBossUtils.App.getWindowDisplay().getWidth() - lp.width) / 2;
 		
 		return root;
 	}
