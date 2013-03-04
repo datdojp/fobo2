@@ -449,11 +449,17 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		} else {
 			gap = minGap;
 			indicatorsCount = (maxWidth + gap) / (width + gap);
-			indicatorsFrom = Math.max(0, pos - indicatorsCount / 2);
+			indicatorsFrom = pos - indicatorsCount / 2;
 			
+			if (indicatorsFrom < 0) {
+				indicatorsFrom = 0;
+			}
+			if (indicatorsFrom + indicatorsCount - 1 > count - 1) {
+				indicatorsFrom = count - indicatorsCount;
+			}
 		}
 
-		for (int i = indicatorsFrom; i < indicatorsCount; i++) {
+		for (int i = indicatorsFrom; i < indicatorsFrom + indicatorsCount; i++) {
 			ImageView img = new ImageView(this);
 			img.setBackgroundColor(Color.TRANSPARENT);
 			img.setScaleType(ScaleType.FIT_XY);
@@ -472,11 +478,15 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 				boolean rightOverflow = indicatorsFrom + indicatorsCount - 1 < count - 1;
 				if (	(leftOverflow && i == indicatorsFrom) ||
 						(rightOverflow && i == indicatorsFrom + indicatorsCount - 1)	) {
-					img.setAlpha(0x55);
+//					img.setAlpha(0x55);
+					img.getLayoutParams().width = width / 3;
+					img.getLayoutParams().height = height / 3;
 				}
 				if (	(leftOverflow && i == indicatorsFrom + 1) ||
 						(rightOverflow && i == indicatorsFrom + indicatorsCount - 2)	) {
-					img.setAlpha(0xaa);
+//					img.setAlpha(0xaa);
+					img.getLayoutParams().width = width * 2 / 3;
+					img.getLayoutParams().height = height * 2 / 3;
 				}
 			}
 
