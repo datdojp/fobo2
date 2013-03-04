@@ -108,8 +108,8 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 			@Override
 			public void onViewFlipped(View view, int position) {
 				refreshPagingIndicatorImages(position);
-				if (position == flipViewControllerAdapter.getData().size() - 2 && !didReachTheLastArticle) {
-					loadNextDataFromServer();
+				if (position == flipViewControllerAdapter.getData().size() - 1 && !didReachTheLastArticle) {
+					loadNextDataFromServer(true);
 				}
 			}
 		});
@@ -118,13 +118,13 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 	}
 	
 	private boolean didReachTheLastArticle = false;
-	private void loadNextDataFromServer() {
+	private void loadNextDataFromServer(boolean shouldAlwaysDisplayProgressAlert) {
 		if (!ForBossUtils.isNetworkAvailable(this)) {
 			nLoadedArticle += N_ARTICLES_TO_LOAD;
 			loadDataFromDatabase();
 			return;
 		}
-		final boolean needToDisplayProgressAlert = flipViewControllerAdapter.getData() == null || flipViewControllerAdapter.getData().isEmpty();
+		final boolean needToDisplayProgressAlert = shouldAlwaysDisplayProgressAlert || flipViewControllerAdapter.getData() == null || flipViewControllerAdapter.getData().isEmpty();
 		if (needToDisplayProgressAlert) {
 			ForBossUtils.alertProgress(this, getResources().getString(R.string.loading_data));
 		}
@@ -499,7 +499,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		flipViewController.setSelection(0);
 		nLoadedArticle = 0;
 		didReachTheLastArticle = false;
-		loadNextDataFromServer();
+		loadNextDataFromServer(true);
 	}
 	
 	@Override
@@ -522,7 +522,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		if (flipViewControllerAdapter.getData() != null && !flipViewControllerAdapter.getData().isEmpty()) {
 			flipViewControllerAdapter.notifyDataSetChanged();
 		} else {
-			loadNextDataFromServer();		
+			loadNextDataFromServer(false);		
 		}
 	}
 	
