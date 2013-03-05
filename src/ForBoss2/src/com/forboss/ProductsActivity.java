@@ -1,12 +1,12 @@
 package com.forboss;
 
-import com.forboss.util.ForBossUtils;
-
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -16,6 +16,8 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
+
+import com.forboss.util.ForBossUtils;
 
 public class ProductsActivity extends Activity {
 	private static final int PRODUCT_IMAGE_WIDTH = 2162;
@@ -95,16 +97,16 @@ public class ProductsActivity extends Activity {
 			img.setLayoutParams(new LinearLayout.LayoutParams(productThumbnailWidth, productThumbnailHeight));		
 			img.setScaleType(ScaleType.FIT_XY);
 			img.setTag(i);
-			img.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					int idx = (Integer) v.getTag();
-					if ((Integer)layoutProductImages.getTag() < 0) {
-						idx += 4;
-					}
-					showProductDetail(arr2Res[idx][1]);
-				}
-			});
+//			img.setOnClickListener(new View.OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					int idx = (Integer) v.getTag();
+//					if ((Integer)layoutProductImages.getTag() < 0) {
+//						idx += 4;
+//					}
+//					showProductDetail(arr2Res[idx][1]);
+//				}
+//			});
 			
 			// set padding left for special images
 			if (arrRes[0] == R.drawable.gold_product_1 || arrRes[0] == R.drawable.black_product_1 
@@ -120,26 +122,64 @@ public class ProductsActivity extends Activity {
 			layoutProductImages.addView(img);
 		}
 
-		ImageButton buttonLeft = (ImageButton) layoutProductLine.findViewById(R.id.buttonLeft);
-		buttonLeft.bringToFront();
-		buttonLeft.setOnClickListener(new View.OnClickListener() {
+		final ImageView imgLeft = (ImageView) layoutProductLine.findViewById(R.id.imgLeft);
+		imgLeft.bringToFront();
+		imgLeft.setVisibility(View.INVISIBLE);
+//		imgLeft.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View view) {
+//				scrollProductLine(layoutProductImages, 1);
+//			}
+//		});
+
+		final ImageView imgRight = (ImageView) layoutProductLine.findViewById(R.id.imgRight);
+		imgRight.bringToFront();
+//		imgRight.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View view) {
+//				scrollProductLine(layoutProductImages, -1);
+//			}
+//		});
+		
+		final GestureDetector gestureDetector = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
 			@Override
-			public void onClick(View view) {
-				scrollProductLine(layoutProductImages, 1);
+			public boolean onDown(MotionEvent e) {
+				return true;
+			}
+			
+			@Override
+			public boolean onSingleTapUp(MotionEvent e) {
+				int idx = Math.round(e.getX()) / productThumbnailWidth;
+				if ((Integer)layoutProductImages.getTag() < 0) {
+					idx += 4;
+				}
+				if (idx < arr2Res.length) {
+					showProductDetail(arr2Res[idx][1]);
+				}
+				return true;
+			}
+			
+			@Override
+			public boolean onFling(MotionEvent e1, MotionEvent e2,
+					float velocityX, float velocityY) {
+				if (velocityX > 0) {
+					scrollProductLine(layoutProductImages, 1, imgLeft, imgRight);
+				} else {
+					scrollProductLine(layoutProductImages, -1, imgLeft, imgRight);
+				}
+				return true;
 			}
 		});
-
-		ImageButton buttonRight = (ImageButton) layoutProductLine.findViewById(R.id.buttonRight);
-		buttonRight.bringToFront();
-		buttonRight.setOnClickListener(new View.OnClickListener() {
+		layoutProductLine.requestDisallowInterceptTouchEvent(true);
+		layoutProductLine.setOnTouchListener(new View.OnTouchListener() {
 			@Override
-			public void onClick(View view) {
-				scrollProductLine(layoutProductImages, -1);
+			public boolean onTouch(View arg0, MotionEvent event) {
+				return gestureDetector.onTouchEvent(event);
 			}
 		});
 	}
 
-	private void scrollProductLine(LinearLayout layoutProductImages, int direction) {
+	private void scrollProductLine(LinearLayout layoutProductImages, int direction, ImageView imgLeft, ImageView imgRight) {
 		int curX = (Integer)layoutProductImages.getTag();
 		int newX =  curX + ForBossUtils.App.getWindowDisplay().getWidth() * direction;
 		newX = Math.max(-ForBossUtils.App.getWindowDisplay().getWidth(), newX);
@@ -149,6 +189,14 @@ public class ProductsActivity extends Activity {
 		anim.setDuration(PRODUCT_LINE_SCROLL_ANIMATION_DURATION);
 		anim.setFillAfter(true);
 		layoutProductImages.startAnimation(anim);
+		
+		if (direction == 1) {
+			imgLeft.setVisibility(View.INVISIBLE);
+			imgRight.setVisibility(View.VISIBLE);
+		} else {
+			imgLeft.setVisibility(View.VISIBLE);
+			imgRight.setVisibility(View.INVISIBLE);
+		}
 	}
 
 	private void showProductDetail(int productResourceId) {

@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.forboss.CustomRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="100dp" >
 
@@ -8,8 +8,8 @@
         android:scaleType="fitXY"
         android:src="@drawable/bg_product_line" />
 
-    <ImageButton
-        android:id="@+id/buttonLeft"
+    <ImageView
+        android:id="@+id/imgLeft"
         android:layout_width="25dp"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
@@ -30,8 +30,8 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <ImageButton
-        android:id="@+id/buttonRight"
+    <ImageView
+        android:id="@+id/imgRight"
         android:layout_width="25dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
@@ -40,4 +40,4 @@
         android:scaleType="centerInside"
         android:src="@drawable/but_right" />
 
-</RelativeLayout>
+</com.forboss.CustomRelativeLayout>
