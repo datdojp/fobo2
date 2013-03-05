@@ -21,8 +21,6 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		ForBossUtils.App.init(this);
-		
 		Boolean shouldCloseApp = (Boolean) ForBossUtils.getBundleData("shouldCloseApp");
 		if (shouldCloseApp != null && shouldCloseApp.booleanValue()) {
 			ForBossUtils.putBundleData("shouldCloseApp", false);

@@ -11,7 +11,7 @@ import com.forboss.news.CategorySelectingActivity;
 import com.forboss.util.ForBossUtils;
 
 
-public class FeatureSelectingActivity extends Activity {
+public class FeatureSelectingActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

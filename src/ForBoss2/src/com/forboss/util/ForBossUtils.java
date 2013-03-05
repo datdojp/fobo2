@@ -623,11 +623,16 @@ public class ForBossUtils {
 	}
 	
 	public static class App {
+		private static boolean isInitialized = false;
 		public static void init(Context context) {
-			WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-			display = wm.getDefaultDisplay();
-			
-			densityDpi = context.getResources().getDisplayMetrics().densityDpi;
+			if (!isInitialized) {
+				WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+				display = wm.getDefaultDisplay();
+				
+				densityDpi = context.getResources().getDisplayMetrics().densityDpi;
+				
+				isInitialized = true;
+			}
 		}
 		
 		private static Display display;	

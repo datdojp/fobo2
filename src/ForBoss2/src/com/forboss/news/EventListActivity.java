@@ -3,7 +3,6 @@ package com.forboss.news;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -22,6 +21,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.forboss.BaseActivity;
 import com.forboss.R;
 import com.forboss.data.api.APIHelper;
 import com.forboss.data.model.Article;
@@ -29,7 +29,7 @@ import com.forboss.data.model.Category;
 import com.forboss.data.model.CommonData;
 import com.forboss.util.ForBossUtils;
 
-public class EventListActivity extends Activity {
+public class EventListActivity extends BaseActivity {
 	private ListView layoutEventList;
 	private EventListAdapter layoutEventListAdapter;
 	private static final int categoryId = Category.CATEGORY_EVENT_ID;

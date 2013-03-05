@@ -4,19 +4,19 @@ import java.util.Stack;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.forboss.BaseFragmentActivity;
 import com.forboss.R;
 import com.forboss.bossmeasure.SurveyData.Question;
 import com.forboss.bossmeasure.SurveyData.Result;
 import com.forboss.bossmeasure.SurveyData.SurveyItem;
 import com.forboss.util.ForBossUtils;
 
-public class BossMeasureActivity extends FragmentActivity {
+public class BossMeasureActivity extends BaseFragmentActivity {
 	private FragmentManager fragmentManager;
 	private Fragment currentFragment;
 	private Stack<SurveyItem> surveyItemsStack = new Stack<SurveyData.SurveyItem>();

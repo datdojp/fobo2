@@ -1,17 +1,17 @@
 package com.forboss.news;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.forboss.BaseActivity;
 import com.forboss.R;
 import com.forboss.data.model.Category;
 import com.forboss.data.model.CommonData;
 import com.forboss.util.ForBossUtils;
 
-public class CategorySelectingActivity extends Activity {
+public class CategorySelectingActivity extends BaseActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

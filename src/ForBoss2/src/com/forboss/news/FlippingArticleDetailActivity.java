@@ -2,7 +2,6 @@ package com.forboss.news;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -22,13 +21,14 @@ import com.addthis.core.AddThis;
 import com.addthis.core.Config;
 import com.addthis.error.ATDatabaseException;
 import com.aphidmobile.flip.FlipViewController;
+import com.forboss.BaseActivity;
 import com.forboss.R;
 import com.forboss.data.api.APIHelper;
 import com.forboss.data.model.Article;
 import com.forboss.data.model.Category;
 import com.forboss.util.ForBossUtils;
 
-public class FlippingArticleDetailActivity extends Activity {
+public class FlippingArticleDetailActivity extends BaseActivity {
 	private FlipViewController flipViewController;
 	private FlipViewControllerAdapter flipViewControllerAdapter;
 	private ViewGroup root;

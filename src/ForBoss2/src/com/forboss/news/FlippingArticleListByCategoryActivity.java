@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -29,6 +28,7 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.aphidmobile.flip.FlipViewController;
+import com.forboss.BaseActivity;
 import com.forboss.R;
 import com.forboss.data.api.APIHelper;
 import com.forboss.data.model.Article;
@@ -37,7 +37,7 @@ import com.forboss.data.model.Category;
 import com.forboss.data.model.CommonData;
 import com.forboss.util.ForBossUtils;
 
-public class FlippingArticleListByCategoryActivity extends Activity {
+public class FlippingArticleListByCategoryActivity extends BaseActivity {
 	private Category category;
 	private FlipViewController flipViewController;
 	private ArticleGroupAdapter flipViewControllerAdapter;

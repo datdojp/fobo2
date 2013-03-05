@@ -3,7 +3,6 @@ package com.forboss;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,7 +20,7 @@ import android.widget.TextView;
 import com.forboss.data.api.APIClient;
 import com.forboss.util.ForBossUtils;
 
-public class RegistrationActivity extends Activity {
+public class RegistrationActivity extends BaseActivity {
 
 	private ImageButton buttonSubmit;
 	private EditText editEmail, editPhoneNumber, editCMND;

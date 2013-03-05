@@ -19,7 +19,7 @@ import android.widget.RelativeLayout.LayoutParams;
 
 import com.forboss.util.ForBossUtils;
 
-public class ProductsActivity extends Activity {
+public class ProductsActivity extends BaseActivity {
 	private static final int PRODUCT_IMAGE_WIDTH = 2162;
 	private static final int PRODUCT_IMAGE_HEIGHT = 2862;
 	private static final int PRODUCT_LINE_SCROLL_ANIMATION_DURATION = 300;
