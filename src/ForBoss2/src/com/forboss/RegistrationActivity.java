@@ -1,12 +1,17 @@
 package com.forboss;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -71,7 +76,30 @@ public class RegistrationActivity extends Activity {
 		APIClient.getClient().signup(email, phoneNumber, cmnd, new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
-				handleRegistrationSuccess();
+				String jsonString = (String) msg.obj;
+				try {
+					JSONObject jsonObject = new JSONObject(jsonString);
+					if (jsonObject.getBoolean("success")) {
+						handleRegistrationSuccess();	
+					} else {
+						int errorcode = jsonObject.getInt("errorcode");
+						String errMsg = "";
+						if (errorcode == 1) {
+							errMsg = "Bạn chưa nhập đầy đủ các thông tin. Vui lòng thử lại.";
+						} else if (errorcode == 2) {
+							errMsg = "Địa chỉ email này đã được sử dụng.";
+						} else if (errorcode == 3) {
+							errMsg = "Số điện thoại này đã được sử dụng.";
+						} else if (errorcode == 4) {
+							errMsg = "Số CMND này đã được sử dụng.";
+						} else {
+							errMsg = "Có lỗi trong quá trình kết nối mạng.";
+						}
+						ForBossUtils.alert(getContext(), errMsg);
+					}
+				} catch (JSONException e) {
+					Log.e(RegistrationActivity.class.getName(), "Unable to parse json data", e);
+				}
 			}
 		},
 		new Handler() {
@@ -97,5 +125,9 @@ public class RegistrationActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		ForBossUtils.UI.closeApp(this);
+	}
+	
+	private Context getContext() {
+		return this;
 	}
 }

@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.graphics.Bitmap;
 
-import com.forboss.ForBossApplication;
 import com.forboss.util.ForBossUtils;
 import com.j256.ormlite.field.DatabaseField;
 
@@ -41,11 +40,11 @@ public class Category extends BaseModel {
 	}
 
 	public Bitmap getIconBitmap(Context context) {
-		String path = mapOfSubcatAndIcon.get(title.toLowerCase(ForBossApplication.getDefaultLocale()))[0];
+		String path = mapOfSubcatAndIcon.get(title.toLowerCase(ForBossUtils.App.getDefaultLocale()))[0];
 		return ForBossUtils.loadBitmapFromAssets(path, context);
 	}
 	public Bitmap getTextBitmap(Context context) {
-		String path = mapOfSubcatAndIcon.get(title.toLowerCase(ForBossApplication.getDefaultLocale()))[1];
+		String path = mapOfSubcatAndIcon.get(title.toLowerCase(ForBossUtils.App.getDefaultLocale()))[1];
 		return ForBossUtils.loadBitmapFromAssets(path, context);
 	}
 	

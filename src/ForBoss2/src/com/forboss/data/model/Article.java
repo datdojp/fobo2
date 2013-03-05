@@ -11,8 +11,8 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.util.Log;
 
-import com.forboss.ForBossApplication;
 import com.forboss.data.util.DatabaseHelper;
+import com.forboss.util.ForBossUtils;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -27,7 +27,7 @@ public class Article extends BaseModel {
 		return serverDataFieldNames;
 	}
 	
-	public Article loadFromJSON(JSONObject json) throws JSONException {
+	public Article loadFromJSON(JSONObject json, Context context) throws JSONException {
 		id = json.getString("ID");
 		title = unescape(json.getString("Title"));
 		thumbnail = json.getString("Thumbnail");
@@ -39,7 +39,7 @@ public class Article extends BaseModel {
 		createdTime = json.getLong("CreatedTime");
 		
 		int categoryId = json.getInt("CategoryID");
-		Category category = CommonData.getInstance().getCategory(categoryId);
+		Category category = CommonData.getInstance().getCategory(categoryId, context);
 		if (category.isParent()) {
 			this.categoryId = categoryId;
 			this.subCategoryId = 0;
@@ -160,7 +160,7 @@ public class Article extends BaseModel {
 //	}
 	
 	public String getThumbnailForDevice() {
-		if (ForBossApplication.getDensityDpi() <= 160 && smallThumbnail != null) {
+		if (ForBossUtils.App.getDensityDpi() <= 160 && smallThumbnail != null) {
 			return smallThumbnail;
 		} else {
 			return thumbnail;

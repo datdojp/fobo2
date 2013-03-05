@@ -1,5 +1,6 @@
 package com.forboss.news;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -29,13 +30,14 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.aphidmobile.flip.FlipViewController;
-import com.forboss.ForBossApplication;
+import com.forboss.BuildConfig;
 import com.forboss.R;
 import com.forboss.data.api.APIHelper;
 import com.forboss.data.model.Article;
 import com.forboss.data.model.ArticleGroup;
 import com.forboss.data.model.Category;
 import com.forboss.data.model.CommonData;
+import com.forboss.data.util.DatabaseHelper;
 import com.forboss.util.ForBossUtils;
 
 public class FlippingArticleListByCategoryActivity extends Activity {
@@ -105,9 +107,9 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		flipViewController.setOnViewFlipListener(new FlipViewController.ViewFlipListener() {
 			@Override
 			public void onViewFlipped(View view, int position) {
-				setPagingIndicatorPosition(position);
-				if (position == flipViewControllerAdapter.getData().size() - 2 && !didReachTheLastArticle) {
-					loadNextDataFromServer();
+				refreshPagingIndicatorImages(position);
+				if (position == flipViewControllerAdapter.getData().size() - 1 && !didReachTheLastArticle) {
+					loadNextDataFromServer(true);
 				}
 			}
 		});
@@ -116,13 +118,13 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 	}
 	
 	private boolean didReachTheLastArticle = false;
-	private void loadNextDataFromServer() {
+	private void loadNextDataFromServer(boolean shouldAlwaysDisplayProgressAlert) {
 		if (!ForBossUtils.isNetworkAvailable(this)) {
 			nLoadedArticle += N_ARTICLES_TO_LOAD;
 			loadDataFromDatabase();
 			return;
 		}
-		final boolean needToDisplayProgressAlert = flipViewControllerAdapter.getData() == null || flipViewControllerAdapter.getData().isEmpty();
+		final boolean needToDisplayProgressAlert = shouldAlwaysDisplayProgressAlert || flipViewControllerAdapter.getData() == null || flipViewControllerAdapter.getData().isEmpty();
 		if (needToDisplayProgressAlert) {
 			ForBossUtils.alertProgress(this, getResources().getString(R.string.loading_data));
 		}
@@ -133,6 +135,10 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 				int nReturnedArticles = (Integer) ((Object[])msg.obj)[1];
 				nLoadedArticle += nReturnedArticles;
 				if (nReturnedArticles < N_ARTICLES_TO_LOAD) didReachTheLastArticle = true;
+				if (BuildConfig.DEBUG) {
+					nLoadedArticle += N_ARTICLES_TO_LOAD - nReturnedArticles;
+					didReachTheLastArticle = false;
+				}
 				loadDataFromDatabase();
 			}
 		});
@@ -141,7 +147,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 	private void initSubcategoriesSelecting() {
 		layoutSubcategriesSelecting = (RelativeLayout) findViewById(R.id.layoutSubcategriesSelecting);
 		final LinearLayout layoutSubcategories = (LinearLayout) layoutSubcategriesSelecting.findViewById(R.id.layoutSubcategories);
-		List<Category> listSubcategories = CommonData.getInstance().getSubcategories(category.getQueryCategoryId());
+		List<Category> listSubcategories = CommonData.getInstance().getSubcategories(category.getQueryCategoryId(), this);
 		for (final Category subcat : listSubcategories) {
 			// add view for each sub-category
 			View viewSubcat = getLayoutInflater().inflate(R.layout.subcategory, null);
@@ -156,7 +162,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 			imgIcon.setImageBitmap(bm);
 
 			TextView txtName = (TextView) viewSubcat.findViewById(R.id.txtName);
-			txtName.setText(subcat.getTitle().toUpperCase(ForBossApplication.getDefaultLocale()));
+			txtName.setText(subcat.getTitle().toUpperCase(ForBossUtils.App.getDefaultLocale()));
 			if (subcat.getId() == category.getQuerySubcategoryId()) {
 				viewSubcat.setBackgroundColor(0xff262626);
 			}
@@ -242,6 +248,25 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 			public void handleMessage(Message msg) {
 				List<ArticleGroup> list = ArticleGroup.loadArticleGroups(getContext(), category.getQueryCategoryId(), category.getQuerySubcategoryId(),
 																			0, nLoadedArticle);
+				if (BuildConfig.DEBUG) {
+					try {
+						com.j256.ormlite.dao.Dao<Article, String> dao = DatabaseHelper.getHelper(getContext()).getArticleDao();
+						if (list.size() < nLoadedArticle) {
+							int n = nLoadedArticle - list.size();
+							for (int i = 0; i < n; i++) {
+								Article dummy = new Article();
+								dummy.copyFrom(list.get(0).top);
+								dummy.setId(Math.round(Math.random() * 1000000) + "_" + System.currentTimeMillis());
+								dummy.setCreatedTime(0);
+								dao.create(dummy);
+							}
+							list = ArticleGroup.loadArticleGroups(getContext(), category.getQueryCategoryId(), category.getQuerySubcategoryId(),
+									0, nLoadedArticle);
+						}
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
 				flipViewControllerAdapter.getData().clear();
 				flipViewControllerAdapter.getData().addAll(list);
 				if (flipViewControllerAdapter.getData().size() != 0) {
@@ -375,7 +400,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		@Override
 		public void notifyDataSetChanged() {
 			super.notifyDataSetChanged();
-			initPagingIndicatorImages();
+			refreshPagingIndicatorImages(flipViewController.getSelectedItemPosition());
 		}
 	}
 
@@ -399,37 +424,73 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		}
 	}
 
-	private void initPagingIndicatorImages() {
+	private void refreshPagingIndicatorImages(int pos) {
 		layoutPagingIndicatorImages.removeAllViews();
-		int width = ForBossUtils.convertDpToPixel(7, this);
+		
+		int count = flipViewControllerAdapter.getCount();
+		int width = ForBossUtils.convertDpToPixel(6, this);
 		int height = width;
-		int gap = ForBossApplication.getWindowDisplay().getWidth() - flipViewControllerAdapter.getCount() * width;
-		gap = Math.max(0, gap);
-		gap = Math.min(gap, 2 * width);
-		for (int i = 0; i < flipViewControllerAdapter.getCount(); i++) {
-			ImageView img = new ImageView(this);
-			img.setImageResource(R.drawable.selected_page);
-			img.setBackgroundColor(Color.TRANSPARENT);
-			img.setScaleType(ScaleType.FIT_XY);
-
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, height);
-			if (i != 0) lp.leftMargin = gap; 
-			img.setLayoutParams(lp);
-
-			layoutPagingIndicatorImages.addView(img);
+		int minGap = width / 2;
+		int maxGap = width * 2;
+		int maxWidth = ForBossUtils.App.getWindowDisplay().getWidth() - 2 * ForBossUtils.convertDpToPixel(40, this);
+		int neededWidth = width*count + (count >= 2 ? minGap * (count - 1) : 0);
+		
+		int gap = 0;
+		int indicatorsFrom;
+		int indicatorsCount;
+		if (neededWidth <= maxWidth) {
+			if (count >= 2) {
+				gap = (maxWidth - count*width) / (count - 1);
+			}
+			gap = Math.max(minGap, gap);
+			gap = Math.min(gap, maxGap);
+			indicatorsFrom = 0;
+			indicatorsCount = count;
+		} else {
+			gap = minGap;
+			indicatorsCount = (maxWidth + gap) / (width + gap);
+			indicatorsFrom = pos - indicatorsCount / 2;
+			
+			if (indicatorsFrom < 0) {
+				indicatorsFrom = 0;
+			}
+			if (indicatorsFrom + indicatorsCount - 1 > count - 1) {
+				indicatorsFrom = count - indicatorsCount;
+			}
 		}
 
-		setPagingIndicatorPosition(flipViewController.getSelectedItemPosition());
-	}
-
-	private void setPagingIndicatorPosition(int pos) {
-		for (int i = 0; i < layoutPagingIndicatorImages.getChildCount(); i++) {
-			ImageView img = (ImageView) layoutPagingIndicatorImages.getChildAt(i);
+		for (int i = indicatorsFrom; i < indicatorsFrom + indicatorsCount; i++) {
+			ImageView img = new ImageView(this);
+			img.setBackgroundColor(Color.TRANSPARENT);
+			img.setScaleType(ScaleType.FIT_XY);
 			if (i == pos) {
 				img.setImageResource(R.drawable.selected_page);
 			} else {
 				img.setImageResource(R.drawable.unselected_page);
 			}
+
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, height);
+			if (i != indicatorsFrom) lp.leftMargin = gap; 
+			img.setLayoutParams(lp);
+			
+			if (indicatorsCount < count) {
+				boolean leftOverflow = indicatorsFrom > 0;
+				boolean rightOverflow = indicatorsFrom + indicatorsCount - 1 < count - 1;
+				if (	(leftOverflow && i == indicatorsFrom) ||
+						(rightOverflow && i == indicatorsFrom + indicatorsCount - 1)	) {
+//					img.setAlpha(0x55);
+					img.getLayoutParams().width = width / 3;
+					img.getLayoutParams().height = height / 3;
+				}
+				if (	(leftOverflow && i == indicatorsFrom + 1) ||
+						(rightOverflow && i == indicatorsFrom + indicatorsCount - 2)	) {
+//					img.setAlpha(0xaa);
+					img.getLayoutParams().width = width * 2 / 3;
+					img.getLayoutParams().height = height * 2 / 3;
+				}
+			}
+
+			layoutPagingIndicatorImages.addView(img);
 		}
 	}
 
@@ -438,7 +499,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		flipViewController.setSelection(0);
 		nLoadedArticle = 0;
 		didReachTheLastArticle = false;
-		loadNextDataFromServer();
+		loadNextDataFromServer(true);
 	}
 	
 	@Override
@@ -461,7 +522,7 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 		if (flipViewControllerAdapter.getData() != null && !flipViewControllerAdapter.getData().isEmpty()) {
 			flipViewControllerAdapter.notifyDataSetChanged();
 		} else {
-			loadNextDataFromServer();
+			loadNextDataFromServer(false);		
 		}
 	}
 	

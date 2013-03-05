@@ -72,7 +72,7 @@ public class ProductsActivity extends Activity {
 		});
 
 		// pre-calculated sizes of product thumbnails
-		productThumbnailWidth = ForBossApplication.getWindowDisplay().getWidth() / 4;
+		productThumbnailWidth = ForBossUtils.App.getWindowDisplay().getWidth() / 4;
 		productThumbnailHeight = productThumbnailWidth * PRODUCT_IMAGE_HEIGHT / PRODUCT_IMAGE_WIDTH;
 
 		// init first product line
@@ -88,7 +88,7 @@ public class ProductsActivity extends Activity {
 		layoutProductLine.getLayoutParams().height = productThumbnailHeight;
 		final LinearLayout layoutProductImages = (LinearLayout) layoutProductLine.findViewById(R.id.layoutProductImages) ;
 		layoutProductImages.setTag(0);
-		((RelativeLayout.LayoutParams)layoutProductImages.getLayoutParams()).rightMargin = - ForBossApplication.getWindowDisplay().getWidth();
+		((RelativeLayout.LayoutParams)layoutProductImages.getLayoutParams()).rightMargin = - ForBossUtils.App.getWindowDisplay().getWidth();
 		for(int i = 0; i < arr2Res.length; i++) {
 			int[] arrRes = arr2Res[i];
 			ImageView img = new ImageView(this);
@@ -141,8 +141,8 @@ public class ProductsActivity extends Activity {
 
 	private void scrollProductLine(LinearLayout layoutProductImages, int direction) {
 		int curX = (Integer)layoutProductImages.getTag();
-		int newX =  curX + ForBossApplication.getWindowDisplay().getWidth() * direction;
-		newX = Math.max(-ForBossApplication.getWindowDisplay().getWidth(), newX);
+		int newX =  curX + ForBossUtils.App.getWindowDisplay().getWidth() * direction;
+		newX = Math.max(-ForBossUtils.App.getWindowDisplay().getWidth(), newX);
 		newX = Math.min(newX, 0);
 		layoutProductImages.setTag(newX);		
 		TranslateAnimation anim = new TranslateAnimation(curX, newX, 0, 0);
@@ -154,24 +154,24 @@ public class ProductsActivity extends Activity {
 	private void showProductDetail(int productResourceId) {
 		Bitmap bm = BitmapFactory.decodeResource(getResources(), productResourceId);
 		ImageView imgProductDetail = (ImageView) layoutProductDetail.findViewById(R.id.imgProductDetail);
-		float screenRatio = 1f * ForBossApplication.getWindowDisplay().getHeight() / ForBossApplication.getWindowDisplay().getWidth(); 
+		float screenRatio = 1f * ForBossUtils.App.getWindowDisplay().getHeight() / ForBossUtils.App.getWindowDisplay().getWidth(); 
 		float bmRatio = 1.0f * bm.getHeight() / bm.getWidth();
 		int width = 0;
 		int height = 0;
 		if (bmRatio > screenRatio) {
-			height = Math.round(ForBossApplication.getWindowDisplay().getHeight() * PRODUCT_DETAIL_IMAGE_RATIO);
+			height = Math.round(ForBossUtils.App.getWindowDisplay().getHeight() * PRODUCT_DETAIL_IMAGE_RATIO);
 			width = height * bm.getWidth() / bm.getHeight();
 		} else {
-			width = Math.round(ForBossApplication.getWindowDisplay().getWidth() * PRODUCT_DETAIL_IMAGE_RATIO);
+			width = Math.round(ForBossUtils.App.getWindowDisplay().getWidth() * PRODUCT_DETAIL_IMAGE_RATIO);
 			height = width * bm.getHeight() / bm.getWidth();
 		}
 		RelativeLayout.LayoutParams lp = (LayoutParams) imgProductDetail.getLayoutParams();
 		lp.width = width;
 		lp.height = height;
-		lp.leftMargin = (ForBossApplication.getWindowDisplay().getWidth() - width) / 2;
+		lp.leftMargin = (ForBossUtils.App.getWindowDisplay().getWidth() - width) / 2;
 		lp.topMargin = Math.min(
-						(ForBossApplication.getWindowDisplay().getHeight() - height) / 2,
-						ForBossApplication.getWindowDisplay().getHeight() - buttonClose.getLayoutParams().height/2 - height - ForBossUtils.convertDpToPixel(5, this)); // need to do this so that button close is always displayed
+						(ForBossUtils.App.getWindowDisplay().getHeight() - height) / 2,
+						ForBossUtils.App.getWindowDisplay().getHeight() - buttonClose.getLayoutParams().height/2 - height - ForBossUtils.convertDpToPixel(5, this)); // need to do this so that button close is always displayed
 		imgProductDetail.setImageBitmap(bm);
 
 		new Handler().post(new Runnable() {
