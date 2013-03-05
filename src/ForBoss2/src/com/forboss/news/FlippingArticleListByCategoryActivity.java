@@ -1,6 +1,5 @@
 package com.forboss.news;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -30,14 +29,12 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.aphidmobile.flip.FlipViewController;
-import com.forboss.BuildConfig;
 import com.forboss.R;
 import com.forboss.data.api.APIHelper;
 import com.forboss.data.model.Article;
 import com.forboss.data.model.ArticleGroup;
 import com.forboss.data.model.Category;
 import com.forboss.data.model.CommonData;
-import com.forboss.data.util.DatabaseHelper;
 import com.forboss.util.ForBossUtils;
 
 public class FlippingArticleListByCategoryActivity extends Activity {
@@ -135,10 +132,10 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 				int nReturnedArticles = (Integer) ((Object[])msg.obj)[1];
 				nLoadedArticle += nReturnedArticles;
 				if (nReturnedArticles < N_ARTICLES_TO_LOAD) didReachTheLastArticle = true;
-				if (BuildConfig.DEBUG) {
-					nLoadedArticle += N_ARTICLES_TO_LOAD - nReturnedArticles;
-					didReachTheLastArticle = false;
-				}
+//				if (BuildConfig.DEBUG) {
+//					nLoadedArticle += N_ARTICLES_TO_LOAD - nReturnedArticles;
+//					didReachTheLastArticle = false;
+//				}
 				loadDataFromDatabase();
 			}
 		});
@@ -248,25 +245,25 @@ public class FlippingArticleListByCategoryActivity extends Activity {
 			public void handleMessage(Message msg) {
 				List<ArticleGroup> list = ArticleGroup.loadArticleGroups(getContext(), category.getQueryCategoryId(), category.getQuerySubcategoryId(),
 																			0, nLoadedArticle);
-				if (BuildConfig.DEBUG) {
-					try {
-						com.j256.ormlite.dao.Dao<Article, String> dao = DatabaseHelper.getHelper(getContext()).getArticleDao();
-						if (list.size() < nLoadedArticle) {
-							int n = nLoadedArticle - list.size();
-							for (int i = 0; i < n; i++) {
-								Article dummy = new Article();
-								dummy.copyFrom(list.get(0).top);
-								dummy.setId(Math.round(Math.random() * 1000000) + "_" + System.currentTimeMillis());
-								dummy.setCreatedTime(0);
-								dao.create(dummy);
-							}
-							list = ArticleGroup.loadArticleGroups(getContext(), category.getQueryCategoryId(), category.getQuerySubcategoryId(),
-									0, nLoadedArticle);
-						}
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-				}
+//				if (BuildConfig.DEBUG) {
+//					try {
+//						com.j256.ormlite.dao.Dao<Article, String> dao = DatabaseHelper.getHelper(getContext()).getArticleDao();
+//						if (list.size() < nLoadedArticle) {
+//							int n = nLoadedArticle - list.size();
+//							for (int i = 0; i < n; i++) {
+//								Article dummy = new Article();
+//								dummy.copyFrom(list.get(0).top);
+//								dummy.setId(Math.round(Math.random() * 1000000) + "_" + System.currentTimeMillis());
+//								dummy.setCreatedTime(0);
+//								dao.create(dummy);
+//							}
+//							list = ArticleGroup.loadArticleGroups(getContext(), category.getQueryCategoryId(), category.getQuerySubcategoryId(),
+//									0, nLoadedArticle);
+//						}
+//					} catch (SQLException e) {
+//						e.printStackTrace();
+//					}
+//				}
 				flipViewControllerAdapter.getData().clear();
 				flipViewControllerAdapter.getData().addAll(list);
 				if (flipViewControllerAdapter.getData().size() != 0) {
