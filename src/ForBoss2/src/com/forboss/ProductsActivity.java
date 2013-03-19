@@ -35,7 +35,8 @@ public class ProductsActivity extends BaseActivity {
 		new int[] {R.drawable.gold_product_2, R.drawable.p4},
 		new int[] {R.drawable.gold_product_3, R.drawable.p6},
 		new int[] {R.drawable.gold_product_4, R.drawable.p10},
-		new int[] {R.drawable.gold_product_5, R.drawable.p11}
+		new int[] {R.drawable.gold_product_5, R.drawable.p11},
+		new int[] {R.drawable.gold_product_6, R.drawable.p12}
 	};
 
 	private static final int[][] PRODUCT_IMAGES_BLACK = new int[][] {
